@@ -1,0 +1,57 @@
+.inputfield {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+
+    .header {
+        width: 100%;
+        margin: 4px 0px;
+
+        label {
+            font-weight: bolder;
+            font-size: 14px;
+            color: #777;
+        }
+    }
+
+    .content {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+
+        height: auto;
+        padding: 2px 2px;
+        width: 100%;
+        font-family: "Work Sans";
+        font-size: 14px;
+        border: 1px solid lightgray;
+        border-radius: 4px;
+        outline: none;
+
+        &:hover,
+        &:focus-within {
+            outline: none;
+            border: 1px solid #777;
+        }
+
+        .start {}
+
+        .input {
+            padding: 2px 8px;
+            flex-grow: 1;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            font-family: 'Work Sans';
+        }
+
+        .end {}
+    }
+
+    .helper {
+        width: 100%;
+    }
+}

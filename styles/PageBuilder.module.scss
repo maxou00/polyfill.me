@@ -1,7 +1,6 @@
-
 .page_builder {
     min-height: 100%;
-    padding: 12px;
+    padding: 24px;
     display: flex;
     flex-direction: column;
 
@@ -10,16 +9,24 @@
     }
 
     * {
-        &[data-has-content = false] {
+        &[data-has-content="false"] {
             color: grey;
         }
     }
 }
 
 .single_field {
+    padding: 4px;
+    margin: 8px 0px;
+    border: 1px solid transparent;
+    transition: all 250ms linear;
 
-    &[ata-active = true] {
-        border: 1px solid blue;
+    &:hover {
+        border: 1px solid rgba(65, 65, 206, 10%);
+    }
+
+    &[data-active=true] {
+        border: 1px solid rgba(65, 65, 206, 10%);
     }
 }
 
@@ -34,7 +41,7 @@
     flex-grow: 1;
     border: 1px dashed transparent;
 
-    &[data-dragging = true] {
+    &[data-dragging=true] {
         border: 1px dashed #2196f3;
         border-radius: 4px;
     }
@@ -43,13 +50,14 @@
 .input {
     height: 46px;
     width: 100%;
-    font-family: 'Work Sans';
+    font-family: "Work Sans";
     font-size: 24px;
     border: none;
     border: 1px dashed transparent;
     outline: none;
 
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
         outline: none;
         border: 1px dashed #2196f3;
     }
@@ -66,12 +74,32 @@
     outline: none;
 }
 
+.field_metadata {
+    padding: 8px 0px;
+    width: 100%;
 
-.field {
-    padding: 8px;
+    .meta_title {
+        height: 38px;
+        font-size: 16px;
+        margin: 1px 0px;
+    }
+
+    .meta_desc {
+        height: 28px;
+        font-size: 14px;
+        font-weight: lighter;
+    }
 }
 
-.field_title {
+.field {
+    padding: 16px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.title {
     height: 36px;
     font-size: 14px;
 }

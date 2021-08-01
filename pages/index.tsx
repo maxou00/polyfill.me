@@ -1,40 +1,53 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import styles from '../styles/Home.module.scss'
 import cn from "classnames";
-import { FormEngine } from '../core/FormEngine';
-import { useState } from 'react';
-import { Page } from '../core/Page';
-import { MdAdd } from 'react-icons/md';
+import { MdAdd, MdClose } from 'react-icons/md';
 import { PageBuilder } from '../ui/PageBuilder';
 import { DraggableChoiceList } from '../ui/DraggableChoiceList';
 import { typeToReadable } from '../core/form_utils';
-import FieldEngine from '../core/FieldEngine';
 import { useEffect } from 'react';
 import { useMemo } from 'react';
+import { initializeStore } from '../state/store';
+import { useEditionState, useFillable } from '../state/selectors';
+import { useDispatch } from 'react-redux';
+import { appendPage, deleteField, setActiveField, setActivePage } from '../state/creator';
+import { initialPage, Page } from '../engine/page';
+import { useCallback } from 'react';
+import names from "../engine/field_names.json";
+import { fieldCode } from '../engine/creators';
 
 export default function Home() {
-  const [engine, setEngine] = useState(new FormEngine().addPage(new Page().setTitle(`Page 1`)));
-  const [activePage, setActivePage] = useState<string>(engine.pages[0].key);
-  const [highlighted, setHighlighted] = useState<string>();
+  const fillable = useFillable();
+  const edition = useEditionState();
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    setHighlighted(undefined);
-  }, [activePage])
+    moveToPage(fillable.pages[0].key);
+  }, [])
 
-  function addPage() {
-    let newPage = new Page().setTitle(`Page ${engine.pages.length + 1}`);
-    setEngine(engine.copy.addPage(newPage));
-  }
+  const setHighlightedField = useCallback((id: string) => {
+    dispatch(setActiveField(id));
+  }, []);
 
-  function updateActivePage(next: Page) {
-    setEngine(engine.copy.updatePage(next))
-    setActivePage(next.key);
-  }
+  const moveToPage = useCallback((id: string) => {
+    dispatch(setActivePage(id));
+  }, []);
 
-  const activePageEngine = useMemo(() => {
-    return engine.pages.find((p) => p.key === activePage)
-  }, [activePage, engine]);
+  const addPage = useCallback(() => {
+    dispatch(appendPage(initialPage()))
+  }, [])
+
+  const updateActivePage = useCallback((next: Page) => {
+    dispatch(appendPage(next));
+  }, [])
+
+  const activePage = useMemo(() => {
+    return fillable.pages.find((p) => p.key === edition.activePage)
+  }, [edition.activePage, fillable]);
+
+  const removeField = useCallback((pageId: string, fieldId: string) => {
+    return dispatch(deleteField(pageId, fieldId));
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -58,10 +71,10 @@ export default function Home() {
               </div>
             </header>
             <div className={styles.content_wrapper}>
-              <ul className={"item_list "+styles.content}>
+              <ul className={"item_list " + styles.content}>
                 {
-                  engine.pages.map((p) => {
-                    return <li key={p.key} className={styles.page_item} onClick={() => setActivePage(p.key)} data-active={activePage === p.key}>
+                  fillable.pages.map((p) => {
+                    return <li key={p.key} className={styles.page_item} onClick={() => moveToPage(p.key)} data-active={activePage && activePage.key === p.key}>
                       {p.title}
                     </li>
                   })
@@ -79,12 +92,19 @@ export default function Home() {
               </div>
             </header>
             <div className={styles.content_wrapper}>
-              {activePageEngine && <ul className={"item_list "+styles.content}>
+              {activePage && <ul className={"item_list " + styles.content}>
                 {
-                  activePageEngine.fields.map((f) => {
-                    return <li key={f.key} className={styles.field_item} onClick={() =>setHighlighted(f.key)} data-active={f.key === highlighted}>
-                      <span className={styles.title}>{f.title || "Sans titre"}</span>
-                      <span className={styles.type}>{typeToReadable(f.type)}</span>
+                  activePage.fields.map((f) => {
+                    return <li key={f.key} className={styles.field_item} onClick={() => setHighlightedField(f.key)} data-active={f.key === edition.activeField}>
+                      <div className={styles.content}>
+                        <span className={styles.title}>{f.title || "Sans titre"}</span>
+                        <span className={styles.type}>{names[fieldCode(f)]}</span>
+                      </div>
+                      <div className={styles.actions}>
+                        <button onClick={() => removeField(activePage.key, f.key)}>
+                          <MdClose size={18} />
+                        </button>
+                      </div>
                     </li>
                   })
                 }
@@ -93,10 +113,12 @@ export default function Home() {
           </div>
         </section>
         <section className={styles.base_wrapper}>
-          <div className={styles.builder_wrapper}>
-            {
-              activePageEngine && <PageBuilder page={activePageEngine} fieldToHighlight={highlighted} onChange={updateActivePage} />
-            }
+          <div className={styles.base_content}>
+            <div className={styles.builder_wrapper}>
+              {
+                activePage && <PageBuilder page={activePage} />
+              }
+            </div>
           </div>
         </section>
         <section className={styles.details_wrapper}>
@@ -115,4 +137,11 @@ export default function Home() {
       </main>
     </div>
   )
+}
+
+
+
+export function getServerSideProps() {
+  let initial = initializeStore(undefined);
+  return { props: { initialReduxState: initial.getState() } };
 }

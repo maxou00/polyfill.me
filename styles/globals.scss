@@ -31,3 +31,21 @@ a {
     white-space: nowrap;
   }
 }
+
+
+input {
+  height: 36px;
+  padding: 0px 0px;
+  width: 100%;
+  font-family: "Work Sans";
+  font-size: 14px;
+  border: none;
+  border: 1px solid lightgray;
+  outline: none;
+
+  &:hover,
+  &:focus {
+      outline: none;
+      border: 1px solid #777;
+  }
+}
