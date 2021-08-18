@@ -55,7 +55,7 @@ export function FileConstraintsEditor(props: FieldEditorProps) {
             <List dense disablePadding>
                 <ListSubheader>Type de fichier</ListSubheader>
                 {
-                    ["audio", "video", "all"].map((f) => {
+                    ["image", "audio", "video", "all"].map((f) => {
                         let checked = hasFormats && (props.field.formats.includes(f) || props.field.formats.includes("all"));
 
                         return <ListItem key={f}>
