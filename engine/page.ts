@@ -20,8 +20,8 @@ export interface Fillable {
 export interface DataForm {
     id: string;
     form_content: Fillable;
-    createdAt?: number;
-    updatedAt?: number;
+    createdAt?: Date;
+    updatedAt?: Date;
 }
 
 export function initialFillable(): Fillable {
