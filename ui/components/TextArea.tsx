@@ -1,5 +1,5 @@
 import { HTMLProps, ReactNode } from "react";
-import styles from "../../styles/components.module.scss";
+import styles from "../../styles/form.module.scss";
 
 interface Props {
     label?: string;

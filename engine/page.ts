@@ -9,13 +9,26 @@ export interface Page {
 }
 
 export interface Fillable {
+    id: string;
+    title: string;
+    subtitle: string;
     locale: string;
     pages: Page[];
     createdAt: number;
 }
 
+export interface DataForm {
+    id: string;
+    form_content: Fillable;
+    createdAt?: number;
+    updatedAt?: number;
+}
+
 export function initialFillable(): Fillable {
     return {
+        id: nanoid(),
+        title: "",
+        subtitle: "",
         locale: 'fr',
         createdAt: Date.now(),
         pages: [

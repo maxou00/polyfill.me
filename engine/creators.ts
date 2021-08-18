@@ -1,5 +1,5 @@
 import { nanoid } from "nanoid";
-import { CheckboxField, ChipField, CommonFieldProps, ContentField, DateField, DateTimeField, DropdownField, EmailField, FieldType, FileField, ImageField, NumberField, ParagraphField, RadioField, RichTextField, SingleLineField, TimeField, VideoField } from "./fields";
+import { CheckboxField, ChipField, CommonFieldProps, ContentField, DateField, DateTimeField, DecorableOption, DropdownField, EmailField, FieldType, FileField, NumberField, ParagraphField, RadioField, RichTextField, SingleLineField, TimeField } from "./fields";
 
 export function commonField(type: FieldType): CommonFieldProps {
     return {
@@ -66,12 +66,20 @@ export function initialDateTime(): DateTimeField {
     } as DateTimeField
 }
 
+export function initialOption(): DecorableOption {
+    return {
+        key: nanoid(),
+        value: 'option',
+        description: ""
+    }
+}
+
 export function initialDropdownField(): DropdownField {
     return {
         ...commonField("selection"),
         format: "dropdown",
         allowCustomValue: false, 
-        options: [],
+        options: [initialOption()],
         selection: "single"
     } as DropdownField
 }
@@ -81,7 +89,7 @@ export function initialRadioField(): RadioField {
         ...commonField("selection"),
         format: "radio",
         allowCustomValue: false, 
-        options: [],
+        options: [initialOption()],
         selection: "single"
     } as RadioField
 }
@@ -91,7 +99,7 @@ export function initialCheckboxField(): CheckboxField {
         ...commonField("selection"),
         format: "checkbox",
         allowCustomValue: false, 
-        options: [],
+        options: [initialOption()],
         selection: "multiple"
     } as CheckboxField
 }
@@ -101,7 +109,7 @@ export function initialChipField(): ChipField {
         ...commonField("selection"),
         format: "chip",
         allowCustomValue: false, 
-        options: [],
+        options: [initialOption()],
         selection: "single"
     } as ChipField
 }
@@ -109,28 +117,10 @@ export function initialChipField(): ChipField {
 export function initialFileField(): FileField {
     return {
         ...commonField("file"),
-        maxSizeInKb: 1024,
+        maxSize: 5,
+        formats: []
     } as FileField
 }
-
-export function initialImageField(): ImageField {
-    return {
-        ...commonField("file"),
-        format: "image",
-        maxSizeInKb: 5 * 1024,
-        acceptedFormats: ["image/*"]
-    } as ImageField
-}
-
-export function initialVideoField(): VideoField {
-    return {
-        ...commonField("file"),
-        format: "video",
-        maxSizeInKb: 25 * 1024,
-        acceptedFormats: ["video/*"]
-    } as VideoField
-}
-
 
 export const FieldCreators = {
     text_short: initialShortText,
@@ -146,10 +136,7 @@ export const FieldCreators = {
     selection_checkbox: initialCheckboxField,
     selection_chip: initialChipField,
     file: initialFileField,
-    file_image: initialImageField,
-    file_video: initialVideoField
 }
-
 
 export function fieldCode(field: ContentField) {
     return `field_${field.type}${field.format ? "_"+field.format : ""}`

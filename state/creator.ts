@@ -2,6 +2,13 @@ import { ContentField } from "../engine/fields";
 import { Fillable, Page } from "../engine/page";
 import { Action } from "./actions";
 
+export function setActiveFillable(fillable: Fillable): Action {
+    return {
+        type: "SET_ACTIVE_FILLABLE",
+        fillable
+    }
+}
+
 export function updateFillable(fillable: Fillable): Action {
     return {
         type: "UPDATE_FILLABLE",

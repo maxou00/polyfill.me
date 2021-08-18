@@ -1,6 +1,11 @@
 import { ContentField } from "../engine/fields";
 import { Fillable, Page } from "../engine/page";
 
+interface SetActiveFillable {
+    type: 'SET_ACTIVE_FILLABLE',
+    fillable: Fillable;
+}
+
 interface UpdateFillable {
     type: 'UPDATE_FILLABLE',
     fillable: Fillable;
@@ -38,8 +43,7 @@ export interface SetActiveField {
     fieldId: string;
 }
 
-
-type EditionAction = SetActivePage | SetActiveField;
+type EditionAction = SetActiveFillable | SetActivePage | SetActiveField;
 
 export type Action = UpdateFillable
                     | AppendPage

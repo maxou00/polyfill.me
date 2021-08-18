@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { applyMiddleware, createStore, Store } from "redux";
+import thunk from "redux-thunk";
 import { AppState } from ".";
 import { Fillable, initialFillable } from "../engine/page"
 import { Action } from "./actions";
@@ -19,7 +20,7 @@ function initStore(preloaded = initialState) {
     return createStore(
         reducer,
         preloaded,
-        applyMiddleware()
+        applyMiddleware(thunk)
     );
 }
 

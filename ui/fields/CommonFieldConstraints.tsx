@@ -1,9 +1,20 @@
+import { Box, Checkbox, Typography } from "@material-ui/core";
+import { useCallback } from "react";
 import { FieldEditorProps } from ".";
 
-
 export function CommonFieldConstraints(props: FieldEditorProps) {
-    return <div style={{ width: '100%', display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "flex-end" }}>
-        <p style={{ fontSize: "14px" }}>Réponse obligatoire</p>
-        <input style={{ width: '18px', marginLeft: "8px" }} type="checkbox" name="" id="" />
-    </div>
+    
+    const onRequired = useCallback((require: boolean) => {
+        props.onChange({...props.field, required: require});
+    }, [props]);
+
+    return <Box 
+        width="100%" 
+        display="flex" 
+        flexDirection="row" 
+        alignItems="center" 
+        justifyContent="flex-end">
+        <Typography variant="body2">Réponse obligatoire</Typography>
+        <Checkbox color="primary" checked={props.field.required} onChange={(ev,checked) => onRequired(checked)}/>
+    </Box>
 }

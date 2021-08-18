@@ -9,13 +9,7 @@
 
 .header {
   grid-area: 1 / 1 / span 1 / span 3;
-  background: white;
   border-bottom: 1px solid #eee;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 4px;
 }
 
 .structure_wrapper {
@@ -204,7 +198,7 @@
     color: #434343;
   }
 
-  &[data-active="true"] {
+  &[data-active = true] {
     background: #eee;
   }
 }

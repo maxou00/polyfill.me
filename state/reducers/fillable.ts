@@ -6,6 +6,9 @@ const initialState: Fillable = initialFillable()
 function fillableReducer(state: Fillable = initialState, action: Action): Fillable {
 
     switch(action.type) {
+        case "SET_ACTIVE_FILLABLE": {
+            return action.fillable;
+        }
         case "UPDATE_FILLABLE": {
             return action.fillable;
         }

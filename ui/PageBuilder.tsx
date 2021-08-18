@@ -4,6 +4,7 @@ import { useState } from "react";
 import { MdDone, MdEdit } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { FieldCreators } from "../engine/creators";
+import { ContentField } from "../engine/fields";
 import { Page } from "../engine/page";
 import { appendField, appendPage, setActiveField } from "../state/creator";
 import { useEditionState } from "../state/selectors";
@@ -48,11 +49,15 @@ export function PageBuilder(props: BuilderProps) {
             dispatch(appendField(props.page.key, FieldCreators[draggedModel]()));
             setDraggedModel(undefined);
         }
-    }, [draggedModel]);
+    }, [draggedModel, dispatch, props]);
 
     const onFocusGained = useCallback((fieldId: string) => {
         dispatch(setActiveField(fieldId));
-    }, []);
+    }, [dispatch]);
+
+    const onFieldChange = useCallback((field: ContentField) => {
+        dispatch(appendField(props.page.key, field));
+    }, [props, dispatch]);
 
     return <div onDrop={onDropCaptured} onDragOver={onDragOver} onDragLeave={onDragExit} onDragExit={onDragExit} className={styles.page_builder}>
         <div className={styles.heading_wrapper}>
@@ -64,7 +69,7 @@ export function PageBuilder(props: BuilderProps) {
             {
                 props.page.fields.map((f) => {
                     return <div onFocus={() => onFocusGained(f.key)} key={f.key} className={styles.single_field} data-active={edition.activeField === f.key}>
-                        <FieldRenderer pageId={props.page.key} field={f}/>
+                        <FieldRenderer field={f} onChange={onFieldChange}/>
                     </div>
                 })
             }

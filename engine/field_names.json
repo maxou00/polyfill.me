@@ -13,7 +13,5 @@
     "field_selection_radio": "Bouton radio",
     "field_selection_checkbox": "Case à cocher",
     "field_selection_chip": "Puce",
-    "field_file": "Fichier",
-    "field_file_image": "Image",
-    "field_file_video": "Vidéo"
+    "field_file": "Fichier"
 }

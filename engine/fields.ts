@@ -26,7 +26,7 @@ export interface CommonFieldProps {
     required: boolean;
 }
 
-interface TextConstraints {
+export interface TextConstraints {
     type: "text",
     maxChars?: number,
     expression?: string
@@ -37,56 +37,57 @@ interface RangeableValue {
     max: number;
 }
 
-interface NumberConstraints extends Partial<RangeableValue> {
+export interface NumberConstraints extends Partial<RangeableValue> {
     type: "number"
 }
 
-interface DateConstraints extends NumberConstraints {
+export interface DateConstraints extends NumberConstraints {
     format: 'date'
 }
 
-interface TimeConstraints extends NumberConstraints {
+export interface TimeConstraints extends NumberConstraints {
     format: 'time'
 }
 
-interface DateTimeConstraints extends NumberConstraints {
+export interface DateTimeConstraints extends NumberConstraints {
     format: 'datetime'
 }
 
-interface RangeConstraints extends RangeableValue {
+export interface RangeConstraints extends RangeableValue {
     type: "range"
     step: number
 }
 
-interface IntervalConstraints extends RangeableValue {
+export interface IntervalConstraints extends RangeableValue {
     type: "interval",
     step: number
 }
 
-interface FileConstaints {
+export interface FileConstaints {
     type: "file"
-    maxSizeInKb: number; // in kb
-    acceptedFormats?: string[];
+    maxSize: number; // in Mb
+    formats?: string[];
 }
 
-interface SelectionConstraints<T = any> {
+export interface DecorableOption<T = string> {
+    key: string;
+    value: T;
+    description?: string;
+    image?: string;
+}
+
+export interface SelectionConstraints<T = string> {
     type: "selection"
-    options:T[];
+    options: DecorableOption<T>[];
     allowCustomValue: boolean,
     selection: 'single' | 'multiple',
     maxSelection?: number
-}
-
-interface DecorableOption {
-    value: string;
-    description: string;
-    image: string;
-}
+}          
 
 type Field<T> = CommonFieldProps & T;
-type TextField<T> = Field<TextConstraints & T>;
-type SelectField<T> = Field<SelectionConstraints & T>;
-export type FileField<T = {}> = Field<FileConstaints & T>;
+export type TextField<T = any> = Field<TextConstraints & T>;
+export type SelectField<T = any> = Field<SelectionConstraints & T>;
+export type FileField<T = any> = Field<FileConstaints & T>;
 
 export type SingleLineField = TextField<{ format: "short" }>
 
@@ -112,10 +113,6 @@ export type CheckboxField = SelectField<{ format: "checkbox", selection: 'multip
 
 export type ChipField = SelectField<{ format: "chip" }>
 
-export type ImageField = FileField<{ format: 'image', acceptedFormats: ['image/*'] }>
-
-export type VideoField = FileField<{ format: 'video', acceptedFormats: ['video/*'] }>
-
 export type ContentField =
                         SingleLineField 
                         | RichTextField
@@ -130,5 +127,3 @@ export type ContentField =
                         | CheckboxField
                         | ChipField
                         | FileField
-                        | ImageField
-                        | VideoField

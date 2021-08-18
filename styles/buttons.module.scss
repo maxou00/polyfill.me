@@ -1,0 +1,50 @@
+.Button {
+    border: none;
+    height: 36px;
+    min-width: 36px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    padding: 8px 16px;
+
+    &[data-rounded = true] {
+        border-radius: 24px;
+        padding: 8px;
+    }
+
+    .start {
+    }
+
+    .text {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Work Sans', sans-serif;
+    }
+
+    .end {
+    }
+}
+
+.IconButton {
+    border: none;
+    height: 36px;
+    width: 36px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    border-radius: 18px;
+    padding: 8px;
+
+    .icon {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Work Sans', sans-serif;
+    }
+}
