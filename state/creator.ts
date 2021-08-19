@@ -1,3 +1,4 @@
+import { FillableDecoration } from "../engine/decoration";
 import { ContentField } from "../engine/fields";
 import { DataForm, Fillable, Page } from "../engine/page";
 import { Action } from "./actions";
@@ -13,6 +14,13 @@ export function updateFillable(fillable: Fillable): Action {
     return {
         type: "UPDATE_FILLABLE",
         fillable
+    }
+}
+
+export function updateDecoration(decoration: FillableDecoration): Action {
+    return {
+        type: "UPDATE_DECORATION",
+        decoration
     }
 }
 

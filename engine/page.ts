@@ -1,4 +1,5 @@
 import { nanoid } from "nanoid";
+import { defaultFillableDecoration, FillableDecoration } from "./decoration";
 import { ContentField } from "./fields";
 
 export interface Page {
@@ -14,6 +15,7 @@ export interface Fillable {
     subtitle: string;
     locale: string;
     pages: Page[];
+    decoration: FillableDecoration;
     createdAt: number;
 }
 
@@ -33,7 +35,8 @@ export function initialFillable(): Fillable {
         createdAt: Date.now(),
         pages: [
             initialPage()
-        ]
+        ],
+        decoration: defaultFillableDecoration
     }
 }
 

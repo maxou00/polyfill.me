@@ -17,10 +17,11 @@ import { fieldCode } from '../engine/creators';
 import TopAppBar from '../ui/TopAppBar';
 import { supaClient } from '../core/utils';
 import { useState } from 'react';
+import { Box, Button } from '@material-ui/core';
+import { FillableSettingsEditor } from '../ui/settings/FillableSettingsEditor';
 
 export default function EditorScreen() {
   const [activeTab, setActiveTab] = useState("fields");
-
   const fillable = useFillable();
   const edition = useEditionState();
   const dispatch = useDispatch();

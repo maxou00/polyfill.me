@@ -12,6 +12,9 @@ function fillableReducer(state: Fillable = initialState, action: Action): Fillab
         case "UPDATE_FILLABLE": {
             return action.fillable;
         }
+        case "UPDATE_DECORATION": {
+            return {...state, decoration: action.decoration};
+        }
         case "APPEND_PAGE": {
             let next = {...state}
             let index = next.pages.findIndex((p) => p.key === action.page.key);

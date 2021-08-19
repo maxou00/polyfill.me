@@ -1,3 +1,4 @@
+import { FillableDecoration } from "../engine/decoration";
 import { ContentField } from "../engine/fields";
 import { DataForm, Fillable, Page } from "../engine/page";
 
@@ -9,6 +10,11 @@ interface SetActiveFillable {
 interface UpdateFillable {
     type: 'UPDATE_FILLABLE',
     fillable: Fillable;
+}
+
+interface UpdateFillableDecoration {
+    type: 'UPDATE_DECORATION',
+    decoration: FillableDecoration;
 }
 
 interface AppendPage {
@@ -46,6 +52,7 @@ export interface SetActiveField {
 type EditionAction = SetActiveFillable | SetActivePage | SetActiveField;
 
 type BuildingAction = UpdateFillable
+                    | UpdateFillableDecoration
                     | AppendPage
                     | DeletePage
                     | AppendField

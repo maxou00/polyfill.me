@@ -1,5 +1,5 @@
 import styles from '../styles/TopAppBar.module.scss'
-import { MdAdd, MdKeyboardArrowDown, MdPerson, MdSave, MdVisibility } from 'react-icons/md';
+import { MdAdd, MdKeyboardArrowDown, MdPerson, MdSave, MdSettings, MdVisibility } from 'react-icons/md';
 import { Avatar, Box, Button, IconButton, MenuItem, Popover, Tooltip, useTheme } from '@material-ui/core';
 import { grey } from '@material-ui/core/colors';
 import { useState } from 'react';
@@ -16,10 +16,12 @@ import { setActiveFillable } from '../state/creator';
 import { useFillable } from '../state/selectors';
 import { ClockLoader } from 'react-spinners';
 import { setActiveForm } from '../state/middlewares';
+import { FillableSettingsEditor } from './settings/FillableSettingsEditor';
 
 export default function TopAppBar() {
   const [session, setSession] = useState<Supabase.Session>();
   const [createOpen, setCreateOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const [updating, setUpdating] = useState(false);
   const [forms, setForms] = useState<DataForm[]>([]);
   const [formPickerAnchor, setFormPickerAnchor] = useState<HTMLButtonElement>();
@@ -157,10 +159,10 @@ export default function TopAppBar() {
           </span>
           }>
             <IconButton
-              size="medium"
+              size="small"
               color="primary"
               onClick={() => setCreateOpen(true)}>
-              <MdAdd size={18} color={theme.palette.primary.main} />
+              <MdAdd size={16} color={theme.palette.primary.main} />
             </IconButton>
           </Tooltip>
         </Box>
@@ -171,10 +173,23 @@ export default function TopAppBar() {
           }>
             <IconButton
               disabled={updating}
-              size="medium"
+              size="small"
               color="primary"
               onClick={onSaveChanges}>
-              {updating ? <ClockLoader size={18} color={theme.palette.primary.main} /> : <MdSave size={18} color={theme.palette.primary.main} />}
+              {updating ? <ClockLoader size={16} color={theme.palette.primary.main} /> : <MdSave size={16} color={theme.palette.primary.main} />}
+            </IconButton>
+          </Tooltip>
+        </Box>
+        <Box paddingX={1}>
+          <Tooltip title={<span style={{ fontSize: '14px' }}>
+            Paramètres du formulaire
+          </span>
+          }>
+            <IconButton
+              size="small"
+              color="primary"
+              onClick={() => setSettingsOpen(true)}>
+              <MdSettings size={16} color={theme.palette.primary.main} />
             </IconButton>
           </Tooltip>
         </Box>
@@ -184,10 +199,10 @@ export default function TopAppBar() {
           </span>
           }>
             <IconButton
-              size="medium"
+              size="small"
               color="primary"
               onClick={onPreview}>
-              <MdVisibility size={18} color={theme.palette.primary.main} />
+              <MdVisibility size={16} color={theme.palette.primary.main} />
             </IconButton>
           </Tooltip>
         </Box>
@@ -231,6 +246,10 @@ export default function TopAppBar() {
         onClose={() => setCreateOpen(false)}
         open={createOpen}
         onFormCreated={() => setCreateOpen(false)} />
+      <FillableSettingsEditor
+        fullScreen
+        open={settingsOpen}
+        onClose={() => setSettingsOpen(false)}/>
     </header>
   )
 }
