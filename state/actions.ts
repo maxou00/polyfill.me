@@ -1,5 +1,5 @@
 import { ContentField } from "../engine/fields";
-import { Fillable, Page } from "../engine/page";
+import { DataForm, Fillable, Page } from "../engine/page";
 
 interface SetActiveFillable {
     type: 'SET_ACTIVE_FILLABLE',
@@ -45,9 +45,26 @@ export interface SetActiveField {
 
 type EditionAction = SetActiveFillable | SetActivePage | SetActiveField;
 
-export type Action = UpdateFillable
+type BuildingAction = UpdateFillable
                     | AppendPage
                     | DeletePage
                     | AppendField
                     | DeleteField
                     | EditionAction
+
+
+interface SetCollectionForm {
+    type: 'SET_COLLECTION_FORM',
+    form: DataForm;
+}
+
+interface AppendAnswer {
+    type: 'APPEND_ANSWER';
+    pageId: string;
+    questionId: string;
+    answer: any;
+}
+
+export type CollectionAction = SetCollectionForm | AppendAnswer;
+
+export type Action = BuildingAction | CollectionAction;

@@ -70,7 +70,7 @@ export function FieldContentRenderer(props: FieldEditorProps) {
     return <></>
 }
 
-export function FieldRenderer(props: FieldEditorProps) {
+export function FieldEditorRenderer(props: FieldEditorProps) {
 
     return <div className={styles.field}>
         <FieldMetadata {...props} />

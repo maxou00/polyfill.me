@@ -151,20 +151,22 @@
   border-bottom: 1px solid #eee;
 
   .tab {
-    height: 36px;
+    height: 28px;
     background: transparent;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     flex-grow: 1;
-    border-left: 1px solid #eee;
+    border-right: 1px solid #eee;
+    cursor: pointer;
+    transition: all 250ms linear;
 
     &:nth-of-type(odd) {
       border-left: none;
     }
 
-    &[data-active="true"] {
+    &[data-active= true ] {
       background: coral;
 
       * {

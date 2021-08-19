@@ -16,8 +16,10 @@ import names from "../engine/field_names.json";
 import { fieldCode } from '../engine/creators';
 import TopAppBar from '../ui/TopAppBar';
 import { supaClient } from '../core/utils';
+import { useState } from 'react';
 
 export default function EditorScreen() {
+  const [activeTab, setActiveTab] = useState("fields");
 
   const fillable = useFillable();
   const edition = useEditionState();
@@ -60,7 +62,7 @@ export default function EditorScreen() {
       </Head>
       <main className={styles.main}>
         <header className={styles.header}>
-          <TopAppBar/>
+          <TopAppBar />
         </header>
         <section className={styles.structure_wrapper}>
           <div className={cn(styles.structure, styles.structure_pages)}>
@@ -125,15 +127,29 @@ export default function EditorScreen() {
         </section>
         <section className={styles.details_wrapper}>
           <div className={styles.tabs_details}>
-            <div className={styles.tab}>
+            <div className={styles.tab} data-active={activeTab === "fields"} onClick={() => setActiveTab("fields")}>
+              <h5>Champs</h5>
+            </div>
+            <div className={styles.tab} data-active={activeTab === "edition"} onClick={() => setActiveTab("edition")}>
               <h5>Edition</h5>
             </div>
-            <div className={styles.tab}>
-              <h5>Choix</h5>
+            <div className={styles.tab} data-active={activeTab === "style"} onClick={() => setActiveTab("style")}>
+              <h5>Style</h5>
             </div>
           </div>
           <div className={styles.tab_content}>
-            <DraggableChoiceList />
+            {
+              activeTab === "edition" &&
+              <DraggableChoiceList />
+            }
+            {
+              activeTab === "fields" &&
+              <DraggableChoiceList />
+            }
+            {
+              activeTab === "style" &&
+              <DraggableChoiceList />
+            }
           </div>
         </section>
       </main>

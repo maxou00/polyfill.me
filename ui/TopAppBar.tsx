@@ -33,6 +33,10 @@ export default function TopAppBar() {
     router.push("/auth/signin");
   }, [router]);
 
+  const onPreview = useCallback(() => {
+    window.open(`http://localhost:5000/preview/${fillable.id}`, "_blank");
+  }, [fillable]);
+
   const fillableAlreadyExists = useCallback((id: string) => {
     return Boolean(forms.find((f) => f.id === id));
   }, [forms]);
@@ -89,7 +93,7 @@ export default function TopAppBar() {
     supaClient
       .from<DataForm>("forms")
       .select("id,form_content")
-      .order("updatedAt", {ascending: false})
+      .order("updatedAt", { ascending: false })
       .then((values) => {
         if (values.error) {
           return toast.error("Erreur de recupération de vos formulaires");
@@ -132,7 +136,7 @@ export default function TopAppBar() {
       else if ((ev.ctrlKey || ev.metaKey) && ev.key === 'P') {
         ev.stopPropagation();
         ev.preventDefault();
-        window.open(`http://localhost:5000/preview/$${fillable.id}`, "_blank");
+        onPreview();
       }
     }
 
@@ -141,7 +145,7 @@ export default function TopAppBar() {
       document.removeEventListener('keydown', handler);
     }
 
-  }, [onSaveChanges, fillable]);
+  }, [onSaveChanges, fillable, onPreview]);
 
   return (
     <header className={styles.header}>
@@ -175,13 +179,14 @@ export default function TopAppBar() {
           </Tooltip>
         </Box>
         <Box paddingX={1}>
-          <Tooltip title={<span style={{fontSize: '14px'}}>
+          <Tooltip title={<span style={{ fontSize: '14px' }}>
             Voir le rendu (ctrl + shift + p)
           </span>
           }>
             <IconButton
               size="medium"
-              color="primary">
+              color="primary"
+              onClick={onPreview}>
               <MdVisibility size={18} color={theme.palette.primary.main} />
             </IconButton>
           </Tooltip>

@@ -9,7 +9,7 @@ import { Page } from "../engine/page";
 import { appendField, appendPage, setActiveField } from "../state/creator";
 import { useEditionState } from "../state/selectors";
 import styles from "../styles/PageBuilder.module.scss";
-import { FieldRenderer } from "./FieldRenderer";
+import { FieldEditorRenderer } from "./FieldEditorRenderer";
 
 interface BuilderProps { 
     page: Page;
@@ -69,7 +69,7 @@ export function PageBuilder(props: BuilderProps) {
             {
                 props.page.fields.map((f) => {
                     return <div onFocus={() => onFocusGained(f.key)} key={f.key} className={styles.single_field} data-active={edition.activeField === f.key}>
-                        <FieldRenderer field={f} onChange={onFieldChange}/>
+                        <FieldEditorRenderer field={f} onChange={onFieldChange}/>
                     </div>
                 })
             }

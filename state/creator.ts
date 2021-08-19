@@ -1,5 +1,5 @@
 import { ContentField } from "../engine/fields";
-import { Fillable, Page } from "../engine/page";
+import { DataForm, Fillable, Page } from "../engine/page";
 import { Action } from "./actions";
 
 export function setActiveFillable(fillable: Fillable): Action {
@@ -57,5 +57,19 @@ export function setActiveField(fieldId: string): Action {
     return {
         type: "SET_ACTIVE_FIELD",
         fieldId
+    }
+}
+
+export function setCollectionForm(form: DataForm): Action {
+    return {
+        type: 'SET_COLLECTION_FORM',
+        form
+    }
+}
+
+export function appendAnswer(pageId: string, questionId: string, answer: any): Action {
+    return {
+        type: 'APPEND_ANSWER',
+        pageId, questionId, answer
     }
 }

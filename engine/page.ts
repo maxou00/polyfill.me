@@ -45,3 +45,18 @@ export function initialPage(): Page {
         fields: []
     }
 }
+
+export interface FormResponse {
+    formId: string;
+    pages: ResponsePage[];
+}
+
+export interface ResponsePage {
+    pageId: string;
+    responses: FieldResponse[];
+}
+
+export interface FieldResponse {
+    questionId: string;
+    answer: any;
+}
