@@ -11,13 +11,17 @@ export function TextFieldRenderer(props: FieldRendererProps) {
         return "text";
     }, [props.question]);
 
+    const isMultiline = useMemo(() => {
+        return props.question.format==="paragraph"
+    }, [props.question]);
+
     return <Box paddingY={1}>
         <TextField
             fullWidth
             size="small"
             type={fieldType}
             variant="outlined"
-            multiline={props.question.format === "paragraph"}
+            multiline={isMultiline}
             placeholder={props.question.title} />
     </Box>
 }
