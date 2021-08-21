@@ -101,6 +101,7 @@ export function FillablePalette() {
             <ColorPicker 
                 value={palette.primary}
                 disableAlpha
+                disableTextfield
                 onChange={onPrimaryChange}/>
         </Grid>
         <Grid item xs={4}>
@@ -110,6 +111,7 @@ export function FillablePalette() {
             <ColorPicker 
                 value={palette.secondary}
                 disableAlpha
+                disableTextfield
                 onChange={onSecondaryChange}
                 />
         </Grid>
@@ -120,6 +122,7 @@ export function FillablePalette() {
             <ColorPicker 
                 value={palette.defaultText}
                 disableAlpha
+                disableTextfield
                 onChange={onDefaultTextChange}
                 />
         </Grid>
@@ -133,6 +136,7 @@ export function FillablePalette() {
             <ColorPicker 
                 value={palette.fillable.title}
                 disableAlpha
+                disableTextfield
                 onChange={onFillableTitleChange}/>
         </Grid>
         <Grid item xs={4}>
@@ -142,6 +146,7 @@ export function FillablePalette() {
             <ColorPicker 
                 value={palette.fillable.subtitle}
                 disableAlpha
+                disableTextfield
                 onChange={onFillableSubtitleChange}
                 />
         </Grid>
@@ -155,6 +160,7 @@ export function FillablePalette() {
             <ColorPicker 
                 value={palette.page.title}
                 disableAlpha
+                disableTextfield
                 onChange={onPageTitleChange}/>
         </Grid>
         <Grid item xs={4}>
@@ -164,6 +170,7 @@ export function FillablePalette() {
             <ColorPicker 
                 value={palette.page.subtitle}
                 disableAlpha
+                disableTextfield
                 onChange={onPageSubtitleChange}
                 />
         </Grid>
@@ -174,6 +181,7 @@ export function FillablePalette() {
             <ColorPicker 
                 value={palette.page.background}
                 disableAlpha
+                disableTextfield
                 onChange={onPageBackgroundChange}
                 />
         </Grid>
@@ -187,6 +195,7 @@ export function FillablePalette() {
             <ColorPicker 
                 value={palette.question.title}
                 disableAlpha
+                disableTextfield
                 onChange={onQuestionTitleChange}/>
         </Grid>
         <Grid item xs={4}>
@@ -196,6 +205,7 @@ export function FillablePalette() {
             <ColorPicker 
                 value={palette.question.description}
                 disableAlpha
+                disableTextfield
                 onChange={onQuestionTitleChange}
                 />
         </Grid>
@@ -206,6 +216,7 @@ export function FillablePalette() {
             <ColorPicker 
                 value={palette.question.error}
                 disableAlpha
+                disableTextfield
                 onChange={onQuestionErrorChange}
                 />
         </Grid>
@@ -216,6 +227,7 @@ export function FillablePalette() {
             <ColorPicker 
                 value={palette.question.helper}
                 disableAlpha
+                disableTextfield
                 onChange={onQuestionHelperChange}
                 />
         </Grid>

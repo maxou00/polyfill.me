@@ -60,5 +60,16 @@ const defaultFillablePalette: FillablePalette = {
 }
 
 export const defaultFillableDecoration: FillableDecoration = {
-    palette: defaultFillablePalette
+    palette: defaultFillablePalette,
+    branding: {
+        brand: {
+            logo: '',
+            name: '',
+            subtitle: ''
+        },
+        background: {
+            color: '#FAFAFA',
+            image: ''
+        }
+    }
 }

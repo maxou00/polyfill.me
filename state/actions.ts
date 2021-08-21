@@ -53,12 +53,12 @@ type EditionAction = SetActiveFillable | SetActivePage | SetActiveField;
 
 type BuildingAction = UpdateFillable
                     | UpdateFillableDecoration
+                    | SetActivePage
                     | AppendPage
                     | DeletePage
                     | AppendField
                     | DeleteField
                     | EditionAction
-
 
 interface SetCollectionForm {
     type: 'SET_COLLECTION_FORM',
@@ -72,6 +72,6 @@ interface AppendAnswer {
     answer: any;
 }
 
-export type CollectionAction = SetCollectionForm | AppendAnswer;
+export type CollectionAction = SetCollectionForm | AppendAnswer | SetActivePage;
 
 export type Action = BuildingAction | CollectionAction;

@@ -4,7 +4,7 @@ import { useState, useCallback, ChangeEvent } from "react";
 import { useDispatch } from "react-redux";
 import { updateFillable } from "../../state/creator";
 import { useFillable } from "../../state/selectors";
-import { FillableBranding } from "./FillableBranding";
+import { FillableBrandingView } from "./FillableBranding";
 import { FillablePalette } from "./FillablePalette";
 
 interface Props extends DialogProps { }
@@ -115,7 +115,7 @@ function FillableDecoration() {
         <Box padding={2}>
             <Typography variant="h6">Branding</Typography>
             <Box padding={2}>
-                <FillableBranding />
+                <FillableBrandingView />
             </Box>
         </Box>
         <Divider />

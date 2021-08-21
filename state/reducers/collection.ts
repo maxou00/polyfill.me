@@ -9,6 +9,7 @@ export function collectionReducer(state: CollectionState = initialState, action:
         case 'SET_COLLECTION_FORM': {
             let next = {...state};
             next.form = action.form;
+            next.activePageId = action.form.form_content.pages[0].key;
             next.response = {
                 formId: action.form.id,
                 pages: action.form.form_content.pages.map((p) => {
@@ -22,6 +23,13 @@ export function collectionReducer(state: CollectionState = initialState, action:
                         })
                     }
                 })
+            }
+            return next;
+        }
+        case 'SET_ACTIVE_PAGE': {
+            let next = {...state};
+            if(next.form) {
+                next.activePageId = action.pageId;
             }
             return next;
         }

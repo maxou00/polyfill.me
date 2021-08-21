@@ -5,7 +5,7 @@ import { ToastContainer } from 'react-toastify';
 import { useStore } from '../state/store';
 import '../styles/globals.scss';
 import "react-toastify/scss/main.scss";
-import { theme } from '../ui/theme';
+import { theme } from '../builder/theme';
 
 function MyApp({ Component, pageProps }) {
   const store = useStore((pageProps as any).initialReduxState);

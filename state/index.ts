@@ -8,6 +8,7 @@ export interface FillableEdition {
 export interface CollectionState {
     form?: DataForm;
     response?: FormResponse;
+    activePageId?: string;
 }
 
 export type AppState = { fillable: Fillable, edition: FillableEdition, collection: CollectionState };

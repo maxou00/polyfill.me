@@ -6,6 +6,7 @@ import { MdClose } from "react-icons/md";
 import { PropagateLoader } from "react-spinners";
 import { toast } from "react-toastify";
 import { supaClient } from "../../core/utils";
+import { defaultFillableDecoration } from "../../engine/decoration";
 import { DataForm, Fillable, initialPage } from "../../engine/page";
 
 interface Props extends DialogProps {
@@ -39,6 +40,7 @@ export function CreateFormDialog(props: Props) {
             locale: lang,
             pages: [initialPage()],
             createdAt: Date.now(),
+            decoration: defaultFillableDecoration
         }
 
         setLoading(true);

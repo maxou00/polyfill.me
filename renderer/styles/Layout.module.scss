@@ -1,0 +1,24 @@
+.formLayout {
+    background: #f9f9f9;
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 45% auto;
+    overflow: hidden;
+}
+
+.metaLayout {
+    background: #f9f9f9;
+    padding: 24px;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    align-items: center;
+    overflow: auto;
+}
+
+.activePageLayout {
+    padding: 16px;
+    background: white;
+    overflow: auto;
+}

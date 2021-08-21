@@ -2,8 +2,8 @@ import Head from 'next/head'
 import styles from '../styles/Home.module.scss'
 import cn from "classnames";
 import { MdAdd, MdClose } from 'react-icons/md';
-import { PageBuilder } from '../ui/PageBuilder';
-import { DraggableChoiceList } from '../ui/DraggableChoiceList';
+import { PageBuilder } from '../builder/PageBuilder';
+import { DraggableChoiceList } from '../builder/DraggableChoiceList';
 import { useEffect } from 'react';
 import { useMemo } from 'react';
 import { initializeStore } from '../state/store';
@@ -14,11 +14,11 @@ import { initialPage, Page } from '../engine/page';
 import { useCallback } from 'react';
 import names from "../engine/field_names.json";
 import { fieldCode } from '../engine/creators';
-import TopAppBar from '../ui/TopAppBar';
+import TopAppBar from '../builder/TopAppBar';
 import { supaClient } from '../core/utils';
 import { useState } from 'react';
 import { Box, Button } from '@material-ui/core';
-import { FillableSettingsEditor } from '../ui/settings/FillableSettingsEditor';
+import { FillableSettingsEditor } from '../builder/settings/FillableSettingsEditor';
 
 export default function EditorScreen() {
   const [activeTab, setActiveTab] = useState("fields");
