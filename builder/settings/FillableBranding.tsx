@@ -176,7 +176,7 @@ export function FillableBrandingView() {
                     variant="text"
                     color="secondary"
                     onClick={onResetBackground}>
-                    Retirer l&apos;image d'arrière-plan
+                    Retirer l&apos;image d&apos;arrière-plan
                 </Button>
             </Grid>
         </Grid>
