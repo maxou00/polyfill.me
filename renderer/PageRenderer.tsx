@@ -6,7 +6,14 @@ import { appendAnswer } from "../state/creator";
 import { usePageResponse } from "../state/selectors";
 import { FieldRenderer } from "./FieldRenderer";
 import { FieldWithMeta } from "./fields/FieldWithMeta";
+import styles from "./styles/PageRenderer.module.scss";
 
+const SemiBordered = (props: { text: string }) => {
+    return <div className={styles.semiBordered}>
+        <Typography variant="h5" className={styles.text}>{props.text}</Typography>
+        <span className={styles.border}></span>
+    </div>
+}
 export function PageRenderer(props: { page: Page }) {
     const response = usePageResponse(props.page.key);
     const dispatch = useDispatch();
@@ -15,10 +22,12 @@ export function PageRenderer(props: { page: Page }) {
         dispatch(appendAnswer(response.pageId, questionId, answer));
     }, [dispatch, response.pageId]);
 
-    return <Box>
-        <h2>{props.page.title}</h2>
-        <Typography variant="body2">{props.page.description}</Typography>
-        <Box>
+    return <Box display="flex" flexDirection="column" alignItems="center" justifyContent="flex-start">
+        <SemiBordered text={props.page.title} />
+        {props.page.description && <Box marginTop={2}>
+            <Typography variant="body2">{props.page.description}</Typography>
+        </Box>}
+        <Box marginTop={2} width="100%">
             {
                 props.page.fields.map((f) => {
                     let answer = response.responses.find((r) => r.questionId === f.key);

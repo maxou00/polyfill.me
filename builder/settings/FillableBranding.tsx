@@ -1,4 +1,4 @@
-import { Box, Button, Grid, InputBase, TextField, Typography } from "@material-ui/core";
+import { Avatar, Box, Button, Grid, InputBase, TextField, Typography } from "@material-ui/core";
 import { ChangeEvent, useMemo } from "react";
 import { useFillable } from "../../state/selectors";
 import { ColorPicker, Color } from "material-ui-color";
@@ -138,7 +138,12 @@ export function FillableBrandingView() {
                 <Typography variant="body2">Logo de l&apos;entreprise / du produit</Typography>
             </Grid>
             <Grid item xs={8}>
-                <InputBase type="file" onChange={onLogoChange} />
+                <Box display="flex" flexDirection="row" alignItems="center" justifyContent="center">
+                    {branding.brand.logo && <Box marginX={1}>
+                        <Avatar src={branding.brand.logo} variant="rounded" />
+                    </Box>}
+                    <InputBase type="file" onChange={onLogoChange} />
+                </Box>
             </Grid>
             <Grid item xs={12}>
                 <Button
@@ -165,7 +170,12 @@ export function FillableBrandingView() {
                 <Typography variant="body2">Image / Couleur de l&apos;arrière plan du formulaire</Typography>
             </Grid>
             <Grid item xs={4}>
-                <InputBase type="file" onChange={onBackgroundChange} />
+            <Box display="flex" flexDirection="row" alignItems="center" justifyContent="center">
+                    { branding.background.image && <Box marginX={1}>
+                        <Avatar src={branding.background.image} variant="rounded" />
+                    </Box> }
+                    <InputBase type="file" onChange={onBackgroundChange} />
+                </Box>
             </Grid>
             <Grid item xs={4}>
                 <ColorPicker disableTextfield value={branding.background.color} onChange={onDecorationColorChange} />

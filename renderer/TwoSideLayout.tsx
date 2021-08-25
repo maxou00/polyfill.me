@@ -3,15 +3,23 @@ import { useCollectionForm } from "../state/selectors";
 import { ActivePage } from "./ActivePage";
 import { DecorationLayer } from "./DecorationLayer";
 import { Meta } from "./Meta";
+import { PageNavigation } from "./PageNavigation";
+import { PageStack } from "./PageStack";
 import styles from "./styles/Layout.module.scss";
 
-export function Layout() {
+export function TwoSideLayout() {
+    const pages = useCollectionForm().form_content.pages;
     return <div className={styles.formLayout}>
         <DecorationLayer className={styles.metaLayout}>
-        <Meta/>
-        </DecorationLayer>  
+            <Meta />
+        </DecorationLayer>
         <div className={styles.activePageLayout}>
-        <ActivePage/>
+            <div className={styles.page}>
+                <PageStack />
+            </div>
+            <div className={styles.navigation}>
+                <PageNavigation />
+            </div>
         </div>
     </div>
 }

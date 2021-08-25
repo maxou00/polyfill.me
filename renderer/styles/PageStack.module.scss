@@ -1,0 +1,44 @@
+.stack {
+    width: 100%;
+    position: relative;
+    overflow-x: hidden;
+}
+
+.detached {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -10;
+    height: 100%;
+    overflow: hidden;
+    opacity: 0; 
+}
+
+.node {
+    width: 100%;
+    transition: transform 250ms linear,
+                opacity 250ms linear;
+
+    &[data-placement = center] {
+        transform: none;
+        opacity: 1;
+    }
+
+    &[data-placement = left] {
+        @extend .detached;
+        transform: translateX(-120%);
+    }
+
+    &[data-placement = right ] {
+        @extend .detached;
+        transform: translateX(120%);
+    }
+}
+
+.header {
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}

@@ -24,8 +24,8 @@ export function Branding() {
     }
 
     return <Box className={styles.brand}>
-        { branding.brand.logo && <Avatar className={styles.avatar}  alt="brand logo" src={logoUrl}/> }
-        <Box className={styles.content}>
+        { branding.brand.logo && <Avatar className={styles.avatar} variant="rounded"  alt="brand logo" src={logoUrl}/> }
+        <Box marginTop={2} className={styles.content}>
             <Typography variant="h4" style={{color: deco.palette.fillable.title}}>{branding.brand.name}</Typography>
             <Typography variant="body2" style={{color: deco.palette.fillable.subtitle}}>{branding.brand.subtitle}</Typography>
         </Box>

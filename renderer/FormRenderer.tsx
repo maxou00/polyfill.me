@@ -1,9 +1,13 @@
-import { Box } from "@material-ui/core";
+import { Box, useMediaQuery } from "@material-ui/core";
 import { DecorationLayer } from "./DecorationLayer";
-import { Layout } from "./Layout";
+import { SingleFlowLayout } from "./SingleFlowLayout";
+import { TwoSideLayout } from "./TwoSideLayout";
 
 export function FormRenderer() {
+
+    const matchTabletAndDown = useMediaQuery("screen and (max-width:960px)");
     return <Box>
-        <Layout/>
+        {matchTabletAndDown && <SingleFlowLayout />}
+        {!matchTabletAndDown && <TwoSideLayout />}
     </Box>
 }

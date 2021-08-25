@@ -18,7 +18,23 @@
 }
 
 .activePageLayout {
-    padding: 16px;
     background: white;
-    overflow: auto;
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: auto 46px;
+
+    .page {
+        padding: 24px 16px;
+        overflow-y: auto;
+        scrollbar-width: thin;
+    }
+
+    .navigation {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    }
 }

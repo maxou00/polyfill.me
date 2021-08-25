@@ -1,0 +1,27 @@
+
+.semiBordered {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: auto;
+
+    .text {
+        padding: 8px 0px;
+        text-align: center;
+    }
+
+    .border {
+        height: 2px;
+        width: 30%;
+        display: block;
+        background-color: blue;
+        transition: all 150ms linear;
+        border-radius: 4px;
+    }
+
+    &:hover {
+        .border {
+            width: 100%;
+        }
+    }
+}

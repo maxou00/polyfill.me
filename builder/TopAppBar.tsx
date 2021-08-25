@@ -209,7 +209,7 @@ export default function TopAppBar() {
         <Box paddingX={1}>
           <Button
             endIcon={<MdKeyboardArrowDown />}
-            variant="contained"
+            variant="outlined"
             color="primary"
             size="small"
             onClick={(ev) => setFormPickerAnchor(ev.currentTarget)}>

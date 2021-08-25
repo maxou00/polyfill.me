@@ -1,0 +1,65 @@
+.layout {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    overflow-y: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.detached {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -10;
+    height: 100%;
+    overflow: hidden;
+    opacity: 0; 
+}
+
+.node {
+    width: 100%;
+    transition: transform 250ms cubic-bezier(1, 0, 0, 1),
+                opacity 250ms linear;
+                overflow: auto;
+
+    &[data-placement = center] {
+        transform: none;
+        opacity: 1;
+        min-height: 100%;
+        overflow: auto;
+    }
+
+    &[data-placement = top] {
+        @extend .detached;
+        transform: translateY(-120%);
+    }
+
+    &[data-placement = bottom ] {
+        @extend .detached;
+        transform: translateY(120%);
+    }
+}
+
+.meta {
+    min-height: 100vh;
+}
+
+.pages {
+    height: 100vh;
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: 56px auto 46px;
+    overflow: hidden;
+}
+
+.stackContainer {
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
+.navigationContainer {
+    border-top: 1px solid #ddd;
+}
