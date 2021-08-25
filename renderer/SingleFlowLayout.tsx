@@ -17,6 +17,7 @@ import { useMemo } from "react";
 import { useContext } from "react";
 
 interface IFlowContext {
+    initial: boolean;
     active: number;
     hasBefore: boolean;
     hasNext: boolean;
@@ -25,6 +26,7 @@ interface IFlowContext {
 }
 
 const initialFlowContext: IFlowContext = {
+    initial: true,
     active: 0,
     hasBefore: false,
     hasNext: false,
@@ -32,7 +34,7 @@ const initialFlowContext: IFlowContext = {
     next: () => { }
 }
 
-const FlowContext = createContext(initialFlowContext);
+const FlowContext = createContext<IFlowContext>(initialFlowContext);
 
 export function useFlow() {
     return useContext(FlowContext);
@@ -72,6 +74,7 @@ export function SingleFlowLayout() {
     }, [activeIndex]);
 
     return <FlowContext.Provider value={{
+        initial: false,
         active: activeIndex,
         hasBefore: canGoBack,
         hasNext: canGoNext,
@@ -84,7 +87,7 @@ export function SingleFlowLayout() {
                     <Container>
                         <Meta />
                     </Container>
-                    <Box marginTop={1} display="flex" flexDirection="column" alignItems="center" justifyContent="center">
+                    <Box margin={1} display="flex" flexDirection="column" alignItems="center" justifyContent="center">
                         <Button startIcon={<MdArrowDownward size={24} color={blueGrey[900]} />} onClick={() => setActiveIndex(1)} style={{ background: 'white', boxShadow: shadows[4] }}>Soumettre une Réponse</Button>
                     </Box>
                 </DecorationLayer>

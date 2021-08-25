@@ -10,7 +10,7 @@ import styles from "./styles/PageRenderer.module.scss";
 
 const SemiBordered = (props: { text: string }) => {
     return <div className={styles.semiBordered}>
-        <Typography variant="h4" className={styles.text}>{props.text}</Typography>
+        <Typography variant="h5" className={styles.text}>{props.text}</Typography>
         <span className={styles.border}></span>
     </div>
 }
