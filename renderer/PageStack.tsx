@@ -1,5 +1,5 @@
 import { Avatar, Box, IconButton, Toolbar, Typography } from "@material-ui/core";
-import { blueGrey } from "@material-ui/core/colors";
+import { blueGrey, grey } from "@material-ui/core/colors";
 import shadows from "@material-ui/core/styles/shadows";
 import { MdArrowUpward } from "react-icons/md";
 import { useCollectionForm, usePageNavigation } from "../state/selectors"
@@ -15,7 +15,8 @@ export function PageHeader() {
         <Box display="flex" flexDirection="row" alignItems="center">
             {brand && brand.brand.logo && <Avatar src={brand.brand.logo} />}
             <Box marginX={2}>
-                {brand && brand.brand.name && <Typography variant="h6">{brand.brand.name}</Typography>}
+                {brand && brand.brand.name && <Typography variant="h6" style={{fontWeight: 600}}>{brand.brand.name}</Typography>}
+                {brand && brand.brand.subtitle && <Typography variant="body2" style={{color: grey[500]}}>{brand.brand.subtitle}</Typography>}
             </Box>
         </Box>
         <Box>
