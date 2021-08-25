@@ -15,6 +15,11 @@ export function DecorationLayer(props: PropsWithChildren<BoxProps>) {
     const styles: CSSProperties = useMemo(() => {
         let bg = decoration.branding.background;
         return {
+            minHeight: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
             background: bg.image ? `0% 0%/cover no-repeat fixed url(${bg.image})` : bg.color
         }
     }, [decoration]);

@@ -1,4 +1,4 @@
-import { Avatar, Box, IconButton, Toolbar, Typography } from "@material-ui/core";
+import { Avatar, Box, Button, Container, IconButton, Toolbar, Typography } from "@material-ui/core";
 import { blueGrey } from "@material-ui/core/colors";
 import shadows from "@material-ui/core/styles/shadows";
 import { useCallback } from "react";
@@ -34,14 +34,13 @@ const initialFlowContext: IFlowContext = {
 
 const FlowContext = createContext(initialFlowContext);
 
-export function useFlow(){
+export function useFlow() {
     return useContext(FlowContext);
 }
 
 export function SingleFlowLayout() {
     const [activeIndex, setActiveIndex] = useState(0);
     const { brand, background } = useCollectionForm().form_content.decoration.branding;
-
     const canGoBack = useMemo(() => {
         return activeIndex > 0 ? true : false;
     }, [activeIndex]);
@@ -82,21 +81,20 @@ export function SingleFlowLayout() {
         <Box className={styles.layout}>
             <Box className={cln(styles.node, styles.meta)} data-placement={placement(0)}>
                 <DecorationLayer>
-                    <Meta />
-                    <Box paddingY={2} display="flex" flexDirection="column" alignItems="center" justifyContent="center">
-                        <IconButton onClick={() => setActiveIndex(1)} style={{ background: 'white', boxShadow: shadows[4] }}>
-                            <MdArrowDownward size={24} color={blueGrey[900]} />
-                        </IconButton>
+                    <Container>
+                        <Meta />
+                    </Container>
+                    <Box marginTop={1} display="flex" flexDirection="column" alignItems="center" justifyContent="center">
+                        <Button startIcon={<MdArrowDownward size={24} color={blueGrey[900]} />} onClick={() => setActiveIndex(1)} style={{ background: 'white', boxShadow: shadows[4] }}>Soumettre une Réponse</Button>
                     </Box>
                 </DecorationLayer>
             </Box>
             <Box className={cln(styles.node, styles.pages)} data-placement={placement(1)}>
-                <PageHeader />
+                <Box className={styles.header}>
+                    <PageHeader />
+                </Box>
                 <Box padding={2} className={styles.stackContainer}>
                     <PageStack />
-                </Box>
-                <Box padding={1} className={styles.navigationContainer}>
-                    <PageNavigation />
                 </Box>
             </Box>
         </Box>

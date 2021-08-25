@@ -10,7 +10,7 @@ import styles from "./styles/PageRenderer.module.scss";
 
 const SemiBordered = (props: { text: string }) => {
     return <div className={styles.semiBordered}>
-        <Typography variant="h5" className={styles.text}>{props.text}</Typography>
+        <Typography variant="h4" className={styles.text}>{props.text}</Typography>
         <span className={styles.border}></span>
     </div>
 }
@@ -25,7 +25,7 @@ export function PageRenderer(props: { page: Page }) {
     return <Box display="flex" flexDirection="column" alignItems="center" justifyContent="flex-start">
         <SemiBordered text={props.page.title} />
         {props.page.description && <Box marginTop={2}>
-            <Typography variant="body2">{props.page.description}</Typography>
+            <Typography variant="body1">{props.page.description}</Typography>
         </Box>}
         <Box marginTop={2} width="100%">
             {

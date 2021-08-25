@@ -1,8 +1,9 @@
-import { Avatar, Box, IconButton, Toolbar, Typography } from "@material-ui/core";
+import { Avatar, Box, Container, IconButton, Toolbar, Typography, useTheme } from "@material-ui/core";
 import { blueGrey, grey } from "@material-ui/core/colors";
 import shadows from "@material-ui/core/styles/shadows";
 import { MdArrowUpward } from "react-icons/md";
 import { useCollectionForm, usePageNavigation } from "../state/selectors"
+import { PageNavigation } from "./PageNavigation";
 import { PageRenderer } from "./PageRenderer";
 import { useFlow } from "./SingleFlowLayout";
 import styles from "./styles/PageStack.module.scss";
@@ -13,16 +14,17 @@ export function PageHeader() {
 
     return <Toolbar className={styles.header}>
         <Box display="flex" flexDirection="row" alignItems="center">
-            {brand && brand.brand.logo && <Avatar src={brand.brand.logo} />}
+            {brand && brand.brand.logo && <Avatar variant="rounded" src={brand.brand.logo} />}
             <Box marginX={2}>
-                {brand && brand.brand.name && <Typography variant="h6" style={{fontWeight: 600}}>{brand.brand.name}</Typography>}
-                {brand && brand.brand.subtitle && <Typography variant="body2" style={{color: grey[500]}}>{brand.brand.subtitle}</Typography>}
+                {brand && brand.brand.name && <Typography variant="h6" style={{ fontWeight: 600 }} className={styles.title}>{brand.brand.name}</Typography>}
+                {brand && brand.brand.subtitle && <Typography variant="body2" style={{ color: grey[500] }} className={styles.subtitle}>{brand.brand.subtitle}</Typography>}
             </Box>
         </Box>
-        <Box>
-            <IconButton size="small" onClick={flow.back} style={{ background: 'white' }}>
-                <MdArrowUpward size={18} color={blueGrey[900]} />
+        <Box display="flex" flexDirection="row" alignItems="center" justifyContent="center">
+            <IconButton color="primary" onClick={flow.back} style={{ background: 'white' }}>
+                <MdArrowUpward size={24}/>
             </IconButton>
+            {flow && <PageNavigation/> }
         </Box>
     </Toolbar>
 }
@@ -40,7 +42,9 @@ export function PageStack() {
                 else if (i > activeIndex) position = 'right';
 
                 return <div className={styles.node} data-placement={position} key={p.key}>
-                    <PageRenderer page={p} />
+                    <Container>
+                        <PageRenderer page={p} />
+                    </Container>
                 </div>
             })
         }
