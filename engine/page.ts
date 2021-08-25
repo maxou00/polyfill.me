@@ -22,6 +22,7 @@ export interface Fillable {
 export interface DataForm {
     id: string;
     form_content: Fillable;
+    user_id: string;
     createdAt?: Date;
     updatedAt?: Date;
 }

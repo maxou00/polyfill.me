@@ -47,7 +47,8 @@ export function CreateFormDialog(props: Props) {
         supaClient.from<DataForm>("forms")
             .insert({
                 id: fillable.id,
-                form_content: fillable
+                form_content: fillable,
+                user_id: supaClient.auth.user().id
             })
             .single()
             .then((value) => {

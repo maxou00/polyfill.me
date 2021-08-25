@@ -92,12 +92,21 @@ export default function TopAppBar() {
         alert("signed out");
       }
     })
+
+    let user = supaClient.auth.user();
+
+    if(!user) {
+      return ;
+    }
+
     supaClient
       .from<DataForm>("forms")
       .select("id,form_content")
+      .eq("user_id", user.id)
       .order("updatedAt", { ascending: false })
       .then((values) => {
         if (values.error) {
+          toast.error(values.error.message);
           return toast.error("Erreur de recupération de vos formulaires");
         }
         setForms(values.body);
