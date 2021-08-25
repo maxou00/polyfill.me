@@ -11,5 +11,5 @@ export interface CollectionState {
     activePageId?: string;
 }
 
-export type AppState = { fillable: Fillable, edition: FillableEdition, collection: CollectionState };
+export type AppState = { fillable: Fillable, edition: FillableEdition, collection?: CollectionState };
 

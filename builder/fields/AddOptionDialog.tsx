@@ -1,7 +1,6 @@
-import { ChangeEvent, MouseEvent, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { MdClose } from "react-icons/md";
 import { DecorableOption } from "../../engine/fields";
-import { InputField } from "../components/InputField";
 import { initialOption } from "../../engine/creators";
 import { useCallback } from "react";
 import { useEffect } from "react";

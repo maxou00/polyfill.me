@@ -76,7 +76,7 @@ function SigninScreen() {
                     <Button type="button" variant="outlined" color="primary" size="small" disableElevation>Connexion Google</Button>
                 </Grid>
                 <Grid item xs={12}>
-                    <Link href="/auth/signup">S'inscrire</Link>
+                    <Link href="/auth/signup">S&apos;inscrire</Link>
                 </Grid>
             </Grid>
         </Box>

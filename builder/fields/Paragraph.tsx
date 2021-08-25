@@ -1,6 +1,5 @@
 import React from "react";
 import { FieldEditorProps } from ".";
-import { TextArea } from "../components/TextArea";
 import { TextConstraintsEditor } from "./TextConstraintEditor";
 
 export function Paragraph(props: FieldEditorProps) {

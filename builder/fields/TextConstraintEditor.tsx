@@ -1,9 +1,7 @@
 import { Grid, TextField } from "@material-ui/core";
 import { ChangeEvent, useCallback } from "react";
-import { useDispatch } from "react-redux";
 import { FieldEditorProps } from ".";
-import { ContentField, TextConstraints, TextField as ContentTextField } from "../../engine/fields";
-import { appendField } from "../../state/creator";
+import { TextConstraints } from "../../engine/fields";
 
 export function TextConstraintsEditor(props: FieldEditorProps) {
 

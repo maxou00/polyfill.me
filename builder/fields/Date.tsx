@@ -1,6 +1,5 @@
 import React from "react";
 import { FieldEditorProps } from ".";
-import { InputField } from "../components/InputField";
 import { NumberConstraintsEditor } from "./NumberConstraintsEditor";
 
 export function Date(props: FieldEditorProps) {

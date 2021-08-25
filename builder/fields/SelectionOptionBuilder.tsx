@@ -1,12 +1,10 @@
-import { Box, Button, Checkbox, FormControlLabel, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, Menu, MenuItem, Popper } from "@material-ui/core";
+import { Box, Button, Checkbox, FormControlLabel, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, Menu, MenuItem } from "@material-ui/core";
 import { grey } from "@material-ui/core/colors";
 import { MouseEvent } from "react";
 import { useCallback, useState } from "react";
-import { MdAdd, MdClose, MdEdit, MdMoreVert } from "react-icons/md";
-import { useDispatch } from "react-redux";
+import { MdClose, MdEdit, MdMoreVert } from "react-icons/md";
 import { FieldEditorProps } from ".";
-import { DecorableOption, DropdownField, SelectField } from "../../engine/fields";
-import { appendField } from "../../state/creator";
+import { DecorableOption, SelectField } from "../../engine/fields";
 import { AddOptionDialog } from "./AddOptionDialog";
 
 
