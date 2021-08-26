@@ -1,3 +1,4 @@
+import { nanoid } from "nanoid";
 import { CollectionState } from "..";
 import { Action, CollectionAction } from "../actions";
 
@@ -11,7 +12,11 @@ export function collectionReducer(state: CollectionState = initialState, action:
             next.form = action.form;
             next.activePageId = action.form.form_content.pages[0].key;
             next.response = {
+                id: nanoid(),
                 formId: action.form.id,
+                meta: {},
+                createdAt: new Date(Date.now()),
+                updatedAt: new Date(Date.now()),
                 pages: action.form.form_content.pages.map((p) => {
                     return {
                         pageId: p.key,

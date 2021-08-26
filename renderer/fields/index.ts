@@ -2,6 +2,6 @@ import { ContentField } from "../../engine/fields";
 
 export interface FieldRendererProps {
     question: ContentField;
-    answer: any;
+    response: {questionId: string, answer: any};
     onChange(answer: any): any;
 }

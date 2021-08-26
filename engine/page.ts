@@ -51,8 +51,12 @@ export function initialPage(): Page {
 }
 
 export interface FormResponse {
+    id: string;
     formId: string;
     pages: ResponsePage[];
+    meta: any;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 export interface ResponsePage {

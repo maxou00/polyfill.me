@@ -1,5 +1,4 @@
 import { Box, useMediaQuery } from "@material-ui/core";
-import { DecorationLayer } from "./DecorationLayer";
 import { SingleFlowLayout } from "./SingleFlowLayout";
 import { TwoSideLayout } from "./TwoSideLayout";
 

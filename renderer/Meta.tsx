@@ -1,8 +1,5 @@
-import { Box, Container, IconButton, Typography } from "@material-ui/core";
-import { blueGrey } from "@material-ui/core/colors";
-import shadows from "@material-ui/core/styles/shadows";
+import { Box, Typography } from "@material-ui/core";
 import { useMemo } from "react";
-import { MdArrowDownward } from "react-icons/md";
 import { useCollectionForm } from "../state/selectors";
 import { Branding } from "./Branding";
 import styles from "./styles/Meta.module.scss";

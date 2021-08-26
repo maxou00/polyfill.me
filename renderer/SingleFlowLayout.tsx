@@ -1,14 +1,12 @@
-import { Avatar, Box, Button, Container, IconButton, Toolbar, Typography } from "@material-ui/core";
+import { Box, Button, Container } from "@material-ui/core";
 import { blueGrey } from "@material-ui/core/colors";
 import shadows from "@material-ui/core/styles/shadows";
 import { useCallback } from "react";
 import { useState } from "react";
-import { MdArrowDownward, MdArrowUpward } from "react-icons/md";
+import { MdKeyboardArrowDown } from "react-icons/md";
 import { useCollectionForm } from "../state/selectors";
-import { Branding } from "./Branding";
 import { DecorationLayer } from "./DecorationLayer";
 import { Meta } from "./Meta";
-import { PageNavigation } from "./PageNavigation";
 import { PageHeader, PageStack } from "./PageStack";
 import styles from "./styles/SingleFlowLayout.module.scss";
 import cln from "classnames";
@@ -88,7 +86,7 @@ export function SingleFlowLayout() {
                         <Meta />
                     </Container>
                     <Box margin={1} display="flex" flexDirection="column" alignItems="center" justifyContent="center">
-                        <Button startIcon={<MdArrowDownward size={24} color={blueGrey[900]} />} onClick={() => setActiveIndex(1)} style={{ background: 'white', boxShadow: shadows[4] }}>Soumettre une Réponse</Button>
+                        <Button endIcon={<MdKeyboardArrowDown size={24} color={blueGrey[900]} />} onClick={() => setActiveIndex(1)} style={{ background: 'white', boxShadow: shadows[4] }}>Soumettre une Réponse</Button>
                     </Box>
                 </DecorationLayer>
             </Box>

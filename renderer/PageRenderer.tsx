@@ -1,10 +1,9 @@
-import { Box, Container, Typography } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { Page } from "../engine/page";
 import { appendAnswer } from "../state/creator";
 import { usePageResponse } from "../state/selectors";
-import { FieldRenderer } from "./FieldRenderer";
 import { FieldWithMeta } from "./fields/FieldWithMeta";
 import styles from "./styles/PageRenderer.module.scss";
 
@@ -34,7 +33,7 @@ export function PageRenderer(props: { page: Page }) {
                     return <FieldWithMeta
                         key={f.key}
                         question={f}
-                        answer={answer}
+                        response={answer}
                         onChange={(ans) => onAnswerChange(f.key, ans)} />
                 })
             }

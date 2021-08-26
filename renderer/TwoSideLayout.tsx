@@ -1,6 +1,4 @@
-import { useMemo, useState } from "react";
 import { useCollectionForm } from "../state/selectors";
-import { ActivePage } from "./ActivePage";
 import { DecorationLayer } from "./DecorationLayer";
 import { Meta } from "./Meta";
 import { PageNavigation } from "./PageNavigation";

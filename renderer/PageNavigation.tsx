@@ -1,5 +1,5 @@
-import { Box, ButtonGroup, Button, withStyles } from "@material-ui/core";
-import { MdArrowBack, MdArrowForward, MdDone, MdSend } from "react-icons/md";
+import { Box, Button, withStyles } from "@material-ui/core";
+import { MdArrowBack, MdArrowForward } from "react-icons/md";
 import { usePageNavigation } from "../state/selectors"
 
 const NavButton = withStyles({
