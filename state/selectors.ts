@@ -65,3 +65,7 @@ export const usePageNavigation = () => {
         }
     }
 }
+
+export const useGlobalState = () => {
+    return useSelector((state: AppState) => state.global);
+}

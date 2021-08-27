@@ -14,11 +14,8 @@ import { initialPage, Page } from '../engine/page';
 import { useCallback } from 'react';
 import names from "../engine/field_names.json";
 import { fieldCode } from '../engine/creators';
-import TopAppBar from '../builder/TopAppBar';
-import { supaClient } from '../core/utils';
+import TopAppBar from '../ui/TopAppBar';
 import { useState } from 'react';
-import { Box, Button } from '@material-ui/core';
-import { FillableSettingsEditor } from '../builder/settings/FillableSettingsEditor';
 
 export default function EditorScreen() {
   const [activeTab, setActiveTab] = useState("fields");

@@ -49,6 +49,18 @@ export interface SetActiveField {
     fieldId: string;
 }
 
+export interface SetForms {
+    type: 'SET_FORMS',
+    forms: DataForm[];
+}
+
+export interface AppendForm {
+    type: 'APPEND_FORM',
+    form: DataForm;
+}
+
+type GlobalAction = SetForms | AppendForm;
+
 type EditionAction = SetActiveFillable | SetActivePage | SetActiveField;
 
 type BuildingAction = UpdateFillable
@@ -74,4 +86,4 @@ interface AppendAnswer {
 
 export type CollectionAction = SetCollectionForm | AppendAnswer | SetActivePage;
 
-export type Action = BuildingAction | CollectionAction;
+export type Action = GlobalAction | BuildingAction | CollectionAction;

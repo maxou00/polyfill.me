@@ -81,3 +81,17 @@ export function appendAnswer(pageId: string, questionId: string, answer: any): A
         pageId, questionId, answer
     }
 }
+
+export function setForms(forms:DataForm[]): Action {
+    return {
+        type: 'SET_FORMS',
+        forms
+    }
+}
+
+export function appendForm(form: DataForm): Action {
+    return {
+        type: 'APPEND_FORM',
+        form
+    }
+}

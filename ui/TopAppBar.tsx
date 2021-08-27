@@ -8,24 +8,23 @@ import { supaClient } from '../core/utils';
 import Supabase from "@supabase/supabase-js";
 import { useCallback } from 'react';
 import { useRouter } from 'next/dist/client/router';
-import { CreateFormDialog } from './form/CreateFormDialog';
+import { CreateFormDialog } from '../builder/form/CreateFormDialog';
 import { DataForm } from '../engine/page';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
-import { setActiveFillable } from '../state/creator';
-import { useFillable } from '../state/selectors';
+import { useFillable, useGlobalState } from '../state/selectors';
 import { ClockLoader } from 'react-spinners';
 import { setActiveForm } from '../state/middlewares';
-import { FillableSettingsEditor } from './settings/FillableSettingsEditor';
+import { FillableSettingsEditor } from '../builder/settings/FillableSettingsEditor';
 
 export default function TopAppBar() {
   const [session, setSession] = useState<Supabase.Session>();
   const [createOpen, setCreateOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [updating, setUpdating] = useState(false);
-  const [forms, setForms] = useState<DataForm[]>([]);
   const [formPickerAnchor, setFormPickerAnchor] = useState<HTMLButtonElement>();
 
+  const { forms } = useGlobalState();
   const fillable = useFillable();
   const router = useRouter();
   const dispatch = useDispatch();
@@ -41,21 +40,6 @@ export default function TopAppBar() {
 
   const fillableAlreadyExists = useCallback((id: string) => {
     return Boolean(forms.find((f) => f.id === id));
-  }, [forms]);
-
-  const appendForm = useCallback((form: DataForm) => {
-    let cpy = [...forms];
-    let index = cpy.findIndex((f) => f.id === form.id);
-
-    if (index >= 0) {
-      cpy[index] = form;
-    }
-    else {
-      cpy.push(form);
-    }
-
-    setForms(cpy);
-
   }, [forms]);
 
   const onFormSelected = useCallback((form: DataForm) => {
@@ -97,37 +81,6 @@ export default function TopAppBar() {
 
     if(!user) {
       return ;
-    }
-
-    supaClient
-      .from<DataForm>("forms")
-      .select("id,form_content")
-      .eq("user_id", user.id)
-      .order("updatedAt", { ascending: false })
-      .then((values) => {
-        if (values.error) {
-          toast.error(values.error.message);
-          return toast.error("Erreur de recupération de vos formulaires");
-        }
-        setForms(values.body);
-        if (values.body.length > 0) {
-          dispatch(setActiveForm(values.body[0].form_content));
-        }
-        else {
-          setCreateOpen(true);
-        }
-      })
-
-    let subscription = supaClient.from<DataForm>("forms").on("INSERT", (ev) => {
-      dispatch(setActiveForm(ev.new.form_content));
-      appendForm(ev.new);
-    })
-      .on("UPDATE", (ev) => {
-        appendForm(ev.new);
-      }).subscribe();
-
-    return () => {
-      supaClient.removeSubscription(subscription);
     }
   }, []);
 

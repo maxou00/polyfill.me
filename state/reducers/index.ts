@@ -3,9 +3,11 @@ import { AppState } from "..";
 import { collectionReducer } from "./collection";
 import editionReducer from "./edition";
 import fillable from "./fillable";
+import { globalReducer } from "./global";
 
 export default combineReducers<AppState>({
     fillable: fillable,
     edition: editionReducer,
-    collection: collectionReducer
+    collection: collectionReducer,
+    global: globalReducer
 })
