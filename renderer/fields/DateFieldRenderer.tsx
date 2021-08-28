@@ -5,7 +5,9 @@ import { FieldRendererProps } from ".";
 export function DateFieldRenderer(props: FieldRendererProps) {
 
     const value = useMemo(() => {
-        return new Intl.DateTimeFormat("en-CA").format(Date.parse(props.response.answer))
+        if(props.response.answer) {
+            return new Intl.DateTimeFormat("en-CA").format(Date.parse(props.response.answer))
+        }
     }, [props.response]);
 
     const onChange = useCallback((ev: React.ChangeEvent<HTMLInputElement>) => {
