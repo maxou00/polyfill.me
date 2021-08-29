@@ -7,6 +7,7 @@ import { supaClient } from "../../core/utils";
 import styles from "../../styles/Signin.module.scss";
 import { PropagateLoader } from "react-spinners";
 import Link from "next/link";
+import { Initializer } from "../../ui/Initializer";
 
 function SigninScreen() {
     const [loading, setLoading] = useState(false);
@@ -50,37 +51,39 @@ function SigninScreen() {
             })
     }, [router]);
 
-    return <Box className={styles.page}>
-        <Box className={styles.formWrapper}>
-            <Box className={styles.header}>
-                <Typography variant="h3">Polyfill</Typography>
-                <Typography variant="body1">Créez des formulaires et effectuez vos collectes facilement.</Typography>
-            </Box>
-            <Grid container component="form" spacing={2} onSubmit={onSubmit}>
-                <Grid item xs={12}>
-                    <TextField size="small" type="email" fullWidth label="Email" variant="outlined" name="email" error={errors.email} />
-                </Grid>
-                <Grid item xs={12}>
-                    <TextField size="small" type="password" fullWidth label="Mot de passe" variant="outlined" name="password" error={errors.password} />
-                </Grid>
+    return <Initializer>
+        <Box className={styles.page}>
+            <Box className={styles.formWrapper}>
+                <Box className={styles.header}>
+                    <Typography variant="h3">Polyfill</Typography>
+                    <Typography variant="body1">Créez des formulaires et effectuez vos collectes facilement.</Typography>
+                </Box>
+                <Grid container component="form" spacing={2} onSubmit={onSubmit}>
+                    <Grid item xs={12}>
+                        <TextField size="small" type="email" fullWidth label="Email" variant="outlined" name="email" error={errors.email} />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField size="small" type="password" fullWidth label="Mot de passe" variant="outlined" name="password" error={errors.password} />
+                    </Grid>
 
-                {loading && <Grid item xs={12}>
-                    <Box padding={2} display="flex" flexDirection="row" alignItems="center" justifyContent="center">
-                        <PropagateLoader color="#999" size={12} />
-                    </Box>
-                </Grid>}
-                <Grid item xs={12}>
-                    <Button disabled={loading} type="submit" variant="contained" color="primary" size="small" fullWidth disableElevation>Se connecter</Button>
+                    {loading && <Grid item xs={12}>
+                        <Box padding={2} display="flex" flexDirection="row" alignItems="center" justifyContent="center">
+                            <PropagateLoader color="#999" size={12} />
+                        </Box>
+                    </Grid>}
+                    <Grid item xs={12}>
+                        <Button disabled={loading} type="submit" variant="contained" color="primary" size="small" fullWidth disableElevation>Se connecter</Button>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Button type="button" variant="outlined" color="primary" size="small" disableElevation>Connexion Google</Button>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Link href="/auth/signup">S&apos;inscrire</Link>
+                    </Grid>
                 </Grid>
-                <Grid item xs={12}>
-                    <Button type="button" variant="outlined" color="primary" size="small" disableElevation>Connexion Google</Button>
-                </Grid>
-                <Grid item xs={12}>
-                    <Link href="/auth/signup">S&apos;inscrire</Link>
-                </Grid>
-            </Grid>
+            </Box>
         </Box>
-    </Box>
+    </Initializer>
 }
 
 export default SigninScreen;

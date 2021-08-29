@@ -15,6 +15,7 @@ export function initialShortText(): SingleLineField {
     return {
         ...commonField("text"),
         format: "short",
+        max: 255
     } as SingleLineField;
 }
 

@@ -28,7 +28,7 @@ export interface CommonFieldProps {
 
 export interface TextConstraints {
     type: "text",
-    maxChars?: number,
+    max?: number,
     expression?: string
 }
 

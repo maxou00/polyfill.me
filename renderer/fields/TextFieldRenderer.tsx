@@ -13,7 +13,7 @@ export function TextFieldRenderer(props: FieldRendererProps) {
     }, [props.question]);
 
     const isMultiline = useMemo(() => {
-        return props.question.format==="paragraph"
+        return ["paragraph", "rich"].includes(props.question.format)
     }, [props.question]);
 
     const onChange = useCallback((ev: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,6 +29,7 @@ export function TextFieldRenderer(props: FieldRendererProps) {
             variant="outlined"
             value={props.response.answer}
             multiline={isMultiline}
+            minRows={isMultiline ? "4": "undefined"}
             placeholder={props.question.title}
             onChange={onChange}
             error={props.errors}/>

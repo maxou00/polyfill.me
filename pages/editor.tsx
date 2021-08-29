@@ -16,6 +16,7 @@ import names from "../engine/field_names.json";
 import { fieldCode } from '../engine/creators';
 import TopAppBar from '../ui/TopAppBar';
 import { useState } from 'react';
+import { Initializer } from '../ui/Initializer';
 
 export default function EditorScreen() {
   const [activeTab, setActiveTab] = useState("fields");
@@ -52,106 +53,108 @@ export default function EditorScreen() {
   }, [])
 
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Polyfill.me</title>
-        <meta name="description" content="Create forms" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <main className={styles.main}>
-        <header className={styles.header}>
-          <TopAppBar />
-        </header>
-        <section className={styles.structure_wrapper}>
-          <div className={cn(styles.structure, styles.structure_pages)}>
-            <header>
-              <h4>Pages</h4>
-              <div className={styles.actions}>
-                <button onClick={addPage}>
-                  <MdAdd size={18} />
-                </button>
+    <Initializer>
+      <div className={styles.container}>
+        <Head>
+          <title>Polyfill.me</title>
+          <meta name="description" content="Create forms" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+        <main className={styles.main}>
+          <header className={styles.header}>
+            <TopAppBar />
+          </header>
+          <section className={styles.structure_wrapper}>
+            <div className={cn(styles.structure, styles.structure_pages)}>
+              <header>
+                <h4>Pages</h4>
+                <div className={styles.actions}>
+                  <button onClick={addPage}>
+                    <MdAdd size={18} />
+                  </button>
+                </div>
+              </header>
+              <div className={styles.content_wrapper}>
+                <ul className={"item_list " + styles.content}>
+                  {
+                    fillable.pages.map((p) => {
+                      return <li key={p.key} className={styles.page_item} onClick={() => moveToPage(p.key)} data-active={activePage && activePage.key === p.key}>
+                        {p.title}
+                      </li>
+                    })
+                  }
+                </ul>
               </div>
-            </header>
-            <div className={styles.content_wrapper}>
-              <ul className={"item_list " + styles.content}>
-                {
-                  fillable.pages.map((p) => {
-                    return <li key={p.key} className={styles.page_item} onClick={() => moveToPage(p.key)} data-active={activePage && activePage.key === p.key}>
-                      {p.title}
-                    </li>
-                  })
-                }
-              </ul>
             </div>
-          </div>
-          <div className={cn(styles.structure, styles.structure_composition)}>
-            <header>
-              <h4>Composition</h4>
-              <div className={styles.actions}>
-                <button>
-                  <MdAdd size={18} />
-                </button>
+            <div className={cn(styles.structure, styles.structure_composition)}>
+              <header>
+                <h4>Composition</h4>
+                <div className={styles.actions}>
+                  <button>
+                    <MdAdd size={18} />
+                  </button>
+                </div>
+              </header>
+              <div className={styles.content_wrapper}>
+                {activePage && <ul className={"item_list " + styles.content}>
+                  {
+                    activePage.fields.map((f) => {
+                      return <li key={f.key} className={styles.field_item} onClick={() => setHighlightedField(f.key)} data-active={f.key === edition.activeField}>
+                        <div className={styles.content}>
+                          <span className={styles.title}>{f.title || "Sans titre"}</span>
+                          <span className={styles.type}>{names[fieldCode(f)]}</span>
+                        </div>
+                        <div className={styles.actions}>
+                          <button onClick={() => removeField(activePage.key, f.key)}>
+                            <MdClose size={18} />
+                          </button>
+                        </div>
+                      </li>
+                    })
+                  }
+                </ul>}
               </div>
-            </header>
-            <div className={styles.content_wrapper}>
-              {activePage && <ul className={"item_list " + styles.content}>
-                {
-                  activePage.fields.map((f) => {
-                    return <li key={f.key} className={styles.field_item} onClick={() => setHighlightedField(f.key)} data-active={f.key === edition.activeField}>
-                      <div className={styles.content}>
-                        <span className={styles.title}>{f.title || "Sans titre"}</span>
-                        <span className={styles.type}>{names[fieldCode(f)]}</span>
-                      </div>
-                      <div className={styles.actions}>
-                        <button onClick={() => removeField(activePage.key, f.key)}>
-                          <MdClose size={18} />
-                        </button>
-                      </div>
-                    </li>
-                  })
-                }
-              </ul>}
             </div>
-          </div>
-        </section>
-        <section className={styles.base_wrapper}>
-          <div className={styles.base_content}>
-            <div className={styles.builder_wrapper}>
+          </section>
+          <section className={styles.base_wrapper}>
+            <div className={styles.base_content}>
+              <div className={styles.builder_wrapper}>
+                {
+                  activePage && <PageBuilder page={activePage} />
+                }
+              </div>
+            </div>
+          </section>
+          <section className={styles.details_wrapper}>
+            <div className={styles.tabs_details}>
+              <div className={styles.tab} data-active={activeTab === "fields"} onClick={() => setActiveTab("fields")}>
+                <h5>Champs</h5>
+              </div>
+              <div className={styles.tab} data-active={activeTab === "edition"} onClick={() => setActiveTab("edition")}>
+                <h5>Edition</h5>
+              </div>
+              <div className={styles.tab} data-active={activeTab === "style"} onClick={() => setActiveTab("style")}>
+                <h5>Style</h5>
+              </div>
+            </div>
+            <div className={styles.tab_content}>
               {
-                activePage && <PageBuilder page={activePage} />
+                activeTab === "edition" &&
+                <DraggableChoiceList />
+              }
+              {
+                activeTab === "fields" &&
+                <DraggableChoiceList />
+              }
+              {
+                activeTab === "style" &&
+                <DraggableChoiceList />
               }
             </div>
-          </div>
-        </section>
-        <section className={styles.details_wrapper}>
-          <div className={styles.tabs_details}>
-            <div className={styles.tab} data-active={activeTab === "fields"} onClick={() => setActiveTab("fields")}>
-              <h5>Champs</h5>
-            </div>
-            <div className={styles.tab} data-active={activeTab === "edition"} onClick={() => setActiveTab("edition")}>
-              <h5>Edition</h5>
-            </div>
-            <div className={styles.tab} data-active={activeTab === "style"} onClick={() => setActiveTab("style")}>
-              <h5>Style</h5>
-            </div>
-          </div>
-          <div className={styles.tab_content}>
-            {
-              activeTab === "edition" &&
-              <DraggableChoiceList />
-            }
-            {
-              activeTab === "fields" &&
-              <DraggableChoiceList />
-            }
-            {
-              activeTab === "style" &&
-              <DraggableChoiceList />
-            }
-          </div>
-        </section>
-      </main>
-    </div>
+          </section>
+        </main>
+      </div>
+    </Initializer>
   )
 }
 

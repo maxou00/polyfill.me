@@ -20,7 +20,6 @@ function MyApp({ Component, pageProps }) {
 
   return <>
     <Provider store={store} >
-      <Initializer>
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Component {...pageProps} />
@@ -32,7 +31,6 @@ function MyApp({ Component, pageProps }) {
           limit={3}
           closeOnClick
           hideProgressBar />
-      </Initializer>
     </Provider>
   </>
 }
