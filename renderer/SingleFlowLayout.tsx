@@ -13,6 +13,7 @@ import cln from "classnames";
 import { createContext } from "react";
 import { useMemo } from "react";
 import { useContext } from "react";
+import { PageNavigation } from "./PageNavigation";
 
 interface IFlowContext {
     initial: boolean;
@@ -96,6 +97,9 @@ export function SingleFlowLayout() {
                 </Box>
                 <Box padding={2} className={styles.stackContainer}>
                     <PageStack />
+                </Box>
+                <Box display="flex" flexDirection="row" alignItems="center" justifyContent="center" className={styles.navigationContainer}>
+                    {<PageNavigation />}
                 </Box>
             </Box>
         </Box>

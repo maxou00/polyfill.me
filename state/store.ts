@@ -10,6 +10,9 @@ let store: Store<AppState>;
 
 const initialState: AppState = {
     fillable: initialFillable(),
+    global: {
+        forms: []
+    },
     edition: {
         activeField: "",
         activePage: ""

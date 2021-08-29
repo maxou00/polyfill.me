@@ -1,35 +1,76 @@
 import { Box, Button, withStyles } from "@material-ui/core";
-import { MdArrowBack, MdArrowForward } from "react-icons/md";
-import { usePageNavigation } from "../state/selectors"
+import shadows from "@material-ui/core/styles/shadows";
+import { useCallback } from "react";
+import { MdArrowBack, MdArrowForward, MdDone } from "react-icons/md";
+import { useDispatch } from "react-redux";
+import { FormResponse } from "../engine/page";
+import { sendResponse } from "../state/middlewares";
+import { useCollectionActivePage, useFormErrors, usePageNavigation, usePageValidation } from "../state/selectors"
 
 const NavButton = withStyles({
     root: {
         borderRadius: '24px',
         marginLeft: '4px',
         marginRight: '4px'
+    },
+    contained: {
+        boxShadow: shadows[3]
     }
 })(Button);
 
 export function PageNavigation() {
     const navigation = usePageNavigation();
 
+    const page = useCollectionActivePage();
+
+    const validation = usePageValidation(page.key);
+    const formValidation = useFormErrors();
+
+    const dispatch = useDispatch();
+
+    const onSubmitResponse = useCallback( async () => {
+        let invalidIndex = formValidation.validate();
+        if(invalidIndex) {
+            if(invalidIndex !== page.key) {
+                navigation.toKey(invalidIndex);
+            }
+            return 
+        }
+
+        let result = await (dispatch(sendResponse()) as unknown as Promise<FormResponse>)
+            .then((done) => {
+                if(done) {
+                    alert(done.id);
+                    /// show a success page or something like that.
+                }
+            });
+    }, [dispatch, navigation, page, formValidation]);
+
     return <Box display="flex" flexDirection="row" alignItems="center" justifyContent="center">
-        {navigation.hasBefore && <NavButton 
+        <NavButton 
             color="primary" 
+            variant="text"
             size="small"
             disabled={!navigation.hasBefore}
             onClick={navigation.back}
             startIcon={<MdArrowBack size={18} />}>
             Précédent
-        </NavButton>}
-        {navigation.hasNext && <NavButton 
+        </NavButton>
+        <NavButton 
+            variant="contained" 
             color="primary" 
-            variant="contained"
+            onClick={onSubmitResponse}
+            endIcon={<MdDone size={18} />}>
+                Envoyer
+        </NavButton>
+        <NavButton 
+            color="primary" 
+            variant="text"
             size="small"
-            disabled={!navigation.hasNext}
+            disabled={ !validation.isValid || !navigation.hasNext}
             onClick={navigation.next}
             endIcon={<MdArrowForward size={18} />}>
             Suivant 
-        </NavButton>}
+        </NavButton>
     </Box>
 }

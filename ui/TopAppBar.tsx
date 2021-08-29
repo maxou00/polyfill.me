@@ -79,8 +79,8 @@ export default function TopAppBar() {
 
     let user = supaClient.auth.user();
 
-    if(!user) {
-      return ;
+    if (!user) {
+      return;
     }
   }, []);
 
@@ -193,6 +193,8 @@ export default function TopAppBar() {
             }
           </Popover>
         </Box>
+      </div>
+      <Box>
         {
           session && <Avatar style={{ background: 'white' }}>
             <MdPerson size={24} fill={grey[300]} />
@@ -201,7 +203,7 @@ export default function TopAppBar() {
         {
           !session && <Button size="small" color="primary" variant="contained" disableElevation onClick={onAuthenticate}>Connectez-vous</Button>
         }
-      </div>
+      </Box>
       <CreateFormDialog
         maxWidth="md"
         fullWidth
@@ -211,7 +213,7 @@ export default function TopAppBar() {
       <FillableSettingsEditor
         fullScreen
         open={settingsOpen}
-        onClose={() => setSettingsOpen(false)}/>
+        onClose={() => setSettingsOpen(false)} />
     </header>
   )
 }

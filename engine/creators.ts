@@ -118,7 +118,8 @@ export function initialFileField(): FileField {
     return {
         ...commonField("file"),
         maxSize: 5,
-        formats: []
+        formats: [],
+        maxCount: 1
     } as FileField
 }
 

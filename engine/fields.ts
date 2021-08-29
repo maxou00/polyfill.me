@@ -63,9 +63,10 @@ export interface IntervalConstraints extends RangeableValue {
     step: number
 }
 
-export interface FileConstaints {
+export interface FileConstraints {
     type: "file"
     maxSize: number; // in Mb
+    maxCount: number; /// max number of files user can input
     formats?: string[];
 }
 
@@ -84,10 +85,10 @@ export interface SelectionConstraints<T = string> {
     maxSelection?: number
 }          
 
-type Field<T> = CommonFieldProps & T;
+export type Field<T> = CommonFieldProps & T;
 export type TextField<T = any> = Field<TextConstraints & T>;
 export type SelectField<T = any> = Field<SelectionConstraints & T>;
-export type FileField<T = any> = Field<FileConstaints & T>;
+export type FileField<T = any> = Field<FileConstraints & T>;
 
 export type SingleLineField = TextField<{ format: "short" }>
 

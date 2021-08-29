@@ -31,7 +31,6 @@ export function PageHeader() {
 export function PageStack() {
     const pages = useCollectionForm().form_content.pages;
     const { hasBefore, hasNext, activeIndex } = usePageNavigation();
-    const flow = useFlow();
 
     return <Box className={styles.stack}>
         {
@@ -43,9 +42,6 @@ export function PageStack() {
                 return <div className={styles.node} data-placement={position} key={p.key}>
                     <Container>
                         <PageRenderer page={p} />
-                        {!flow.initial && <Box marginY={1}>
-                            <PageNavigation />
-                        </Box>}
                     </Container>
                 </div>
             })

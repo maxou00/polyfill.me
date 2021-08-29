@@ -2,7 +2,7 @@ import { nanoid } from "nanoid";
 import { CollectionState } from "..";
 import { Action, CollectionAction } from "../actions";
 
-const initialState: CollectionState = {};
+const initialState: CollectionState = { errors: { } };
 
 export function collectionReducer(state: CollectionState = initialState, action: CollectionAction): CollectionState {
 
@@ -52,6 +52,31 @@ export function collectionReducer(state: CollectionState = initialState, action:
                     }
                 }
             }
+            return next;
+        }
+        case 'APPEND_ANSWER_ERROR': {
+            let next = {...state};
+
+            let { error, pageId, questionId } = action
+            let pageErrors = next.errors[pageId] || [];
+            let existentIndex = pageErrors.findIndex((err) => err.questionId === questionId);
+
+            if(!error) {
+                pageErrors = pageErrors.filter((err) => err.questionId !== questionId);
+            }
+            else {
+                if(existentIndex > -1) {
+                    pageErrors[existentIndex].errors = error;
+                }
+                else {
+                    pageErrors.push({
+                        questionId,
+                        errors: error
+                    })
+                }
+            }
+
+            next.errors[pageId] = pageErrors;
             return next;
         }
     }

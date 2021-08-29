@@ -82,6 +82,15 @@ export function appendAnswer(pageId: string, questionId: string, answer: any): A
     }
 }
 
+export function appendAnswerError(pageId: string, questionId: string, error: any): Action {
+    return {
+        type: 'APPEND_ANSWER_ERROR',
+        pageId,
+        questionId,
+        error
+    }
+}
+
 export function setForms(forms:DataForm[]): Action {
     return {
         type: 'SET_FORMS',

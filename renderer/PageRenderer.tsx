@@ -3,7 +3,7 @@ import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { Page } from "../engine/page";
 import { appendAnswer } from "../state/creator";
-import { usePageResponse } from "../state/selectors";
+import { usePageValidation, usePageResponse } from "../state/selectors";
 import { FieldWithMeta } from "./fields/FieldWithMeta";
 import styles from "./styles/PageRenderer.module.scss";
 
@@ -15,6 +15,7 @@ const SemiBordered = (props: { text: string }) => {
 }
 export function PageRenderer(props: { page: Page }) {
     const response = usePageResponse(props.page.key);
+    const validation = usePageValidation(props.page.key);
     const dispatch = useDispatch();
 
     const onAnswerChange = useCallback((questionId: string, answer: any) => {
@@ -29,11 +30,15 @@ export function PageRenderer(props: { page: Page }) {
         <Box marginTop={2} width="100%">
             {
                 props.page.fields.map((f) => {
+
                     let answer = response.responses.find((r) => r.questionId === f.key);
+                    let fieldErrors = validation.errors.find((err) => err.questionId === f.key);
+
                     return <FieldWithMeta
                         key={f.key}
                         question={f}
                         response={answer}
+                        errors={fieldErrors}
                         onChange={(ans) => onAnswerChange(f.key, ans)} />
                 })
             }

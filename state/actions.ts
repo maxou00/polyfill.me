@@ -84,6 +84,13 @@ interface AppendAnswer {
     answer: any;
 }
 
-export type CollectionAction = SetCollectionForm | AppendAnswer | SetActivePage;
+interface AppendAnswerError { 
+    type: 'APPEND_ANSWER_ERROR';
+    pageId: string;
+    questionId: string;
+    error: any;
+}
+
+export type CollectionAction = SetCollectionForm | AppendAnswer | SetActivePage | AppendAnswerError;
 
 export type Action = GlobalAction | BuildingAction | CollectionAction;

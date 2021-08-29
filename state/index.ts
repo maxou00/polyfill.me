@@ -8,6 +8,12 @@ export interface FillableEdition {
 export interface CollectionState {
     form?: DataForm;
     response?: FormResponse;
+    /**
+     * map to each page id its responses errors.
+     */
+    errors: {
+        [key: string]: {questionId: string, errors: any}[]
+    }
     activePageId?: string;
 }
 

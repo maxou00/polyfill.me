@@ -1,8 +1,9 @@
 import { Box, TextField, Typography } from "@material-ui/core";
 import { useCallback, useMemo } from "react";
 import { FieldRendererProps } from ".";
+import { DateField, DateTimeField } from "../../engine/fields";
 
-export function DateFieldRenderer(props: FieldRendererProps) {
+export function DateFieldRenderer(props: FieldRendererProps<DateField | DateTimeField>) {
 
     const value = useMemo(() => {
         if(props.response.answer) {
@@ -12,8 +13,6 @@ export function DateFieldRenderer(props: FieldRendererProps) {
 
     const onChange = useCallback((ev: React.ChangeEvent<HTMLInputElement>) => {
         let value = ev.target.valueAsDate.toISOString();
-        alert(value);
-        alert(new Date( Date.parse(value) ))
         props.onChange(value);
     },[props]);
 
@@ -21,7 +20,7 @@ export function DateFieldRenderer(props: FieldRendererProps) {
         <TextField
             fullWidth
             size="small"
-            type={props.question.format === "datetime-local" ? "datetime-local" : "date"}
+            type={props.question.format === "datetime" ? "datetime-local" : "date"}
             variant="outlined"
             value={value}
             onChange={onChange}
