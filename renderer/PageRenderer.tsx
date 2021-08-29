@@ -3,6 +3,7 @@ import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { Page } from "../engine/page";
 import { appendAnswer } from "../state/creator";
+import { validatePageResponse } from "../state/middlewares";
 import { usePageValidation, usePageResponse } from "../state/selectors";
 import { FieldWithMeta } from "./fields/FieldWithMeta";
 import styles from "./styles/PageRenderer.module.scss";
@@ -13,6 +14,7 @@ const SemiBordered = (props: { text: string }) => {
         <span className={styles.border}></span>
     </div>
 }
+
 export function PageRenderer(props: { page: Page }) {
     const response = usePageResponse(props.page.key);
     const validation = usePageValidation(props.page.key);
@@ -20,7 +22,8 @@ export function PageRenderer(props: { page: Page }) {
 
     const onAnswerChange = useCallback((questionId: string, answer: any) => {
         dispatch(appendAnswer(response.pageId, questionId, answer));
-    }, [dispatch, response.pageId]);
+        dispatch(validatePageResponse(props.page.key));
+    }, [dispatch, response.pageId,props.page]);
 
     return <Box display="flex" flexDirection="column" alignItems="center" justifyContent="flex-start">
         <SemiBordered text={props.page.title} />
@@ -38,7 +41,7 @@ export function PageRenderer(props: { page: Page }) {
                         key={f.key}
                         question={f}
                         response={answer}
-                        errors={fieldErrors}
+                        errors={fieldErrors ? fieldErrors.errors : undefined}
                         onChange={(ans) => onAnswerChange(f.key, ans)} />
                 })
             }

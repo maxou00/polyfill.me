@@ -24,6 +24,7 @@ export function DateFieldRenderer(props: FieldRendererProps<DateField | DateTime
             variant="outlined"
             value={value}
             onChange={onChange}
-            placeholder={props.question.title} />
+            placeholder={props.question.title}
+            error={props.errors}/>
     </Box>
 }

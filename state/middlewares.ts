@@ -5,7 +5,7 @@ import { ThunkAction, ThunkDispatch } from "redux-thunk";
 import { AppState } from ".";
 import { extractFileAnswers, KEY_PF_RESPONSE_ID, KEY_PF_RESPONSE_TIME, supaClient } from "../core/utils";
 import { defaultFillableDecoration } from "../engine/decoration";
-import { FieldErrorMap, ValidationFunction } from "../engine/FieldErrorMap";
+import { FieldErrorMap, ValidationFunction } from "../engine/errors";
 import { Fillable, FormResponse } from "../engine/page";
 import { appendAnswerError, setActiveFillable, setActivePage } from "./creator";
 
@@ -89,7 +89,7 @@ export function validatePageResponse(pageId: string): ThunkAction<boolean, AppSt
         let { response } = getState().collection;
         let { pages } = getState().collection.form.form_content;
 
-        let { fields } = pages[pageId];
+        let { fields } = pages.find((p) => p.key === pageId);
         let pageResponse = response.pages.find((p) => p.pageId === pageId);
 
         let passed = true;

@@ -23,7 +23,8 @@ export function DropdownFieldRenderer(props: FieldRendererProps) {
             size="small"
             variant="outlined"
             placeholder={props.question.title}
-            onChange={(ev) => onSelect(ev.target.value)}>
+            onChange={(ev) => onSelect(ev.target.value)}
+            error={props.errors}>
             {
                 props.question.options.map((o) => {
                     return <MenuItem dense key={o.value} value={o.value}>{o.value}</MenuItem>

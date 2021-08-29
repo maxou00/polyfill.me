@@ -17,6 +17,7 @@ export function TimeFieldRenderer(props: FieldRendererProps) {
             value={props.response.answer}
             variant="outlined"
             placeholder={props.question.title}
-            onChange={onTimeChange}/>
+            onChange={onTimeChange}
+            error={props.errors}/>
     </Box>
 }

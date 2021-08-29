@@ -9,5 +9,8 @@ export function FieldWithMeta(props: FieldRendererProps) {
             <Typography variant="body2">{props.question.description}</Typography>
         </Box>
         <FieldRenderer {...props} />
+        {props.errors && <Box margin={.5}>
+            <Typography variant="body2" color="error">{props.errors}</Typography>
+        </Box>}
     </Box>
 }

@@ -30,6 +30,7 @@ export function TextFieldRenderer(props: FieldRendererProps) {
             value={props.response.answer}
             multiline={isMultiline}
             placeholder={props.question.title}
-            onChange={onChange}/>
+            onChange={onChange}
+            error={props.errors}/>
     </Box>
 }

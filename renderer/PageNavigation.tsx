@@ -20,13 +20,21 @@ const NavButton = withStyles({
 
 export function PageNavigation() {
     const navigation = usePageNavigation();
-
     const page = useCollectionActivePage();
-
     const validation = usePageValidation(page.key);
     const formValidation = useFormErrors();
 
     const dispatch = useDispatch();
+
+    const navigateBack = useCallback(() => {
+        navigation.back();
+    }, [navigation]);
+
+    const navigateNext = useCallback(() => {
+        if(validation.isValid) {
+            navigation.next();
+        }
+    }, [navigation, validation]);
 
     const onSubmitResponse = useCallback( async () => {
         let invalidIndex = formValidation.validate();
@@ -52,7 +60,7 @@ export function PageNavigation() {
             variant="text"
             size="small"
             disabled={!navigation.hasBefore}
-            onClick={navigation.back}
+            onClick={navigateBack}
             startIcon={<MdArrowBack size={18} />}>
             Précédent
         </NavButton>
@@ -67,8 +75,8 @@ export function PageNavigation() {
             color="primary" 
             variant="text"
             size="small"
-            disabled={ !validation.isValid || !navigation.hasNext}
-            onClick={navigation.next}
+            disabled={!validation.isValid || !navigation.hasNext}
+            onClick={navigateNext}
             endIcon={<MdArrowForward size={18} />}>
             Suivant 
         </NavButton>

@@ -33,6 +33,47 @@ export const usePageResponse = (id: string) => {
     return useSelector((state: AppState) => state.collection.response?.pages.find((p) => p.pageId === id));
 }
 
+export const useGlobalState = () => {
+    return useSelector((state: AppState) => state.global);
+}
+
+export const usePageValidation = (pageId: string) => {
+    const dispatch = useDispatch();
+    return useSelector((state: AppState) => {
+        return {
+            errors: state.collection?.errors[pageId] || [],
+            isValid: (state.collection?.errors[pageId] || []).length === 0,
+            validate(){
+                return dispatch(validatePageResponse(pageId)) as unknown as boolean;
+            }
+        }
+    });
+}
+
+export const useFormErrors = () => {
+    const dispatch = useDispatch();
+    return useSelector((state: AppState) => {
+        let isFormValid = true;
+
+        let keys = Object.keys(state.collection.errors);
+        for (const key in state.collection.errors) {
+            let pageErrors = state.collection.errors[key];
+            if(pageErrors.length > 0) {
+                isFormValid = false;
+                break;
+            }
+        }
+
+        return {
+            errors: state.collection?.errors,
+            isValid: isFormValid,
+            validate(){
+                return dispatch(validateFormResponse()) as unknown as string;
+            }
+        }
+    });
+}
+
 export const usePageNavigation = () => {
     const dispatch = useDispatch();
     const activeForm = useCollectionForm();
@@ -69,45 +110,4 @@ export const usePageNavigation = () => {
             dispatch(setActivePage(id));
         }
     }
-}
-
-export const useGlobalState = () => {
-    return useSelector((state: AppState) => state.global);
-}
-
-export const useFormErrors = () => {
-    const dispatch = useDispatch();
-    return useSelector((state: AppState) => {
-        let isFormValid = true;
-
-        let keys = Object.keys(state.collection.errors);
-        for (const key in state.collection.errors) {
-            let pageErrors = state.collection.errors[key];
-            if(pageErrors.length > 0) {
-                isFormValid = false;
-                break;
-            }
-        }
-
-        return {
-            errors: state.collection?.errors,
-            isValid: isFormValid,
-            validate(){
-                return dispatch(validateFormResponse()) as unknown as string;
-            }
-        }
-    });
-}
-
-export const usePageValidation = (pageId: string) => {
-    const dispatch = useDispatch();
-    return useSelector((state: AppState) => {
-        return {
-            errors: state.collection?.errors[pageId] || [],
-            isValid: (state.collection?.errors[pageId] || []).length === 0,
-            validate(){
-                return dispatch(validatePageResponse(pageId)) as unknown as boolean;
-            }
-        }
-    });
 }

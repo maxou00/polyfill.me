@@ -17,6 +17,7 @@ export function NumberFieldRenderer(props: FieldRendererProps) {
             value={props.response.answer}
             onChange={onChange}
             variant="outlined"
-            placeholder={props.question.title} />
+            placeholder={props.question.title}
+            error={props.errors}/>
     </Box>
 }
