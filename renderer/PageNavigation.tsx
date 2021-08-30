@@ -11,6 +11,7 @@ import { isEligibleForNewResponse } from "../core/utils";
 import { FormResponse } from "../engine/page";
 import { sendResponse } from "../state/middlewares";
 import { useCollectionActivePage, useCollectionForm, useFormErrors, usePageNavigation, usePageValidation } from "../state/selectors"
+import { useRenderingMode } from "./FormRenderer";
 
 const NavButton = withStyles({
     root: {
@@ -29,7 +30,7 @@ export function PageNavigation() {
     const page = useCollectionActivePage();
     const validation = usePageValidation(page.key);
     const formValidation = useFormErrors();
-
+    const {mode} = useRenderingMode();
     const [busy, setBusy] = useState(false);
     const [submitted, setSubmitted] = useState(false);
 
@@ -56,7 +57,9 @@ export function PageNavigation() {
         }
 
         setBusy(true);
-        (dispatch(sendResponse()) as unknown as Promise<FormResponse>)
+
+        if(mode === "live") {
+            (dispatch(sendResponse()) as unknown as Promise<FormResponse>)
             .then((done) => {
                 if (done) {
                     setSubmitted(true);
@@ -69,7 +72,8 @@ export function PageNavigation() {
             .finally(() => {
                 setBusy(false);
             })
-    }, [dispatch, navigation, page, formValidation]);
+        }
+    }, [dispatch, navigation, page, formValidation, mode]);
 
     const onTerminate = useCallback(() => {
         setSubmitted(false);

@@ -66,7 +66,6 @@ export function sendResponse() {
                         toast.success("Files uploaded. Submitting Response...");
                     })
             }
-
             
             return supaClient
                 .from<FormResponse>("form_response")

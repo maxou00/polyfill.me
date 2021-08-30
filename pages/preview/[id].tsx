@@ -27,7 +27,7 @@ export default function Preview(props: {form?: DataForm, id: string}) {
         return <></>
     }
     return <div>
-        <FormRenderer/>
+        <FormRenderer preview={true}/>
     </div>
 }
 
@@ -46,7 +46,7 @@ export const getServerSideProps: GetServerSideProps =  async(context) => {
             }
             return {
                 props: {
-                    form: value.body
+                    form: value.body,
                 }
             }
         })
