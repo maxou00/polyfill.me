@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import { AnyAction } from "redux";
 import { ThunkAction, ThunkDispatch } from "redux-thunk";
 import { AppState } from ".";
-import { extractFileAnswers, KEY_PF_RESPONSE_ID, KEY_PF_RESPONSE_TIME, supaClient } from "../core/utils";
+import { extractFileAnswers, KEY_PF_RESPONSE_ID, KEY_PF_RESPONSE_TIME, KEY_PF_RESPONSE_UNLOCK, supaClient } from "../core/utils";
 import { defaultFillableDecoration } from "../engine/decoration";
 import { FieldErrorMap, ValidationFunction } from "../engine/errors";
 import { Fillable, FormResponse } from "../engine/page";
@@ -33,7 +33,7 @@ export function sendResponse() {
         if (response) {
             let fileAnswers = extractFileAnswers(response);
             if (fileAnswers.length > 0) {
-                toast("Uploading files");
+                toast.info("Uploading files");
                 await Promise.all(
                     fileAnswers.map((index) => {
                         let files: Array<File> = response.pages[index.pageIndex].responses[index.answerIndex].answer;
@@ -47,7 +47,6 @@ export function sendResponse() {
                                     .from("general")
                                     .upload(newName, file)
                                     .then((done) => {
-                                        alert(JSON.stringify(done))
                                         urls.push({
                                             type: "file",
                                             bucket: "general",
@@ -64,18 +63,24 @@ export function sendResponse() {
                     })
                 )
                     .then((done) => {
-                        toast("Files uploaded. Submitting Response...");
+                        toast.success("Files uploaded. Submitting Response...");
                     })
             }
 
+            
             return supaClient
                 .from<FormResponse>("form_response")
                 .insert(response)
                 .single()
                 .then((result) => {
                     if (result.data) {
-                        localStorage.setItem(KEY_PF_RESPONSE_ID, result.data.id);
-                        localStorage.setItem(KEY_PF_RESPONSE_TIME, `${Date.now()}`);
+                        let lock = {
+                            [KEY_PF_RESPONSE_ID]: result.data.id,
+                            [KEY_PF_RESPONSE_TIME]: Date.now(),
+                            [KEY_PF_RESPONSE_UNLOCK]: Date.now() + (1000 * 60 * 10) /// 10 minutes before sending a new response
+                        }
+
+                        localStorage.setItem(form.id, JSON.stringify(lock));
                         return result.data;
                     }
                 })
@@ -135,6 +140,6 @@ export function validateFormResponse(): ThunkAction<string|undefined, AppState, 
                 return pages[key].key;
             }    
         }
-        return undefined;
+        return "";
     }
 }
