@@ -46,6 +46,13 @@ function SignupScreen() {
             password: data.password
         })
             .then((result) => {
+                return supaClient.auth.update({
+                    data: {
+                        name: data.fullname
+                    }
+                })
+            })
+            .then((result) => {
                 setLoading(false);
                 if (result.error) {
                     toast.error(result.error.message);

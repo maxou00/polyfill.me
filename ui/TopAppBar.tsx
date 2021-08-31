@@ -1,6 +1,6 @@
 import styles from '../styles/TopAppBar.module.scss'
 import { MdAdd, MdKeyboardArrowDown, MdPerson, MdSave, MdSettings, MdVisibility } from 'react-icons/md';
-import { Avatar, Box, Button, IconButton, MenuItem, Popover, Tooltip, useTheme } from '@material-ui/core';
+import { Avatar, Box, Button, IconButton, List, ListItem, ListItemText, MenuItem, Popover, Tooltip, Typography, useTheme } from '@material-ui/core';
 import { grey } from '@material-ui/core/colors';
 import { useState } from 'react';
 import { useEffect } from 'react';
@@ -23,6 +23,7 @@ export default function TopAppBar() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [updating, setUpdating] = useState(false);
   const [formPickerAnchor, setFormPickerAnchor] = useState<HTMLButtonElement>();
+  const [profileAnchor, setProfileAnchor] = useState<HTMLDivElement>();
 
   const { forms } = useGlobalState();
   const fillable = useFillable();
@@ -196,7 +197,7 @@ export default function TopAppBar() {
       </div>
       <Box>
         {
-          session && <Avatar style={{ background: 'white' }}>
+          session && <Avatar style={{ background: 'white' }} onClick={(ev) => setProfileAnchor(ev.currentTarget)}>
             <MdPerson size={24} fill={grey[300]} />
           </Avatar>
         }
@@ -214,6 +215,18 @@ export default function TopAppBar() {
         fullScreen
         open={settingsOpen}
         onClose={() => setSettingsOpen(false)} />
+      {session && <Popover elevation={2} anchorEl={profileAnchor} open={Boolean(profileAnchor)} onClose={() => setProfileAnchor(undefined)} anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
+        <Box minWidth="320px" padding={2}>
+          <Box marginBottom={2}>
+            <Typography variant="body1">{session.user.email}</Typography>
+          </Box>
+          <List dense disablePadding>
+            <ListItem button onClick={() => router.push("/dashboard")}>
+              <ListItemText primary="Tableau de bord" />
+            </ListItem>
+          </List>
+        </Box>
+      </Popover>}
     </header>
   )
 }

@@ -3,10 +3,10 @@ import { useEffect } from 'react';
 import { Provider } from 'react-redux'
 import { ToastContainer } from 'react-toastify';
 import { useStore } from '../state/store';
-import '../styles/globals.scss';
+import '../styles/uicons-regular-rounded.css';
 import "react-toastify/scss/main.scss";
+import '../styles/globals.scss';
 import { theme } from '../builder/theme';
-import { Initializer } from '../ui/Initializer';
 
 function MyApp({ Component, pageProps }) {
   const store = useStore((pageProps as any).initialReduxState);

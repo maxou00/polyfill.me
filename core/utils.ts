@@ -60,3 +60,11 @@ export function isEligibleForNewResponse(formId: string) {
     }
     return true;
 }
+
+
+export function padZero(value: number) {
+    if(value >= 0 && value < 10) {
+        return "0"+value;
+    }
+    return ""+value;
+}

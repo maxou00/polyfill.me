@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import { AnyAction } from "redux";
 import { ThunkAction, ThunkDispatch } from "redux-thunk";
 import { AppState } from ".";
+import { BucketFile } from "../core";
 import { extractFileAnswers, KEY_PF_RESPONSE_ID, KEY_PF_RESPONSE_TIME, KEY_PF_RESPONSE_UNLOCK, supaClient } from "../core/utils";
 import { defaultFillableDecoration } from "../engine/decoration";
 import { FieldErrorMap, ValidationFunction } from "../engine/errors";
@@ -17,14 +18,6 @@ export function setActiveForm(form: Fillable) {
         dispatch(setActiveFillable(form));
         dispatch(setActivePage(form.pages[0].key));
     }
-}
-
-interface BucketFile {
-    type: 'file',
-    bucket: string,
-    name: string,
-    format: string,
-    size: number
 }
 
 export function sendResponse() {
