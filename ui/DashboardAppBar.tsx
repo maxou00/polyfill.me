@@ -65,7 +65,7 @@ export function DashboardAppBar(props: Props) {
                     <List disablePadding>
                         {
                             forms.map((f) => {
-                                return <ListItem key={f.id} button onClick={() => props.onFormSelected(f)}>
+                                return <ListItem key={f.id} button onClick={() => { setFormsMenuAnchor(undefined); props.onFormSelected(f) }}>
                                     <ListItemText
                                         primary={f.form_content.title}/>
                                 </ListItem>

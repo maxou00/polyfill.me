@@ -1,4 +1,6 @@
 import { Box, Button, ButtonGroup, Container, Dialog, DialogContent, Grid, Paper, Toolbar, Typography } from "@material-ui/core";
+import { useRouter } from "next/dist/client/router";
+import { useCallback } from "react";
 import { useContext } from "react";
 import { createContext } from "react";
 import { useState } from "react";
@@ -21,6 +23,12 @@ export function FormReport(props: { form: DataForm }) {
     const responses = useFetchResponses(props.form.id);
     const [isFullScreen, setFullScreen] = useState(false);
 
+    const router = useRouter();
+
+    const onPreview = useCallback(() => {
+        window.open(`${router.basePath}/preview/${props.form.id}`, "_blank");
+    }, [props, router]);
+
     return <FormReportContext.Provider value={{
         ...responses,
         form: props.form
@@ -35,7 +43,7 @@ export function FormReport(props: { form: DataForm }) {
                                 <Typography variant="h5" className={styles.title}>{props.form.form_content.title}</Typography>
                             </Box>
                             <Box>
-                                <NoTransformButton variant="outlined" color='primary' size="small">Preview</NoTransformButton>
+                                <NoTransformButton onClick={onPreview} variant="outlined" color='primary' size="small" endIcon={<i className="fi-rr-link" style={{fontSize: '14px'}}></i>}>Preview</NoTransformButton>
                             </Box>
                         </div>
                         <Box>

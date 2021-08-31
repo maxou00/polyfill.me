@@ -1,4 +1,5 @@
 import { GetServerSideProps } from "next";
+import Head from "next/head";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { supaClient } from "../../core/utils";
@@ -27,6 +28,9 @@ export default function Preview(props: {form?: DataForm, id: string}) {
         return <></>
     }
     return <div>
+        <Head>
+            <title>{props.form.form_content.title}</title>
+        </Head>
         <FormRenderer preview={true}/>
     </div>
 }
