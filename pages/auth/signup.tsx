@@ -8,6 +8,10 @@ import styles from "../../styles/Signin.module.scss";
 import { PropagateLoader } from "react-spinners";
 import Link from "next/link";
 import { Initializer } from "../../ui/Initializer";
+import Head from "next/head";
+import { Logo } from "../../ui/Logo";
+import { NoTransformButton } from "../../ui/styled";
+import { FcGoogle } from "react-icons/fc";
 
 function SignupScreen() {
     const [loading, setLoading] = useState(false);
@@ -63,39 +67,68 @@ function SignupScreen() {
             })
     }, [router]);
 
+    const signinWithGoogle = useCallback(() => {
+        let authUrl = supaClient.auth.api.getUrlForProvider("google", {redirectTo: "http://localhost:5000/dashboard"});
+        window.location.replace(authUrl);
+    }, []);
+
     return <Initializer>
+        <Head>
+            <title>S&apos;inscrire</title>
+        </Head>
         <Box className={styles.page}>
-            <Box className={styles.formWrapper}>
-                <Box className={styles.header}>
-                    <Typography variant="h3">Polyfill</Typography>
-                    <Typography variant="body1">Créez des formulaires et effectuez vos collectes facilement.</Typography>
-                </Box>
-                <Grid container component="form" spacing={2} onSubmit={onSubmit}>
-                    <Grid item xs={12}>
-                        <TextField size="small" type="text" fullWidth label="Votre nom" variant="outlined" name="fullname" error={errors.fullName} />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField size="small" type="email" fullWidth label="Email" variant="outlined" name="email" error={errors.email} />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField size="small" type="password" fullWidth label="Mot de passe" variant="outlined" name="password" error={errors.password} />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField size="small" type="password" fullWidth label="Confirmez votre mot de passe" variant="outlined" name="confirmPassword" error={errors.confirmPassword} />
-                    </Grid>
-                    <Grid item xs={12}>
-                        {
-                            !loading && <Button type="submit" variant="contained" color="primary" size="small" fullWidth disableElevation>S&apos;inscrire</Button>
-                        }
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Button type="submit" variant="contained" color="primary" size="small" disableElevation>Connexion Google</Button>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Link href="/auth/signup">Se connecter</Link>
-                    </Grid>
-                </Grid>
+        <Box className={styles.header}>
+                <div className={styles.logoWrapper}>
+                    <Logo size={32} />
+                    <Typography variant="h5" data-role="title">Polyfill.me</Typography>
+                </div>
             </Box>
+            <main className={styles.body}>
+                <Box className={styles.formWrapper}>
+                    <Grid container component="form" spacing={2} onSubmit={onSubmit}>
+                        <Grid item xs={12}>
+                            <Box display="flex" flexDirection="row" alignItems="center" justifyContent="center">
+                                <Typography variant="h5" data-role="title">Inscription</Typography>
+                            </Box>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField size="small" type="text" fullWidth label="Votre nom" variant="outlined" name="fullname" error={errors.fullName} />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField size="small" type="email" fullWidth label="Email" variant="outlined" name="email" error={errors.email} />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField size="small" type="password" fullWidth label="Mot de passe" variant="outlined" name="password" error={errors.password} />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField size="small" type="password" fullWidth label="Confirmez votre mot de passe" variant="outlined" name="confirmPassword" error={errors.confirmPassword} />
+                        </Grid>
+                        {loading && <Grid item xs={12}>
+                            <Box padding={2} display="flex" flexDirection="row" alignItems="center" justifyContent="center">
+                                <PropagateLoader color="#999" size={12} />
+                            </Box>
+                        </Grid>}
+                        <Grid item xs={12}>
+                            <NoTransformButton disabled={loading} type="submit" variant="contained" color="primary" fullWidth disableElevation>Se connecter</NoTransformButton>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Box display="flex" flexDirection="row" alignItems="center" justifyContent="flex-end">
+                                <NoTransformButton onClick={signinWithGoogle} size="small" variant="outlined" color="primary" disableElevation startIcon={<FcGoogle />}>Se connecter avec Google</NoTransformButton>
+                            </Box>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Link href="/auth/signin" passHref>
+                                <a className={styles.link}>
+                                    <i className="fi-rr-user" data-role="icon"></i>
+                                    <span data-role="text">
+                                        Se connecter
+                                    </span>
+                                </a>
+                            </Link>
+                        </Grid>
+                    </Grid>
+                </Box>
+            </main>
         </Box>
     </Initializer>
 }

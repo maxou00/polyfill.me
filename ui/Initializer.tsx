@@ -1,4 +1,7 @@
 import { Session } from "@supabase/supabase-js";
+import { useRouter } from "next/dist/client/router";
+import { useContext } from "react";
+import { createContext } from "react";
 import { useState } from "react";
 import { PropsWithChildren, useEffect } from "react";
 import { useDispatch } from "react-redux";
@@ -8,23 +11,46 @@ import { DataForm } from "../engine/page";
 import { appendForm, setForms } from "../state/creator";
 import { setActiveForm } from "../state/middlewares";
 
-export function Initializer(props: PropsWithChildren<{}>) {
+const InitializerContext = createContext<Session>(undefined);
+
+export const useInit = () => {
+    return useContext(InitializerContext);
+}
+
+export function Initializer(props: PropsWithChildren<{redirectToSignin?: boolean}>) {
     const [session, setSession] = useState<Session>();
+    const [shouldExit, setShouldExit] = useState(false);
+    const [busy, setBusy] = useState(true);
+
     const dispatch = useDispatch();
+    const router = useRouter();
 
     useEffect(() => {
-        let user = supaClient.auth.user();
-        if (!user) {
-            return;
+        /*let query = router.query;
+        if (query.access_token) {
+            supaClient.auth.setAuth(query.access_token as string);
+        }*/
+
+        let activeSession = supaClient.auth.session();
+        if (!activeSession) {
+            if(props.redirectToSignin) {
+                router.replace("/auth/signin");
+            }
+            else {
+                setBusy(false);
+                return;
+            }
         }
+
+        setSession(activeSession);
+        setBusy(false);
         supaClient
             .from<DataForm>("forms")
             .select("id,form_content")
-            .eq("user_id", user.id)
+            .eq("user_id", activeSession.user.id)
             .order("updatedAt", { ascending: false })
             .then((values) => {
                 if (values.error) {
-                    toast.error(values.error.message);
                     return toast.error("Erreur de recupération de vos formulaires");
                 }
                 dispatch(setForms(values.body));
@@ -35,17 +61,24 @@ export function Initializer(props: PropsWithChildren<{}>) {
     }, []);
 
     useEffect(() => {
-        setSession(supaClient.auth.session());
         supaClient.auth.onAuthStateChange((_event, session) => {
             setSession(session);
             if (_event === "SIGNED_OUT") {
-                alert("signed out");
+                router.replace("/auth/signin");
+                toast.warn("signed out");
+                setSession(undefined);
             }
         })
-        let user = supaClient.auth.user();
+
+        if(!session) {
+            return;
+        }
+
+        let {user} = session;
         if (!user) {
             return;
         }
+
         supaClient
             .from<DataForm>("forms")
             .select("id,form_content")
@@ -53,7 +86,6 @@ export function Initializer(props: PropsWithChildren<{}>) {
             .order("updatedAt", { ascending: false })
             .then((values) => {
                 if (values.error) {
-                    toast.error(values.error.message);
                     return toast.error("Erreur de recupération de vos formulaires");
                 }
                 dispatch(setForms(values.body));
@@ -73,9 +105,9 @@ export function Initializer(props: PropsWithChildren<{}>) {
         return () => {
             supaClient.removeSubscription(subscription);
         }
-    }, [dispatch]);
+    }, [dispatch, session]);
 
-    return <>
-        {props.children}
-    </>
+    return <InitializerContext.Provider value={session}>
+        {!busy && props.children}
+    </InitializerContext.Provider>
 }

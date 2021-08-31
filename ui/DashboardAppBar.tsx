@@ -6,13 +6,14 @@ import { supaClient } from "../core/utils";
 import { useGlobalState } from "../state/selectors";
 import { useState } from "react";
 import { DataForm } from "../engine/page";
+import { useInit } from "./Initializer";
 
 interface Props {
     onFormSelected(form: DataForm): any;
 }
 
 export function DashboardAppBar(props: Props) {
-    const session = supaClient.auth.session();
+    const session = useInit();
     const { forms } = useGlobalState();
     const [formsMenuAnchor, setFormsMenuAnchor] = useState<HTMLElement>();
 
@@ -54,7 +55,7 @@ export function DashboardAppBar(props: Props) {
                     <i className="fi-rr-angle-small-down"></i>
                 </span>
             </div>
-            <Popover
+            {forms.length > 0 && <Popover
                 anchorEl={formsMenuAnchor}
                 elevation={2}
                 open={Boolean(formsMenuAnchor)}
@@ -73,7 +74,7 @@ export function DashboardAppBar(props: Props) {
                         }
                     </List>
                 </Box>
-            </Popover>
+            </Popover>}
             {
                 session && <Link href="/profile" passHref={true}>
                     <div className={styles.menuItem}>

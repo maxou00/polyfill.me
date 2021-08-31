@@ -9,7 +9,7 @@ export function ResponseTablePaper() {
     return <Box>
         <Toolbar variant="dense">
             <Box flexGrow={1}>
-                <Typography variant="h5">{padZero(responses.total)} Réponses</Typography>
+                <Typography variant="h5">{padZero(responses.total)} Entrées</Typography>
             </Box>
             <Box>
                 <ButtonGroup variant="outlined" color='default' size='small'>

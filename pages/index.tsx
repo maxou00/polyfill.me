@@ -51,7 +51,7 @@ function IndexScreen() {
                                 <span data-role="text">Accueil</span>
                             </div>
                         </Link>
-                        <Link href="/" passHref>
+                        <Link href="/auth/signin" passHref>
                             <div className={cln(styles.item, styles.btnLogin)}>
                                 <span data-role="text">Se connecter</span>
                             </div>

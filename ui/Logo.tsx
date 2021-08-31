@@ -1,6 +1,6 @@
 
 export function Logo(props: { size: number } = { size: 128 }) {
-    return <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width={props.size + "pt"} height={props.size + "pt"}>
+    return <svg data-role="logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width={props.size + "pt"} height={props.size + "pt"}>
         <defs>
             <clipPath id="_clipPath_oMy1J3ee9Eag1JYzac8bn3R2w4e9Lt6i">
                 <rect width="512" height="512" />

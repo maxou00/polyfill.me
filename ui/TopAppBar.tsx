@@ -169,7 +169,7 @@ export default function TopAppBar() {
             </IconButton>
           </Tooltip>
         </Box>
-        <Box paddingX={1}>
+        { forms.length > 0 && <Box paddingX={1}>
           <Button
             endIcon={<MdKeyboardArrowDown />}
             variant="outlined"
@@ -183,7 +183,8 @@ export default function TopAppBar() {
             onClose={() => setFormPickerAnchor(undefined)}
             elevation={1}
             anchorEl={formPickerAnchor}
-            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}>
+            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+            transformOrigin={{vertical: "top", horizontal: "center"}}>
             {
               forms.map((f) => {
                 return <MenuItem
@@ -193,7 +194,7 @@ export default function TopAppBar() {
               })
             }
           </Popover>
-        </Box>
+        </Box> }
       </div>
       <Box>
         {

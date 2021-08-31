@@ -10,7 +10,7 @@ import Head from "next/head";
 export default function Dashboard() {
     const [selectedForm, setSelectedForm] = useState<DataForm>();
 
-    return <Initializer>
+    return <Initializer redirectToSignin>
         <Head>
             <title>Dashboard</title>
         </Head>

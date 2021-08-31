@@ -1,11 +1,6 @@
 .page {
     width: 100%;
     min-height: 100vh;
-    --header-height: 64px;
-    --phex: 81,45,168;
-    --shex: 255,153,0;
-    --primary-tint: rgb(var(--phex));
-    --secondary-tint: rgb(var(--shex));
 }
 
 .headerWrapper {

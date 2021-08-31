@@ -53,7 +53,7 @@ export default function EditorScreen() {
   }, [])
 
   return (
-    <Initializer>
+    <Initializer redirectToSignin>
       <div className={styles.container}>
         <Head>
           <title>Polyfill.me</title>
