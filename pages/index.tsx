@@ -9,10 +9,10 @@ import cln from "classnames";
 import Link from "next/link";
 
 let cases = [
-    "Les soumissions de candidatures",
-    "Les sondages",
-    "Les études de marché",
-    "Les prises de contact",
+    "Les sondages.",
+    "Les soumissions de candidatures.",
+    "Les études de marché.",
+    "Les prises de contact.",
     "Collecter ce que vous voulez."
 ]
 
@@ -26,6 +26,8 @@ function IndexScreen() {
                 showCursor: true,
                 typeSpeed: 100,
                 backSpeed: 50,
+                backDelay: 3000,
+                cursorChar:'.',
                 strings: cases
             })
         }
@@ -38,30 +40,41 @@ function IndexScreen() {
             <link rel="icon" href="/favicon.ico" />
         </Head>
         <main>
-            <header className={styles.header}>
-                <div className={styles.logoWrapper}>
-                    <Logo size={28} />
-                    <Typography variant="h6" className={styles.title}>Polyfill.me</Typography>
-                </div>
-                <div className={styles.menu}>
-
-                    <span className={styles.item}>Accueil</span>
-                    <span className={cln(styles.item, styles.btnLogin)}>Se connecter</span>
-                </div>
-            </header>
-            <div className={styles.underHeader}>
-                <p className={styles.bigText}>
-                    Polyfill <br />est conçu pour <br /><span ref={caseRef} className={styles.useCases}></span>
-                </p>
-                <div className={styles.actions}>
-                    <Link href="/editor" passHref>
-                        <button className={styles.btnGetStarted}>
-                            <span className="text" data-role="text">
-                                Accéder à l&apos;éditeur
-                            </span>
-                            <i className="fi-rr-arrow-right" data-role="icon end"></i>
-                        </button>
-                    </Link>
+            <div className={styles.headerWrapper}>
+                <header className={styles.header}>
+                    <div className={styles.logoWrapper}>
+                        <Logo size={28} />
+                        <Typography variant="h6" className={styles.title}>Polyfill.me</Typography>
+                    </div>
+                    <div className={styles.menu}>
+                        <Link href="/" passHref>
+                            <div className={styles.item}>
+                                <span data-role="text">Accueil</span>
+                            </div>
+                        </Link>
+                        <Link href="/" passHref>
+                            <div className={cln(styles.item, styles.btnLogin)}>
+                                <span data-role="text">Se connecter</span>
+                            </div>
+                        </Link>
+                    </div>
+                </header>
+                <div className={styles.underHeader}>
+                    <p className={styles.bigTextWrapper}>
+                        <span className={styles.bigText}>Polyfill est pour</span>
+                        <span ref={caseRef} className={cln(styles.bigText, styles.useCases)}></span>
+                    </p>
+                    <div className={styles.actions}>
+                        <Link href="/editor" passHref>
+                            <button className={styles.btnGetStarted}>
+                                <span className="text" data-role="text">
+                                    Accéder à l&apos;éditeur
+                                </span>
+                                <i className="fi-rr-arrow-right" data-role="icon end"></i>
+                                <span data-role="glow"></span>
+                            </button>
+                        </Link>
+                    </div>
                 </div>
             </div>
         </main>

@@ -3,6 +3,11 @@
     min-height: 100vh;
     --header-height: 64px;
     --primary-tint: #512DA8;
+    --secondary-tint: #ff8000;
+}
+
+.headerWrapper {
+    background: center/cover fixed url("/headerbg.svg");
 }
 
 .header {
@@ -11,6 +16,7 @@
     align-items: center;
     justify-content: space-around;
     height: var(--header-height);
+    color: white;
 
     .logoWrapper {
         display: flex;
@@ -31,8 +37,22 @@
         justify-content: center;
 
         .item {
-
+            height: 100%;
+            font-size: 16px;
             padding: 8px 16px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            transition: all 250ms linear;
+
+            &:hover {
+                background: white;
+                border-radius: 4px;
+                color: var(--secondary-tint);
+            }
         }
 
     }
@@ -46,15 +66,33 @@
     justify-content: space-around;
 }
 
+.bigTextWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
 .bigText {
     font-size: 36px;
     text-align: center;
     font-weight: lighter;
+    color: white;
+    margin: 16px 0px;
 
-    .useCases {
+    &.useCases {
         font-weight: bolder;
-        color: var(--primary-tint);
+        color: white;
+        display: block;
+        height: 46px;
     }
+}
+
+.actions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 }
 
 .btnGetStarted {
