@@ -9,10 +9,9 @@ import cln from "classnames";
 import Link from "next/link";
 
 let cases = [
-    "Les sondages.",
-    "Les soumissions de candidatures.",
-    "Les études de marché.",
-    "Les prises de contact.",
+    "Lancer des sondages.",
+    "Collecter des candidatures.",
+    "Réaliser des études de marché.",
     "Collecter ce que vous voulez."
 ]
 
@@ -27,7 +26,7 @@ function IndexScreen() {
                 typeSpeed: 100,
                 backSpeed: 50,
                 backDelay: 3000,
-                cursorChar:'.',
+                cursorChar: '.',
                 strings: cases
             })
         }
@@ -67,11 +66,11 @@ function IndexScreen() {
                     <div className={styles.actions}>
                         <Link href="/editor" passHref>
                             <button className={styles.btnGetStarted}>
+                                <span data-role="glow"></span>
                                 <span className="text" data-role="text">
                                     Accéder à l&apos;éditeur
                                 </span>
                                 <i className="fi-rr-arrow-right" data-role="icon end"></i>
-                                <span data-role="glow"></span>
                             </button>
                         </Link>
                     </div>
