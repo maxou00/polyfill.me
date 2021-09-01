@@ -1,25 +1,28 @@
 import Head from 'next/head'
-import styles from '../styles/Home.module.scss'
+import styles from '../styles/Editor.module.scss'
 import cn from "classnames";
-import { MdAdd, MdClose } from 'react-icons/md';
-import { PageBuilder } from '../builder/PageBuilder';
-import { DraggableChoiceList } from '../builder/DraggableChoiceList';
-import { useEffect } from 'react';
+import { MdAdd, MdClose, MdKeyboardArrowDown } from 'react-icons/md';
+import { PageBuilder } from '../editor/PageBuilder';
+import { DraggableChoiceList } from '../editor/DraggableChoiceList';
+import React, { MouseEvent, useEffect } from 'react';
 import { useMemo } from 'react';
 import { initializeStore } from '../state/store';
 import { useEditionState, useFillable } from '../state/selectors';
 import { useDispatch } from 'react-redux';
-import { appendPage, deleteField, setActiveField, setActivePage } from '../state/creator';
+import { appendPage, deleteField, moveFieldAfter, moveFieldBefore, setActiveField, setActivePage } from '../state/creator';
 import { initialPage, Page } from '../engine/page';
 import { useCallback } from 'react';
 import names from "../engine/field_names.json";
 import { fieldCode } from '../engine/creators';
-import TopAppBar from '../ui/TopAppBar';
+import TopAppBar from '../editor/TopAppBar';
 import { useState } from 'react';
 import { Initializer } from '../ui/Initializer';
+import { findNodeAtY } from '../core/utils';
 
 export default function EditorScreen() {
   const [activeTab, setActiveTab] = useState("fields");
+  const [compositionPanelOpen, setCompositionPanelOpen] = useState(true);
+
   const fillable = useFillable();
   const edition = useEditionState();
   const dispatch = useDispatch();
@@ -48,6 +51,103 @@ export default function EditorScreen() {
     return dispatch(deleteField(pageId, fieldId));
   }, [dispatch]);
 
+  const onMouseLeaveDragZone = useCallback((ev: MouseEvent<HTMLElement>) => {
+    let dropIndicator = ev.currentTarget.querySelector("span[data-role = drop-indicator]") as HTMLElement;
+    if (dropIndicator) {
+      ev.currentTarget.removeChild(dropIndicator);
+    }
+  }, []);
+
+  const onDragFieldStarted = useCallback((ev: React.DragEvent<HTMLLIElement>, field: any) => {
+    ev.dataTransfer.setData("field", field.key);
+  }, []);
+
+  const onDragFieldOver = useCallback((ev: React.DragEvent<HTMLUListElement>) => {
+    ev.stopPropagation();
+    ev.preventDefault();
+
+    let eventYAxis = ev.clientY;
+    let target = ev.currentTarget;
+
+    let nodeAtPosition = findNodeAtY(target.children, eventYAxis);
+
+    let dropIndicator = target.querySelector("span[data-role = drop-indicator]") as HTMLElement;
+
+    if (!nodeAtPosition) {
+      return;
+    }
+
+    if (dropIndicator && nodeAtPosition === dropIndicator) {
+      return;
+    }
+
+    if (dropIndicator) {
+      target.removeChild(dropIndicator);
+    }
+
+    dropIndicator = document.createElement("span");
+    dropIndicator.setAttribute("data-role", "drop-indicator");
+    dropIndicator.innerHTML = `<i class="fi-rr-add" data-role="icon"></i> Déplacer ici`;
+
+    ///Where to position the indicator
+    let placeBefore = true;
+    let middle = nodeAtPosition.offsetTop + (nodeAtPosition.offsetHeight / 2);
+
+    if (eventYAxis > middle) {
+      placeBefore = false;
+    }
+    if (placeBefore) {
+      target.insertBefore(dropIndicator, nodeAtPosition);
+    }
+    else {
+      target.insertBefore(dropIndicator, nodeAtPosition.nextSibling);
+    }
+
+  }, []);
+
+  const onDragFieldLeave = useCallback((ev: React.DragEvent<HTMLUListElement>) => {
+    ev.stopPropagation();
+    ev.preventDefault();
+  }, []);
+
+  const onDragFieldExit = useCallback((ev: React.DragEvent<HTMLUListElement>) => {
+    ev.stopPropagation();
+    ev.preventDefault();
+    let { clientX, clientY } = ev;
+    let { offsetTop, offsetLeft, clientHeight, clientWidth } = ev.currentTarget;
+    if (
+      (clientX < offsetLeft || clientX > (offsetLeft + clientWidth))
+      || (clientY < offsetTop || clientY > (offsetTop + clientHeight))
+    ) {
+      /// not anymore inside the drop zone. remove drop indicator
+      let dropIndicator = ev.currentTarget.querySelector("span[data-role = drop-indicator]") as HTMLElement;
+      if (dropIndicator) {
+        ev.currentTarget.removeChild(dropIndicator);
+      }
+    }
+  }, []);
+
+  const onDropField = useCallback((ev: React.DragEvent<HTMLUListElement>) => {
+    let fieldId = ev.dataTransfer.getData("field");
+    let dropIndicator = ev.currentTarget.querySelector("span[data-role = drop-indicator]") as HTMLElement;
+    if (dropIndicator && fieldId) {
+      let before = dropIndicator.previousSibling as HTMLElement;
+      let next = dropIndicator.nextSibling as HTMLElement;
+
+      if (next) {
+        let nextId = next.getAttribute("data-field");
+        dispatch(moveFieldBefore(activePage.key,fieldId, nextId));
+      }
+      else if (before) {
+        let beforeId = before.getAttribute("data-field");
+        dispatch(moveFieldAfter(activePage.key, fieldId, beforeId));
+      }
+      /// when done, remove indicator
+      ev.currentTarget.removeChild(dropIndicator);
+    }
+
+  }, [dispatch, activePage]);
+
   useEffect(() => {
     moveToPage(fillable.pages[0].key);
   }, [])
@@ -56,8 +156,8 @@ export default function EditorScreen() {
     <Initializer redirectToSignin>
       <div className={styles.container}>
         <Head>
-          <title>Polyfill.me</title>
-          <meta name="description" content="Create forms" />
+          <title>Editeur de schémas</title>
+          <meta name="description" content="Editeur de schémas Polyfill" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <main className={styles.main}>
@@ -86,20 +186,32 @@ export default function EditorScreen() {
                 </ul>
               </div>
             </div>
-            <div className={cn(styles.structure, styles.structure_composition)}>
-              <header>
+            <div aria-expanded={compositionPanelOpen} className={cn(styles.structure, styles.structure_composition)}>
+              <header data-role="header">
                 <h4>Composition</h4>
                 <div className={styles.actions}>
-                  <button>
-                    <MdAdd size={18} />
+                  <button data-role="toggle" onClick={() => setCompositionPanelOpen(!compositionPanelOpen)}>
+                    <MdKeyboardArrowDown size={18} />
                   </button>
                 </div>
               </header>
-              <div className={styles.content_wrapper}>
-                {activePage && <ul className={"item_list " + styles.content}>
+              <div data-role="content" className={styles.content_wrapper}>
+                {activePage && <ul
+                  className={"item_list " + styles.content}
+                  onDrop={onDropField}
+                  onDragOver={onDragFieldOver}
+                  onDragLeave={onDragFieldLeave}
+                  onDragExit={onDragFieldExit}
+                  onMouseLeave={onMouseLeaveDragZone}>
                   {
                     activePage.fields.map((f) => {
-                      return <li key={f.key} className={styles.field_item} onClick={() => setHighlightedField(f.key)} data-active={f.key === edition.activeField}>
+                      return <li
+                        draggable
+                        onDragStart={(ev) => onDragFieldStarted(ev, f)}
+                        key={f.key} className={styles.field_item}
+                        onClick={() => setHighlightedField(f.key)}
+                        data-active={f.key === edition.activeField}
+                        data-field={f.key}>
                         <div className={styles.content}>
                           <span className={styles.title}>{f.title || "Sans titre"}</span>
                           <span className={styles.type}>{names[fieldCode(f)]}</span>

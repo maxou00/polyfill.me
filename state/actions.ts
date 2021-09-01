@@ -44,6 +44,24 @@ interface SetActivePage {
     pageId: string;
 }
 
+interface MoveFieldBefore {
+    type: "MOVE_FIELD_BEFORE",
+    payload: {
+        page: string;
+        field: string;
+        before: string;
+    };
+}
+
+interface MoveFieldAfter {
+    type: "MOVE_FIELD_AFTER",
+    payload: {
+        page: string;
+        field: string;
+        after: string;
+    }
+}
+
 export interface SetActiveField {
     type: "SET_ACTIVE_FIELD",
     fieldId: string;
@@ -61,7 +79,7 @@ export interface AppendForm {
 
 type GlobalAction = SetForms | AppendForm;
 
-type EditionAction = SetActiveFillable | SetActivePage | SetActiveField;
+type EditionAction = SetActiveFillable | SetActivePage | SetActiveField | MoveFieldBefore | MoveFieldAfter;
 
 type BuildingAction = UpdateFillable
                     | UpdateFillableDecoration

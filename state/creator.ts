@@ -68,6 +68,28 @@ export function setActiveField(fieldId: string): Action {
     }
 }
 
+export function moveFieldBefore(page: string, fieldId: string, before: string): Action {
+    return {
+        type: 'MOVE_FIELD_BEFORE',
+        payload: {
+            page,
+            field: fieldId,
+            before
+        }
+    }
+}
+
+export function moveFieldAfter(page: string, fieldId: string, after: string): Action {
+    return {
+        type: 'MOVE_FIELD_AFTER',
+        payload: {
+            page,
+            field: fieldId,
+            after
+        }
+    }
+}
+
 export function setCollectionForm(form: DataForm): Action {
     return {
         type: 'SET_COLLECTION_FORM',

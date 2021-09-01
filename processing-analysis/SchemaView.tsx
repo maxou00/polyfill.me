@@ -9,18 +9,18 @@ import { supaClient } from "../core/utils";
 import { DataForm, FormResponse } from "../engine/page";
 import styles from "../styles/FormReport.module.scss";
 import { NoTransformButton } from "../ui/styled";
-import { FormResponseTable } from "./FormResponseTable";
-import { useFetchResponses } from "./helper";
-import { ResponseTablePaper } from "./ResponseTablePaper";
+import { SchemaTable } from "./SchemaTable";
+import { useDataset } from "./helper";
+import { SchemaRowsPaper } from "./SchemaRowsPaper";
 
-const FormReportContext = createContext<ReturnType<typeof useFetchResponses> & { form: DataForm } | undefined>(undefined);
+const SchemaViewContext = createContext<ReturnType<typeof useDataset> & { form: DataForm } | undefined>(undefined);
 
-export function useFormReportContext() {
-    return useContext(FormReportContext);
+export function useSchemaView() {
+    return useContext(SchemaViewContext);
 }
 
-export function FormReport(props: { form: DataForm }) {
-    const responses = useFetchResponses(props.form.id);
+export function SchemaView(props: { form: DataForm }) {
+    const responses = useDataset(props.form.id);
     const [isFullScreen, setFullScreen] = useState(false);
 
     const router = useRouter();
@@ -29,7 +29,7 @@ export function FormReport(props: { form: DataForm }) {
         window.open(`${router.basePath}/preview/${props.form.id}`, "_blank");
     }, [props, router]);
 
-    return <FormReportContext.Provider value={{
+    return <SchemaViewContext.Provider value={{
         ...responses,
         form: props.form
     }}>
@@ -59,7 +59,7 @@ export function FormReport(props: { form: DataForm }) {
                             <i className="fi-rr-zoom-in" style={{ fontSize: '16px' }}></i>
                         </NoTransformButton>
                     </Box>
-                    <ResponseTablePaper />
+                    <SchemaRowsPaper />
                 </Paper>
             </Grid>
             <Dialog fullScreen open={isFullScreen}>
@@ -69,9 +69,9 @@ export function FormReport(props: { form: DataForm }) {
                     </NoTransformButton>
                 </Box>
                 <DialogContent>
-                    <ResponseTablePaper />
+                    <SchemaRowsPaper />
                 </DialogContent>
             </Dialog>
         </Grid>
-    </FormReportContext.Provider>
+    </SchemaViewContext.Provider>
 }

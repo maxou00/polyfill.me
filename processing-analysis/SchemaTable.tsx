@@ -3,10 +3,10 @@ import { useMemo } from "react";
 import { ContentField } from "../engine/fields";
 import { DataForm } from "../engine/page";
 import { CellRenderer } from "./cells";
-import { useFormReportContext } from "./FormReport";
+import { useSchemaView } from "./SchemaView";
 
-export function FormResponseTable() {
-    const responses = useFormReportContext();
+export function SchemaTable() {
+    const responses = useSchemaView();
 
     const flattenedFields = useMemo(() => {
         return responses.form.form_content.pages

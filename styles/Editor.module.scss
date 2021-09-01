@@ -5,6 +5,7 @@
   grid-template-rows: 48px auto;
   grid-template-columns: 250px auto 320px;
   overflow: hidden;
+  --transition: all 0.25s cubic-bezier(1, 0, 0, 1);
 }
 
 .header {
@@ -23,7 +24,6 @@
   .structure {
     width: 100%;
     padding: 4px;
-
     border-bottom: 1px solid #eee;
 
     header {
@@ -95,6 +95,50 @@
   }
 }
 
+.structure_composition {
+  button[data-role="toggle"] {
+    border-radius: 24px;
+    transform: rotate(90deg);
+    transition: var(--transition);
+  }
+
+  *[data-role="content"] {
+    overflow: hidden;
+    height: 0px;
+    opacity: 0;
+    transition: var(--transition);
+    
+    span[data-role = drop-indicator] {
+      background: transparent;
+      height: 32px;
+      width: 100%;
+      display: block;
+      border: 1px dashed #ddd;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+
+      i[data-role = icon] {
+        font-size: 18px;
+        margin-right: 8px;
+      }
+    }
+  }
+
+
+  &[aria-expanded="true"] {
+    button[data-role="toggle"] {
+      transform: rotate(0deg);
+    }
+
+    *[data-role="content"] {
+      height: auto;
+      opacity: 1;
+    }
+  }
+}
+
 .base_wrapper {
   background: #f7f7f7;
   display: flex;
@@ -160,13 +204,13 @@
     flex-grow: 1;
     border-right: 1px solid #eee;
     cursor: pointer;
-    transition: all 250ms linear;
+    transition: var(--transition);
 
     &:nth-of-type(odd) {
       border-left: none;
     }
 
-    &[data-active= true ] {
+    &[data-active="true"] {
       background: coral;
 
       * {
@@ -200,13 +244,18 @@
     color: #434343;
   }
 
-  &[data-active = true] {
+  &[data-active="true"] {
     background: #eee;
   }
 }
 
 .page_item {
   @extend .item;
+  margin: 0;
+  overflow: hidden;
+  width: 100%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   font-weight: normal;
 }
 
@@ -223,12 +272,16 @@
   justify-content: center;
 
   .content {
-    width: 100%;
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
     overflow: hidden;
+    pointer-events: none;
+    .title {
+      width: 100%;
+    }
   }
 
   .actions {
@@ -269,5 +322,15 @@
     .actions {
       display: block;
     }
+  }
+
+  &[ data-drag-placement = before ] {
+    border-radius: 0 !important;
+    border-top: 4px solid var(--secondary-tint);
+  }
+
+  &[ data-drag-placement = after ] {
+    border-radius: 0 !important;
+    border-bottom: 4px solid var(--secondary-tint);
   }
 }

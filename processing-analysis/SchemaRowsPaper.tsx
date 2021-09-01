@@ -1,11 +1,11 @@
 import { Box, ButtonGroup, Toolbar, Typography } from "@material-ui/core";
 import { padZero } from "../core/utils";
 import { NoTransformButton } from "../ui/styled";
-import { useFormReportContext } from "./FormReport";
-import { FormResponseTable } from "./FormResponseTable";
+import { useSchemaView } from "./SchemaView";
+import { SchemaTable } from "./SchemaTable";
 
-export function ResponseTablePaper() {
-    const responses = useFormReportContext();
+export function SchemaRowsPaper() {
+    const responses = useSchemaView();
     return <Box>
         <Toolbar variant="dense">
             <Box flexGrow={1}>
@@ -24,6 +24,6 @@ export function ResponseTablePaper() {
                 </ButtonGroup>
             </Box>
         </Toolbar>
-        <FormResponseTable />
+        <SchemaTable />
     </Box>
 }

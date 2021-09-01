@@ -35,19 +35,23 @@ export function Initializer(props: PropsWithChildren<{redirectToSignin?: boolean
         if (!activeSession) {
             if(props.redirectToSignin) {
                 router.replace("/auth/signin");
-            }
-            else {
-                setBusy(false);
                 return;
             }
         }
 
         setSession(activeSession);
         setBusy(false);
+    }, [props.redirectToSignin, router]);
+
+    useEffect(() => {
+        if(!session){
+            return;
+        }
+
         supaClient
             .from<DataForm>("forms")
             .select("id,form_content")
-            .eq("user_id", activeSession.user.id)
+            .eq("user_id", session.user.id)
             .order("updatedAt", { ascending: false })
             .then((values) => {
                 if (values.error) {
@@ -58,26 +62,22 @@ export function Initializer(props: PropsWithChildren<{redirectToSignin?: boolean
                     dispatch(setActiveForm(values.body[0].form_content));
                 }
             })
-    }, []);
+    }, [session, dispatch]);
 
     useEffect(() => {
-        supaClient.auth.onAuthStateChange((_event, session) => {
-            setSession(session);
-            if (_event === "SIGNED_OUT") {
-                router.replace("/auth/signin");
-                toast.warn("signed out");
-                setSession(undefined);
-            }
-        })
-
         if(!session) {
             return;
         }
 
-        let {user} = session;
-        if (!user) {
-            return;
-        }
+        supaClient.auth.onAuthStateChange((_event, session) => {
+            setSession(session);
+            if (_event === "SIGNED_OUT") {
+                setSession(undefined);
+                router.replace("/auth/signin");
+            }
+        })
+
+        let { user } = session;
 
         supaClient
             .from<DataForm>("forms")
@@ -105,7 +105,7 @@ export function Initializer(props: PropsWithChildren<{redirectToSignin?: boolean
         return () => {
             supaClient.removeSubscription(subscription);
         }
-    }, [dispatch, session]);
+    }, [dispatch, session, router]);
 
     return <InitializerContext.Provider value={session}>
         {!busy && props.children}

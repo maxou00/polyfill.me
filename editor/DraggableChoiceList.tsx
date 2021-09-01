@@ -1,5 +1,5 @@
 import { FieldCreators } from "../engine/creators";
-import styles from "../styles/Home.module.scss";
+import styles from "../styles/Editor.module.scss";
 import names from "../engine/field_names.json";
 
 export function DraggableChoiceList() {

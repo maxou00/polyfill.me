@@ -54,6 +54,35 @@ function fillableReducer(state: Fillable = initialState, action: Action): Fillab
             }
             return next;
         }
+        case "MOVE_FIELD_BEFORE": {
+            let next = {...state};
+            let pageIndex = next.pages.findIndex((p) => p.key === action.payload.page);
+            if(pageIndex > -1) {
+                let item = next.pages[pageIndex].fields.find((f) => f.key === action.payload.field);
+                next.pages[pageIndex].fields = next.pages[pageIndex].fields.filter((f) => f.key !== action.payload.field);
+                let beforeIndex = next.pages[pageIndex].fields.findIndex((f) => f.key === action.payload.before);
+                
+                if(beforeIndex > -1 && item) {
+                    next.pages[pageIndex].fields.splice(beforeIndex, 0, item);
+                }
+            }
+
+            return next;
+        }
+        case "MOVE_FIELD_AFTER": {
+            let next = {...state};
+            let pageIndex = next.pages.findIndex((p) => p.key === action.payload.page);
+            if(pageIndex > -1) {
+                let item = next.pages[pageIndex].fields.find((f) => f.key === action.payload.field);
+                next.pages[pageIndex].fields = next.pages[pageIndex].fields.filter((f) => f.key !== action.payload.field);
+                let afterIndex = next.pages[pageIndex].fields.findIndex((f) => f.key === action.payload.after);
+                
+                if(afterIndex > -1 && item) {
+                    next.pages[pageIndex].fields.splice(afterIndex+1, 0, item);
+                }
+            }
+            return next;
+        }
         default :
             return state;
     }

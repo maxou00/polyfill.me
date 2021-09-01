@@ -1,21 +1,22 @@
-import { Box, List, ListItem, ListItemText, Menu, MenuItem, Popover, Toolbar, Typography } from "@material-ui/core";
-import { Logo } from "./Logo";
+import { Box, List, ListItem, ListItemText, Popover, Typography } from "@material-ui/core";
+import { Logo } from "../ui/Logo";
 import styles from "../styles/DashboardAppbar.module.scss"
 import Link from "next/link";
-import { supaClient } from "../core/utils";
 import { useGlobalState } from "../state/selectors";
-import { useState } from "react";
-import { DataForm } from "../engine/page";
-import { useInit } from "./Initializer";
+import { useCallback, useState } from "react";
+import { useInit } from "../ui/Initializer";
+import { useRouter } from "next/dist/client/router";
 
-interface Props {
-    onFormSelected(form: DataForm): any;
-}
-
-export function DashboardAppBar(props: Props) {
+export function DashboardAppBar() {
     const session = useInit();
     const { forms } = useGlobalState();
     const [formsMenuAnchor, setFormsMenuAnchor] = useState<HTMLElement>();
+    const router = useRouter();
+
+    const onFormSelected = useCallback((formId: string) => {
+        setFormsMenuAnchor(undefined);
+        router.replace("/datasets/"+formId);
+    }, [router]);
 
     return <div data-role="appbar" className={styles.bar}>
         <div className={styles.logoWrapper}>
@@ -49,7 +50,7 @@ export function DashboardAppBar(props: Props) {
                     <i className="fi-rr-form"></i>
                 </span>
                 <span className={styles.title}>
-                    Mes Formulaires
+                    Schémas
                 </span>
                 <span className={styles.icon}>
                     <i className="fi-rr-angle-small-down"></i>
@@ -66,7 +67,7 @@ export function DashboardAppBar(props: Props) {
                     <List disablePadding>
                         {
                             forms.map((f) => {
-                                return <ListItem key={f.id} button onClick={() => { setFormsMenuAnchor(undefined); props.onFormSelected(f) }}>
+                                return <ListItem key={f.id} button onClick={() => onFormSelected(f.id)}>
                                     <ListItemText
                                         primary={f.form_content.title}/>
                                 </ListItem>
@@ -76,7 +77,7 @@ export function DashboardAppBar(props: Props) {
                 </Box>
             </Popover>}
             {
-                session && <Link href="/profile" passHref={true}>
+                session && <Link href="/settings" passHref={true}>
                     <div className={styles.menuItem}>
                         <span className={styles.icon}>
                             <i className="fi-rr-user"></i>

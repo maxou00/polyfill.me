@@ -8,14 +8,15 @@ import { supaClient } from '../core/utils';
 import Supabase from "@supabase/supabase-js";
 import { useCallback } from 'react';
 import { useRouter } from 'next/dist/client/router';
-import { CreateFormDialog } from '../builder/form/CreateFormDialog';
+import { CreateFormDialog } from './form/CreateFormDialog';
 import { DataForm } from '../engine/page';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { useFillable, useGlobalState } from '../state/selectors';
 import { ClockLoader } from 'react-spinners';
 import { setActiveForm } from '../state/middlewares';
-import { FillableSettingsEditor } from '../builder/settings/FillableSettingsEditor';
+import { FillableSettingsEditor } from './settings/FillableSettingsEditor';
+import { Logo } from '../ui/Logo';
 
 export default function TopAppBar() {
   const [session, setSession] = useState<Supabase.Session>();
@@ -114,7 +115,10 @@ export default function TopAppBar() {
 
   return (
     <header className={styles.header}>
-      <h2>Polyfill.me</h2>
+      <div className={styles.logoWrapper}>
+        <Logo size={24} />
+        <h2>Polyfill.me</h2>
+      </div>
       <div className={styles.actions}>
         <Box paddingX={1}>
           <Tooltip title={<span style={{ fontSize: '14px' }}>
@@ -169,7 +173,7 @@ export default function TopAppBar() {
             </IconButton>
           </Tooltip>
         </Box>
-        { forms.length > 0 && <Box paddingX={1}>
+        {forms.length > 0 && <Box paddingX={1}>
           <Button
             endIcon={<MdKeyboardArrowDown />}
             variant="outlined"
@@ -184,7 +188,7 @@ export default function TopAppBar() {
             elevation={1}
             anchorEl={formPickerAnchor}
             anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-            transformOrigin={{vertical: "top", horizontal: "center"}}>
+            transformOrigin={{ vertical: "top", horizontal: "center" }}>
             {
               forms.map((f) => {
                 return <MenuItem
@@ -194,7 +198,7 @@ export default function TopAppBar() {
               })
             }
           </Popover>
-        </Box> }
+        </Box>}
       </div>
       <Box>
         {
