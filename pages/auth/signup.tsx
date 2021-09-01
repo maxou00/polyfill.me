@@ -68,7 +68,7 @@ function SignupScreen() {
     }, [router]);
 
     const signinWithGoogle = useCallback(() => {
-        let authUrl = supaClient.auth.api.getUrlForProvider("google", {redirectTo: (process.env.NODE_ENV || process.env.VERCEL_ENV) === "production" ? "https://polyfill-me.vercel.app/dashboard" : "http://localhost:5000/dashboard"});
+        let authUrl = supaClient.auth.api.getUrlForProvider("google", {redirectTo: process.env.NODE_ENV === "production" ? "https://polyfill-me.vercel.app/dashboard" : "http://localhost:5000/dashboard"});
         window.location.replace(authUrl);
     }, []);
 
