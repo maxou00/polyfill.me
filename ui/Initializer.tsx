@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 import { supaClient } from "../core/utils";
 import { DataForm } from "../engine/page";
 import { appendForm, setForms } from "../state/creator";
-import { setActiveForm } from "../state/middlewares";
+import { fetchForms, setActiveForm } from "../state/middlewares";
 
 const InitializerContext = createContext<Session>(undefined);
 
@@ -26,11 +26,6 @@ export function Initializer(props: PropsWithChildren<{redirectToSignin?: boolean
     const router = useRouter();
 
     useEffect(() => {
-        /*let query = router.query;
-        if (query.access_token) {
-            supaClient.auth.setAuth(query.access_token as string);
-        }*/
-
         let activeSession = supaClient.auth.session();
         if (!activeSession) {
             if(props.redirectToSignin) {
@@ -38,7 +33,6 @@ export function Initializer(props: PropsWithChildren<{redirectToSignin?: boolean
                 return;
             }
         }
-
         setSession(activeSession);
         setBusy(false);
     }, [props.redirectToSignin, router]);
@@ -47,21 +41,7 @@ export function Initializer(props: PropsWithChildren<{redirectToSignin?: boolean
         if(!session){
             return;
         }
-
-        supaClient
-            .from<DataForm>("forms")
-            .select("id,form_content")
-            .eq("user_id", session.user.id)
-            .order("updatedAt", { ascending: false })
-            .then((values) => {
-                if (values.error) {
-                    return toast.error("Erreur de recupération de vos formulaires");
-                }
-                dispatch(setForms(values.body));
-                if (values.body.length > 0) {
-                    dispatch(setActiveForm(values.body[0].form_content));
-                }
-            })
+        dispatch(fetchForms());
     }, [session, dispatch]);
 
     useEffect(() => {
@@ -76,24 +56,7 @@ export function Initializer(props: PropsWithChildren<{redirectToSignin?: boolean
                 router.replace("/auth/signin");
             }
         })
-
-        let { user } = session;
-
-        supaClient
-            .from<DataForm>("forms")
-            .select("id,form_content")
-            .eq("user_id", user.id)
-            .order("updatedAt", { ascending: false })
-            .then((values) => {
-                if (values.error) {
-                    return toast.error("Erreur de recupération de vos formulaires");
-                }
-                dispatch(setForms(values.body));
-                if (values.body.length > 0) {
-                    dispatch(setActiveForm(values.body[0].form_content));
-                }
-            })
-
+        
         let subscription = supaClient.from<DataForm>("forms").on("INSERT", (ev) => {
             dispatch(setActiveForm(ev.new.form_content));
             dispatch(appendForm(ev.new));

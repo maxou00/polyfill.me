@@ -82,3 +82,8 @@ export function findNodeAtY(collection: HTMLCollection, y: number) {
         }
     }
 }
+
+
+export function getBaseUrl() {
+    return process.env.NODE_ENV === "production" ? "https://polyfill-me.vercel.app" : "http://localhost:5000"
+}

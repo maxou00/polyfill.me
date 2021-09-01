@@ -7,8 +7,29 @@ import { BucketFile } from "../core";
 import { extractFileAnswers, KEY_PF_RESPONSE_ID, KEY_PF_RESPONSE_TIME, KEY_PF_RESPONSE_UNLOCK, supaClient } from "../core/utils";
 import { defaultFillableDecoration } from "../engine/decoration";
 import { FieldErrorMap, ValidationFunction } from "../engine/errors";
-import { Fillable, FormResponse } from "../engine/page";
-import { appendAnswerError, setActiveFillable, setActivePage } from "./creator";
+import { DataForm, Fillable, FormResponse } from "../engine/page";
+import { appendAnswerError, setActiveFillable, setActivePage, setForms } from "./creator";
+
+
+export function fetchForms(): ThunkAction<Promise<void>, AppState, {}, AnyAction> {
+    return async (dispatch, getState) => {
+        let user = supaClient.auth.user();
+        supaClient
+            .from<DataForm>("forms")
+            .select("id, form_content, createdAt,updatedAt, allowAnonymousFill, user_id")
+            .eq("user_id", user.id)
+            .order("updatedAt", { ascending: false })
+            .then((values) => {
+                if (values.error) {
+                    return toast.error("Erreur de recupération de vos formulaires");
+                }
+                dispatch(setForms(values.body));
+                if (values.body.length > 0) {
+                    dispatch(setActiveForm(values.body[0].form_content));
+                }
+            })
+    }
+}
 
 export function setActiveForm(form: Fillable) {
     return (dispatch: ThunkDispatch<AppState, {}, AnyAction>, getState: () => AppState) => {

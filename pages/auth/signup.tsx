@@ -3,7 +3,7 @@ import { useRouter } from "next/dist/client/router";
 import { ChangeEvent, HTMLFactory, useCallback } from "react";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { supaClient } from "../../core/utils";
+import { getBaseUrl, supaClient } from "../../core/utils";
 import styles from "../../styles/Signin.module.scss";
 import { PropagateLoader } from "react-spinners";
 import Link from "next/link";
@@ -68,7 +68,7 @@ function SignupScreen() {
     }, [router]);
 
     const signinWithGoogle = useCallback(() => {
-        let authUrl = supaClient.auth.api.getUrlForProvider("google", {redirectTo: process.env.NODE_ENV === "production" ? "https://polyfill-me.vercel.app/dashboard" : "http://localhost:5000/dashboard"});
+        let authUrl = supaClient.auth.api.getUrlForProvider("google", {redirectTo: getBaseUrl()+"/dashboard"});
         window.location.replace(authUrl);
     }, []);
 
