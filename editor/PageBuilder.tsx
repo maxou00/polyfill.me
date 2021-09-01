@@ -1,7 +1,6 @@
 import React from "react";
 import { useCallback } from "react";
 import { useState } from "react";
-import { MdDone, MdEdit } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { FieldCreators } from "../engine/creators";
 import { ContentField } from "../engine/fields";

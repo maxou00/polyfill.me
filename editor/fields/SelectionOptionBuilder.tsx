@@ -81,7 +81,7 @@ export function SelectionOptionBuilder(props: FieldEditorProps<SelectField<{}>>)
             }
         </List>
 
-        <Menu elevation={1} onClose={onCloseMenu} anchorEl={reference} anchorOrigin={{ horizontal: 'right', vertical: "center" }} open={Boolean(reference)}>
+        <Menu elevation={1} onClose={onCloseMenu} anchorEl={reference} anchorOrigin={{ horizontal: 'right', vertical: "center" }} transformOrigin={{vertical: 'top', horizontal: 'center'}} open={Boolean(reference)}>
             <MenuItem value="1" divider onClick={() => editOption(selectedOption)}>
                 <MdEdit size={16} fill={grey[500]} />
                 <span style={{ marginLeft: '4px', fontSize: '14px' }}>Modifier</span>

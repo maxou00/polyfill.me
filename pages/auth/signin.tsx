@@ -57,7 +57,7 @@ function SigninScreen() {
     }, [router]);
 
     const signinWithGoogle = useCallback(() => {
-        let authUrl = supaClient.auth.api.getUrlForProvider("google", {redirectTo: "http://localhost:5000/dashboard"});
+        let authUrl = supaClient.auth.api.getUrlForProvider("google", { redirectTo: (process.env.NODE_ENV || process.env.VERCEL_ENV) === "production" ? "https://polyfill-me.vercel.app/dashboard" : "http://localhost:5000/dashboard" });
         window.location.replace(authUrl);
     }, []);
 
@@ -97,7 +97,7 @@ function SigninScreen() {
                         </Grid>
                         <Grid item xs={12}>
                             <Box display="flex" flexDirection="row" alignItems="center" justifyContent="flex-end">
-                                <NoTransformButton onClick={signinWithGoogle} size="small" variant="outlined" color="primary" disableElevation startIcon={<FcGoogle/>}>Se connecter avec Google</NoTransformButton>
+                                <NoTransformButton onClick={signinWithGoogle} size="small" variant="outlined" color="primary" disableElevation startIcon={<FcGoogle />}>Se connecter avec Google</NoTransformButton>
                             </Box>
                         </Grid>
                         <Grid item xs={12}>

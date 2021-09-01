@@ -18,9 +18,11 @@ import TopAppBar from '../editor/TopAppBar';
 import { useState } from 'react';
 import { Initializer } from '../ui/Initializer';
 import { findNodeAtY } from '../core/utils';
+import { ExtendedFieldMetaEditor } from '../editor/FieldExtendedFieldMetaEditor';
+import { MenuItem, Popover } from '@material-ui/core';
 
 export default function EditorScreen() {
-  const [activeTab, setActiveTab] = useState("fields");
+  const [activeTab, setActiveTab] = useState("choices");
   const [compositionPanelOpen, setCompositionPanelOpen] = useState(true);
 
   const fillable = useFillable();
@@ -29,6 +31,7 @@ export default function EditorScreen() {
 
   const setHighlightedField = useCallback((id: string) => {
     dispatch(setActiveField(id));
+    setActiveTab("edition");
   }, [dispatch]);
 
   const moveToPage = useCallback((id: string) => {
@@ -226,6 +229,9 @@ export default function EditorScreen() {
                   }
                 </ul>}
               </div>
+              <Popover open={false}>
+                <MenuItem>Dupliquer</MenuItem>
+              </Popover>
             </div>
           </section>
           <section className={styles.base_wrapper}>
@@ -239,27 +245,20 @@ export default function EditorScreen() {
           </section>
           <section className={styles.details_wrapper}>
             <div className={styles.tabs_details}>
-              <div className={styles.tab} data-active={activeTab === "fields"} onClick={() => setActiveTab("fields")}>
+              <div className={styles.tab} data-active={activeTab === "choices"} onClick={() => setActiveTab("choices")}>
                 <h5>Champs</h5>
               </div>
               <div className={styles.tab} data-active={activeTab === "edition"} onClick={() => setActiveTab("edition")}>
                 <h5>Edition</h5>
               </div>
-              <div className={styles.tab} data-active={activeTab === "style"} onClick={() => setActiveTab("style")}>
-                <h5>Style</h5>
-              </div>
             </div>
             <div className={styles.tab_content}>
               {
                 activeTab === "edition" &&
-                <DraggableChoiceList />
+                <ExtendedFieldMetaEditor/>
               }
               {
-                activeTab === "fields" &&
-                <DraggableChoiceList />
-              }
-              {
-                activeTab === "style" &&
+                activeTab === "choices" &&
                 <DraggableChoiceList />
               }
             </div>
