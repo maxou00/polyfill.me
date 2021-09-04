@@ -23,7 +23,7 @@ export interface DataForm {
     id: string;
     form_content: Fillable;
     user_id: string;
-    allowAnonymousFill?: boolean;
+    allow_anonymous?: boolean;
     createdAt?: Date;
     updatedAt?: Date;
 }

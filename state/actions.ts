@@ -62,6 +62,24 @@ interface MoveFieldAfter {
     }
 }
 
+interface AppendFieldBefore {
+    type: "APPEND_FIELD_BEFORE",
+    payload: {
+        page: string;
+        field: ContentField;
+        before: string;
+    };
+}
+
+interface AppendFieldAfter {
+    type: "APPEND_FIELD_AFTER",
+    payload: {
+        page: string;
+        field: ContentField;
+        before: string;
+    };
+}
+
 export interface SetActiveField {
     type: "SET_ACTIVE_FIELD",
     fieldId: string;
@@ -79,7 +97,7 @@ export interface AppendForm {
 
 type GlobalAction = SetForms | AppendForm;
 
-type EditionAction = SetActiveFillable | SetActivePage | SetActiveField | MoveFieldBefore | MoveFieldAfter;
+type EditionAction = SetActiveFillable | SetActivePage | SetActiveField | MoveFieldBefore | MoveFieldAfter | AppendFieldBefore | AppendFieldAfter;
 
 type BuildingAction = UpdateFillable
                     | UpdateFillableDecoration
@@ -109,6 +127,10 @@ interface AppendAnswerError {
     error: any;
 }
 
-export type CollectionAction = SetCollectionForm | AppendAnswer | SetActivePage | AppendAnswerError;
+interface ResetResponse {
+    type: 'RESET_RESPONSE'
+}
+
+export type CollectionAction = SetCollectionForm | AppendAnswer | SetActivePage | AppendAnswerError | ResetResponse;
 
 export type Action = GlobalAction | BuildingAction | CollectionAction;

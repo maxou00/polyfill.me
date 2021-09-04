@@ -6,7 +6,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: 4px 16px;
+  padding: 2px 16px;
   border-bottom: 1px solid #ddd;
 
   .actions {
@@ -23,7 +23,7 @@
   align-items: center;
   justify-content: center;
 
-  svg[ data-role = logo ] {
+  svg[data-role="logo"] {
     margin-right: 8px;
   }
 }

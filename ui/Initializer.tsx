@@ -5,10 +5,9 @@ import { createContext } from "react";
 import { useState } from "react";
 import { PropsWithChildren, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { toast } from "react-toastify";
 import { supaClient } from "../core/utils";
 import { DataForm } from "../engine/page";
-import { appendForm, setForms } from "../state/creator";
+import { appendForm } from "../state/creator";
 import { fetchForms, setActiveForm } from "../state/middlewares";
 
 const InitializerContext = createContext<Session>(undefined);
@@ -17,7 +16,7 @@ export const useInit = () => {
     return useContext(InitializerContext);
 }
 
-export function Initializer(props: PropsWithChildren<{redirectToSignin?: boolean}>) {
+export function Initializer(props: PropsWithChildren<{ redirectToSignin?: boolean }>) {
     const [session, setSession] = useState<Session>();
     const [shouldExit, setShouldExit] = useState(false);
     const [busy, setBusy] = useState(true);
@@ -28,47 +27,45 @@ export function Initializer(props: PropsWithChildren<{redirectToSignin?: boolean
     useEffect(() => {
         let activeSession = supaClient.auth.session();
         if (!activeSession) {
-            if(props.redirectToSignin) {
+            if (props.redirectToSignin) {
                 router.replace("/auth/signin");
                 return;
             }
         }
         setSession(activeSession);
         setBusy(false);
-    }, [props.redirectToSignin, router]);
+        if (activeSession) {
+            dispatch(fetchForms());
+            supaClient.auth.onAuthStateChange((_event, s) => {
+                setSession(s);
+                if (_event === "SIGNED_OUT") {
+                    setSession(undefined);
+                    router.replace("/auth/signin");
+                }
+            })
 
-    useEffect(() => {
-        if(!session){
-            return;
-        }
-        dispatch(fetchForms());
-    }, [session, dispatch]);
+            const subscription = supaClient
+                .from<DataForm>("forms")
+                .on("INSERT", (ev) => {
+                    alert("New insert");
+                    dispatch(setActiveForm(ev.new.form_content));
+                    dispatch(appendForm(ev.new));
+                })
+                .on("UPDATE", (ev) => {
+                    alert("new update");
+                    dispatch(appendForm(ev.new));
+                })
+                .on("DELETE", (ev) => {
+                    alert("new delete");
+                    dispatch(appendForm(ev.new));
+                })
+                .subscribe();
 
-    useEffect(() => {
-        if(!session) {
-            return;
-        }
-
-        supaClient.auth.onAuthStateChange((_event, session) => {
-            setSession(session);
-            if (_event === "SIGNED_OUT") {
-                setSession(undefined);
-                router.replace("/auth/signin");
+            return () => {
+                supaClient.removeSubscription(subscription);
             }
-        })
-        
-        let subscription = supaClient.from<DataForm>("forms").on("INSERT", (ev) => {
-            dispatch(setActiveForm(ev.new.form_content));
-            dispatch(appendForm(ev.new));
-        })
-            .on("UPDATE", (ev) => {
-                dispatch(appendForm(ev.new));
-            }).subscribe();
-
-        return () => {
-            supaClient.removeSubscription(subscription);
         }
-    }, [dispatch, session, router]);
+    }, []);
 
     return <InitializerContext.Provider value={session}>
         {!busy && props.children}

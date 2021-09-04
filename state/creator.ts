@@ -90,6 +90,28 @@ export function moveFieldAfter(page: string, fieldId: string, after: string): Ac
     }
 }
 
+export function appendFieldBefore(page: string, field: ContentField, before: string): Action {
+    return {
+        type: 'APPEND_FIELD_BEFORE',
+        payload: {
+            page,
+            field,
+            before
+        }
+    }
+}
+
+export function appendFieldAfter(page: string, field: ContentField, before: string): Action {
+    return {
+        type: 'APPEND_FIELD_AFTER',
+        payload: {
+            page,
+            field,
+            before
+        }
+    }
+}
+
 export function setCollectionForm(form: DataForm): Action {
     return {
         type: 'SET_COLLECTION_FORM',
@@ -110,6 +132,12 @@ export function appendAnswerError(pageId: string, questionId: string, error: any
         pageId,
         questionId,
         error
+    }
+}
+
+export function resetResponse(): Action {
+    return {
+        type: 'RESET_RESPONSE'
     }
 }
 

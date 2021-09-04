@@ -16,7 +16,7 @@ export function fetchForms(): ThunkAction<Promise<void>, AppState, {}, AnyAction
         let user = supaClient.auth.user();
         supaClient
             .from<DataForm>("forms")
-            .select("id, form_content, createdAt,updatedAt, allowAnonymousFill, user_id")
+            .select("*")
             .eq("user_id", user.id)
             .order("updatedAt", { ascending: false })
             .then((values) => {

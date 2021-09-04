@@ -3,11 +3,13 @@ import { nanoid } from "nanoid";
 import { useState } from "react";
 import { useCallback } from "react";
 import { MdClose } from "react-icons/md";
+import { useDispatch } from "react-redux";
 import { PropagateLoader } from "react-spinners";
 import { toast } from "react-toastify";
 import { supaClient } from "../../core/utils";
 import { defaultFillableDecoration } from "../../engine/decoration";
 import { DataForm, Fillable, initialPage } from "../../engine/page";
+import { appendForm } from "../../state/creator";
 
 interface Props extends DialogProps {
     onFormCreated(): any;
@@ -19,6 +21,7 @@ export function CreateFormDialog(props: Props) {
     const [lang, setLang] = useState("fr");
 
     const [loading, setLoading] = useState(false);
+    const dispatch = useDispatch();
 
     const onReset = useCallback(() => {
         setTitle("");
@@ -56,9 +59,10 @@ export function CreateFormDialog(props: Props) {
                 if (value.body) {
                     toast.success("Nouveau formulaire créé. Editez-le maintenant !");
                     props.onFormCreated();
+                    dispatch(appendForm(value.body));
                 }
             })
-    }, [title, subtitle, lang, props]);
+    }, [title, subtitle, lang, props, dispatch]);
 
     return <Dialog {...props}>
         <DialogTitle>

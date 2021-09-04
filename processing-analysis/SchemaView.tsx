@@ -37,7 +37,7 @@ export function SchemaView(props: { form: DataForm }) {
     const onAnonymousFillChange = useCallback((check: boolean) => {
         toast.info("En cours...")
         supaClient.from<DataForm>("forms").update({
-            allowAnonymousFill: Boolean(check)
+            allow_anonymous: Boolean(check)
         }).eq("id", props.form.id)
             .then((value) => {
                 if (value.data) {
@@ -85,12 +85,12 @@ export function SchemaView(props: { form: DataForm }) {
                                     }>
                                         <FormControlLabel
                                             label="Remplissage anonyme"
-                                            checked={props.form.allowAnonymousFill}
+                                            checked={props.form.allow_anonymous}
                                             onChange={(ev, check) => onAnonymousFillChange(check)}
                                             control={<Switch color="primary" />} />
                                     </Tooltip>
                                 </Box>
-                                {props.form.allowAnonymousFill && <NoTransformButton variant="outlined" color="default" size="small" onClick={onCopyLink}>
+                                {props.form.allow_anonymous && <NoTransformButton variant="outlined" color="default" size="small" onClick={onCopyLink}>
                                     Copier le lien de réponse
                                 </NoTransformButton>}
                             </Box>

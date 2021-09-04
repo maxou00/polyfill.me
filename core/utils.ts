@@ -75,8 +75,7 @@ export function findNodeAtY(collection: HTMLCollection, y: number) {
     for(let i = 0; i < collection.length; i++) {
         let node = collection.item(i) as HTMLElement;
 
-        let {offsetTop, clientHeight} = node;
-
+        let {offsetTop, clientHeight, scrollTop} = node;
         if( offsetTop <= y && (offsetTop+clientHeight)>=y ) {
             return node;
         }

@@ -17,9 +17,10 @@ import { ClockLoader } from 'react-spinners';
 import { setActiveForm } from '../state/middlewares';
 import { FillableSettingsEditor } from './settings/FillableSettingsEditor';
 import { Logo } from '../ui/Logo';
+import { useInit } from '../ui/Initializer';
 
 export default function TopAppBar() {
-  const [session, setSession] = useState<Supabase.Session>();
+  const session = useInit();
   const [createOpen, setCreateOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [updating, setUpdating] = useState(false);
@@ -69,22 +70,6 @@ export default function TopAppBar() {
         }
       })
   }, [fillable, fillableAlreadyExists]);
-
-  useEffect(() => {
-    setSession(supaClient.auth.session());
-    supaClient.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-      if (_event === "SIGNED_OUT") {
-        alert("signed out");
-      }
-    })
-
-    let user = supaClient.auth.user();
-
-    if (!user) {
-      return;
-    }
-  }, []);
 
   useEffect(() => {
 
@@ -187,7 +172,7 @@ export default function TopAppBar() {
             onClose={() => setFormPickerAnchor(undefined)}
             elevation={1}
             anchorEl={formPickerAnchor}
-            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
             transformOrigin={{ vertical: "top", horizontal: "center" }}>
             {
               forms.map((f) => {
@@ -220,7 +205,13 @@ export default function TopAppBar() {
         fullScreen
         open={settingsOpen}
         onClose={() => setSettingsOpen(false)} />
-      {session && <Popover elevation={2} anchorEl={profileAnchor} open={Boolean(profileAnchor)} onClose={() => setProfileAnchor(undefined)} anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
+      {session && <Popover 
+        elevation={2} 
+        anchorEl={profileAnchor} 
+        open={Boolean(profileAnchor)} 
+        onClose={() => setProfileAnchor(undefined)} 
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        transformOrigin={{ vertical: "top", horizontal: "center" }}>
         <Box minWidth="320px" padding={2}>
           <Box marginBottom={2}>
             <Typography variant="body1">{session.user.email}</Typography>

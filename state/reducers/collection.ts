@@ -31,6 +31,34 @@ export function collectionReducer(state: CollectionState = initialState, action:
             }
             return next;
         }
+        /////ONGOING
+        case 'RESET_RESPONSE': {
+            let next = {...state};
+            next.activePageId = next.form.form_content.pages[0].key;
+
+            next.response = {
+                id: nanoid(),
+                formId: next.form.id,
+                meta: {},
+                createdAt: new Date(Date.now()),
+                updatedAt: new Date(Date.now()),
+                pages: next.form.form_content.pages.map((p) => {
+                    /// Reset errors
+                    next.errors[p.key] = [];
+
+                    return {
+                        pageId: p.key,
+                        responses: p.fields.map((f) => {
+                            return {
+                                questionId: f.key,
+                                answer: undefined
+                            }
+                        })
+                    }
+                })
+            }
+            return next;
+        }
         case 'SET_ACTIVE_PAGE': {
             let next = {...state};
             if(next.form) {
