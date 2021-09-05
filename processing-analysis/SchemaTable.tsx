@@ -14,21 +14,22 @@ export function SchemaTable() {
                 (page) => page.fields
                     .map(
                         (field) => {
-                            return {page: page.key, field}
+                            return { page: page.key, field }
                         }
                     )
             )
     }, [responses.form]);
 
-    if(!responses) {
+    if (!responses) {
         return <></>
     }
 
     return <div>
-        <TableContainer style={{scrollbarWidth:'thin'}}>
-            <Table>
+        <TableContainer style={{ scrollbarWidth: 'thin' }}>
+            <Table stickyHeader size="small">
                 <TableHead>
                     <TableRow>
+                        <TableCell colSpan={2}>Dates</TableCell>
                         {
                             responses.form.form_content.pages.map((page) => {
                                 return <TableCell key={page.key} colSpan={page.fields.length}>
@@ -38,10 +39,24 @@ export function SchemaTable() {
                         }
                     </TableRow>
                     <TableRow>
+                        <TableCell>
+                            <Tooltip title={<span style={{ fontSize: '14px' }}>Création</span>}>
+                                <div style={{ overflow: 'hidden', maxWidth: '250px', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+                                    Création
+                                </div>
+                            </Tooltip>
+                        </TableCell>
+                        <TableCell>
+                            <Tooltip title={<span style={{ fontSize: '14px' }}>Mise à jour</span>}>
+                                <div style={{ overflow: 'hidden', maxWidth: '250px', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+                                    Mise à jour
+                                </div>
+                            </Tooltip>
+                        </TableCell>
                         {
                             responses.form.form_content.pages.flatMap((page) => page.fields).map((field) => {
                                 return <TableCell key={field.key}>
-                                    <Tooltip title={<span style={{fontSize: '14px'}}>{field.title}</span>}>
+                                    <Tooltip title={<span style={{ fontSize: '14px' }}>{field.title}</span>}>
                                         <div style={{ overflow: 'hidden', maxWidth: '250px', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
                                             {field.title}
                                         </div>
@@ -55,7 +70,28 @@ export function SchemaTable() {
                     {
                         responses.pageData.map((response) => {
 
+                            let created = response.createdAt instanceof Date ? response.createdAt : new Date(Date.parse(response.createdAt as any));
+                            let updated = response.updatedAt instanceof Date ? response.updatedAt : new Date(Date.parse(response.updatedAt as any));
+
+                            let createdStr = `${created.toLocaleDateString()} ${created.toLocaleTimeString()}`
+                            let updatedStr = response.createdAt !== response.updatedAt ? `${updated.toLocaleDateString()} ${updated.toLocaleTimeString()}` : '-'
+
                             return <TableRow key={response.id}>
+                                <TableCell>
+                                    <Tooltip title={<span style={{ fontSize: '14px' }}>{createdStr}</span>}>
+                                        <div style={{ overflow: 'hidden', maxWidth: '250px', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+                                            {createdStr}
+                                        </div>
+                                    </Tooltip>
+                                </TableCell>
+                                <TableCell>{
+                                    <Tooltip title={<span style={{ fontSize: '14px' }}>{updatedStr}</span>}>
+                                        <div style={{ overflow: 'hidden', maxWidth: '250px', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+                                            {updatedStr}
+                                        </div>
+                                    </Tooltip>
+                                }
+                                </TableCell>
                                 {
                                     flattenedFields.map((flat) => {
                                         let page = response.pages.find((p) => p.pageId === flat.page);

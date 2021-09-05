@@ -1,4 +1,4 @@
-import { Box, Button, ButtonGroup, Container, Dialog, DialogContent, FormControlLabel, Grid, Paper, Switch, Toolbar, Tooltip, Typography } from "@material-ui/core";
+import { Box, Button, ButtonGroup, Container, Dialog, DialogContent, FormControlLabel, Grid, IconButton, Paper, Switch, Toolbar, Tooltip, Typography } from "@material-ui/core";
 import { useRouter } from "next/dist/client/router";
 import { useCallback } from "react";
 import { useContext } from "react";
@@ -16,6 +16,7 @@ import { toast } from "react-toastify";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { fetchForms } from "../state/middlewares";
+import { MdExpandMore, MdFullscreen, MdFullscreenExit, MdZoomIn } from "react-icons/md";
 
 const SchemaViewContext = createContext<ReturnType<typeof useDataset> & { form: DataForm } | undefined>(undefined);
 
@@ -81,7 +82,7 @@ export function SchemaView(props: { form: DataForm }) {
                             <Box marginY={2} display="flex" flexDirection="row" alignItems="center" justifyContent="flex-end">
                                 <Box>
                                     <Tooltip title={
-                                        <span style={{ fontSize: '14px' }}>Activez le remplissage anonyme si vous effectuez des sondages ou d&apos;autres collectes d&apos;informations</span>
+                                        <span style={{ fontSize: '14px' }}>Le remplissage anonyme permets à n&apos;importe qui ayant accès au lien de ce schéma d&apos;ajouter une donnée. Utile pour les sondages et autres collectes d&apos;informations</span>
                                     }>
                                         <FormControlLabel
                                             label="Remplissage anonyme"
@@ -106,18 +107,18 @@ export function SchemaView(props: { form: DataForm }) {
             <Grid item xs={12}>
                 <Paper elevation={2}>
                     <Box paddingBottom={1} display="flex" flexDirection="row" alignItems="center" justifyContent="flex-end">
-                        <NoTransformButton size="small" variant="contained" disableElevation color="primary" onClick={() => setFullScreen(true)}>
-                            <i className="fi-rr-zoom-in" style={{ fontSize: '16px' }}></i>
-                        </NoTransformButton>
+                        <IconButton onClick={() => setFullScreen(true)}>
+                            <MdFullscreen size={24} />
+                        </IconButton>
                     </Box>
                     <SchemaRowsPaper />
                 </Paper>
             </Grid>
             <Dialog fullScreen open={isFullScreen}>
                 <Box padding={1} display="flex" flexDirection="row" alignItems="center" justifyContent="flex-end">
-                    <NoTransformButton size="small" onClick={() => setFullScreen(false)} variant="outlined" disableElevation color="default">
-                        <i className="fi-rr-zoom-out" style={{ fontSize: '16px' }}></i>
-                    </NoTransformButton>
+                    <IconButton onClick={() => setFullScreen(false)}>
+                        <MdFullscreenExit size={24} />
+                    </IconButton>
                 </Box>
                 <DialogContent>
                     <SchemaRowsPaper />

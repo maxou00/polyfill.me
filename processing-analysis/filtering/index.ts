@@ -1,0 +1,35 @@
+export enum DataOperation {
+    contain = "contain",
+    startWith = "startWith",
+    endWith = "endWith",
+
+    eq = "eq",
+    gt = "gt",
+    gte = "gte",
+    lt = "lt",
+    lte = "lte"
+}
+
+export enum LogicalJoin  {
+    and = "and",
+    or = "or"
+}
+
+export interface SingleRowCondition {
+    type: 'single';
+    page: string;
+    field: string;
+    operation: DataOperation;
+    value: any;
+}
+
+
+export interface BinaryRowCondition {
+    type: 'combined';
+    logic: LogicalJoin;
+    left: SingleRowCondition | BinaryRowCondition;
+    right: SingleRowCondition | BinaryRowCondition;
+}
+
+
+export type FilterChain = SingleRowCondition | BinaryRowCondition;

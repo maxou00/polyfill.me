@@ -50,9 +50,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     let id = context.params.id as string;
     return supaClient
         .from<DataForm>("forms")
-        .select("id,form_content,createdAt,updatedAt, allowAnonymousFill")
+        .select("*")
         .eq("id", id)
-        .eq("allowAnonymousFill", true)
+        .eq("allow_anonymous", true)
         .single()
         .then((value) => {
             if (value.error) {

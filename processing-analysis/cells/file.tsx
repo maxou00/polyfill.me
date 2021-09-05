@@ -42,11 +42,22 @@ export function FileCell(props: CellRendererProps<FileField, BucketFile>) {
     }, [downloadHref, url]);
 
     return <div>
-        {props.answer.type.startsWith("image/") && <NoTransformButton variant="outlined" color="default" size="small" startIcon={<span className="fi-rr-cloud-download" style={{ fontSize: '14px' }}></span>}>
+        {props.answer.type.startsWith("image/") && <NoTransformButton 
+            variant="outlined" 
+            color="default" 
+            size="small" 
+            startIcon={<span className="fi-rr-cloud-download" 
+            style={{ fontSize: '14px', margin: '2px', borderRadius: '24px'}}></span>}>
             Visualiser
         </NoTransformButton>
         }
-        <NoTransformButton onClick={onDownload} variant="outlined" color="default" size="small" startIcon={<span className="fi-rr-cloud-download" style={{ fontSize: '14px' }}></span>}>
+        <NoTransformButton 
+            onClick={onDownload} 
+            variant="outlined" 
+            color="default" 
+            size="small" 
+            startIcon={<span className="fi-rr-cloud-download" style={{ fontSize: '14px'}}></span>}
+            style={{ margin: '2px', borderRadius: '24px'}}>
             Télécharger
         </NoTransformButton>
         {url && <a href={url} download={props.field.title} hidden ref={downloadHref}></a>}

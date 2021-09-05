@@ -38,7 +38,7 @@ export default function TopAppBar() {
   }, [router]);
 
   const onPreview = useCallback(() => {
-    window.open(`http://localhost:5000/preview/${fillable.id}`, "_blank");
+    window.open(`/preview/${fillable.id}`, "_blank");
   }, [fillable]);
 
   const fillableAlreadyExists = useCallback((id: string) => {
