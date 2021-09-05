@@ -20,6 +20,7 @@ export interface SingleRowCondition {
     page: string;
     field: string;
     operation: DataOperation;
+    negated: boolean;
     value: any;
 }
 
@@ -30,6 +31,5 @@ export interface BinaryRowCondition {
     left: SingleRowCondition | BinaryRowCondition;
     right: SingleRowCondition | BinaryRowCondition;
 }
-
 
 export type FilterChain = SingleRowCondition | BinaryRowCondition;

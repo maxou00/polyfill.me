@@ -1,19 +1,27 @@
 import { FilterChain } from ".";
 import { DataForm, FormResponse } from "../../engine/page";
+import { checkRowConditionChain } from "./conditionchecker";
 
 export class FilterChainProcessor {
     chain: FilterChain;
     schema: DataForm;
     dataset: FormResponse[];
 
-    nextStage(previousStageDataset: FormResponse[], chainPosition: FilterChain) {
-        if(chainPosition.type === "single"){
-            //chainPosition.
-        }
-    
+    filter() {
+        return this.runStaged(this.dataset, this.chain);
     }
 
-    run() {
-        return this.nextStage(this.dataset, this.chain);
+    runStaged(previousStageDataset: FormResponse[], chainPosition: FilterChain) {
+        let match: FormResponse[] = [];
+        previousStageDataset.forEach((row) => {
+            if(this.checkSingleRow(row, chainPosition)) {
+                match.push(row);
+            }
+        })
+        return match;
+    }
+
+    checkSingleRow(row: FormResponse, chainPosition: FilterChain) {
+        return checkRowConditionChain(this.schema, row, chainPosition)
     }
 }

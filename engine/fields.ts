@@ -17,6 +17,16 @@ export type FieldFormat = "short"
     | "image"
     | "video"
 
+export enum FieldTypeEnum {
+    text = "text", number = "number", selection = "selection", file = "file"
+}
+
+export enum FieldFormEnum {
+    short = "short", paragraph = "paragraph", rich = "rich", email = "email",
+    date = "date", time = "time", datetime = "datetime", dropdown = "dropdown", 
+    radio = "radio", checkbox = "checkbox", chip = "chip", image = "image", video = "video"
+}
+
 export interface CommonFieldProps {
     key: string;
     type: FieldType;
