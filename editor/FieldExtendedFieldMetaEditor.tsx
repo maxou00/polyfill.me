@@ -1,11 +1,14 @@
 import { Box, Input, InputBase, MenuItem } from "@material-ui/core";
-import { useMemo } from "react";
+import { ChangeEvent, FocusEvent, MouseEvent, useCallback, useMemo } from "react";
+import { useDispatch } from "react-redux";
 import { ContentField } from "../engine/fields";
+import { appendField } from "../state/creator";
 import { useEditionState, useFillable } from "../state/selectors";
 import { NoTransformButton } from "../ui/styled";
 
 export function ExtendedFieldMetaEditor() {
     const fillable = useFillable();
+    const dispatch = useDispatch();
     const edition = useEditionState();
 
     const activeField = useMemo(() => {
@@ -15,13 +18,28 @@ export function ExtendedFieldMetaEditor() {
         }
     }, [fillable.pages, edition.activeField, edition.activePage]);
 
+    const onFocusID = useCallback((ev: FocusEvent<HTMLInputElement>) => {
+        if(activeField) {
+            ev.currentTarget.value = activeField.key;
+        }
+    }, [activeField]);
+
+    const onBlurID = useCallback((ev: FocusEvent<HTMLInputElement>) => {
+        let value = ev.currentTarget.value;
+        if(activeField && value !== activeField.key) {
+            let copy = {...activeField};
+            copy.key = value;
+            dispatch(appendField(edition.activePage, copy))
+        }
+    }, [dispatch, activeField, edition.activePage]);
+
     return <div>
         <Box padding={.2} paddingY={1}>
             <label style={{ margin: '8px 0px', width: '100%', overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>{activeField.title}</label>
         </Box>
         <Box padding={.5} display="flex" flexDirection="column" alignItems="flex-start" justifyContent="flex-start">
             <label style={{ margin: '8px 0px' }}>Identifiant du champ</label>
-            <InputBase style={{ border: '1px solid #ddd', padding: '0px 4px', height: '34px' }} fullWidth value={activeField.key} />
+            <InputBase onBlur={onBlurID} onFocus={onFocusID} style={{ border: '1px solid #ddd', padding: '0px 4px', height: '34px' }} fullWidth value={activeField.key} />
         </Box>
         <Box padding={.5} display="flex" flexDirection="column" alignItems="flex-start" justifyContent="flex-start">
             <label style={{ margin: '8px 0px' }}>Déplacer vers</label>

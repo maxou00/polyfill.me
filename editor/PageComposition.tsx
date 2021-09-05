@@ -5,11 +5,12 @@ import { useEditionState, useFillable } from '../state/selectors';
 import { useDispatch } from 'react-redux';
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { initialPage } from '../engine/page';
-import { appendPage, deleteField, moveFieldBefore, setActiveField, setActivePage } from '../state/creator';
+import { appendPage, deleteField, deletePage, moveFieldBefore, setActiveField, setActivePage } from '../state/creator';
 import names from "../engine/field_names.json";
 import { fieldCode } from '../engine/creators';
 import { ContentField } from '../engine/fields';
 import { useDrag, useDrop } from 'react-dnd';
+import { padZero } from '../core/utils';
 
 const SortablePageField = (props: {
     field: ContentField,
@@ -90,10 +91,10 @@ const SortablePageField = (props: {
     </div>
 }
 
-const SortableFieldList = (props: { 
-    items: ContentField[], 
-    active: string, 
-    onClick(field: ContentField): any, 
+const SortableFieldList = (props: {
+    items: ContentField[],
+    active: string,
+    onClick(field: ContentField): any,
     onDelete(field: ContentField): any,
     onSwap(old: number, nextPosition: number): any
 }) => {
@@ -101,13 +102,13 @@ const SortableFieldList = (props: {
         {
             props.items.map((f, i) => {
                 return <SortablePageField
-                    key={f.key+"-"+i}
+                    key={f.key + "-" + i}
                     field={f}
                     index={i}
                     active={f.key === props.active}
                     onClick={() => props.onClick(f)}
                     onDelete={() => props.onDelete(f)}
-                    onSwap={props.onSwap}/>
+                    onSwap={props.onSwap} />
             })
         }
     </ul>
@@ -167,7 +168,15 @@ export function PageComposition() {
                     {
                         fillable.pages.map((p) => {
                             return <li key={p.key} className={styles.page_item} onClick={() => moveToPage(p.key)} data-active={activePage && activePage.key === p.key}>
-                                {p.title}
+                                <div className={styles.content}>
+                                    <span className={styles.title} style={{ cursor: 'none', pointerEvents: 'none' }}>{p.title || "Sans titre"}</span>
+                                    <span className={styles.subtitle} style={{ cursor: 'none', pointerEvents: 'none' }}>{`${padZero(p.fields.length)} questions`}</span>
+                                </div>
+                                <div className={styles.actions}>
+                                    <button onClick={() => dispatch(deletePage(p.key))}>
+                                        <MdClose size={18} />
+                                    </button>
+                                </div>
                             </li>
                         })
                     }
@@ -189,7 +198,7 @@ export function PageComposition() {
                     active={edition.activeField}
                     onClick={(f) => setHighlightedField(f.key)}
                     onDelete={(f) => removeField(activePage.key, f.key)}
-                    onSwap={onSortEnd}/>
+                    onSwap={onSortEnd} />
                 }
             </div>
         </div>
