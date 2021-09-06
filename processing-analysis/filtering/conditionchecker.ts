@@ -99,24 +99,15 @@ export function checkRowConditionChain(schema: DataForm, row: FormResponse, chai
         let field = schema.form_content.pages.find((p) => p.key === chain.page)?.fields.find((f) => f.key === chain.field);
         let response = row.pages.find((p) => p.pageId === chain.page)?.responses.find((r) => r.questionId === chain.field);
         if(field && response) {
-            let match = doFieldMatch(field, chain, response) || false;
+            let match = Boolean(doFieldMatch(field, chain, response) || false);
             return chain.negated ? !match : match;
         }
     }
     else if(chain.logic === LogicalJoin.and) {
-        let leftMatch = checkRowConditionChain(schema, row, chain.left);
-        if(leftMatch) {
-            return checkRowConditionChain(schema, row, chain.right);
-        }
+        return checkRowConditionChain(schema, row, chain.left) && checkRowConditionChain(schema, row, chain.right);
     }
     else if(chain.logic === LogicalJoin.or) {
-        let leftMatch = checkRowConditionChain(schema, row, chain.left);
-        if(leftMatch) {
-            return true;
-        }
-        else {
-            return checkRowConditionChain(schema, row, chain.right);
-        }
+        return checkRowConditionChain(schema, row, chain.left) || checkRowConditionChain(schema, row, chain.right);
     }
     return false;
 }

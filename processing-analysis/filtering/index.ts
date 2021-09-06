@@ -24,7 +24,6 @@ export interface SingleRowCondition {
     value: any;
 }
 
-
 export interface BinaryRowCondition {
     type: 'combined';
     logic: LogicalJoin;

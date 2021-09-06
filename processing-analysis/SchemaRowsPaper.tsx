@@ -32,7 +32,7 @@ export function SchemaRowsPaper() {
             </Box>
         </Toolbar>
         <SchemaTable />
-        <Dialog open={filterOpen} onClose={() => setFilterOpen(false)}>
+        <Dialog fullScreen open={filterOpen} onClose={() => setFilterOpen(false)}>
             <DialogContent>
                 <FilterComposer schema={responses.form} />
             </DialogContent>
