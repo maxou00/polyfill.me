@@ -28,9 +28,6 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.4.0
 
-      - name: Print docker credentials
-        run: echo ${{secrets.DOCKER_USER}} ${{secrets.DOCKER_PASSWORD}}
-      
       - name: Docker Build & Push Action
         uses: mr-smithers-excellent/docker-build-push@v5.6
         with:
@@ -40,6 +37,6 @@ jobs:
           tags: dev
           registry: https://registry.hub.docker.com
           # Docker registry username
-          username: ${{secrets.DOCKER_USER}}
+          username: secrets.DOCKER_USER
           # Docker registry password
-          password: ${{secrets.DOCKER_PASSWORD}}
+          password: secrets.DOCKER_PASSWORD
