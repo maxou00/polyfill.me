@@ -8,15 +8,10 @@ COPY . .
 
 RUN npm install 
 
-RUN npm run build 
-
-RUN rm -r src
-
 RUN ls
 
 ENV PORT=80
 
 EXPOSE 80
 
-CMD npm start
-
+CMD npm run build && npm run start
