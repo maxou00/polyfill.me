@@ -35,6 +35,7 @@ jobs:
           image: themx05/polyfill-ui
           # Tags override for Docker image
           tags: dev
+          registry: https://hub.docker.com
           # Docker registry username
           username: ${{secrets.DOCKER_USER}}
           # Docker registry password
