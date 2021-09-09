@@ -6,6 +6,7 @@
     "dev": "PORT=5000 next dev",
     "build": "next build",
     "start": "next start",
+    "buildAndStart": "next build && next start",
     "lint": "next lint"
   },
   "dependencies": {
