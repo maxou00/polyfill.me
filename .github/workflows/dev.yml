@@ -27,6 +27,9 @@ jobs:
       
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.4.0
+
+      - name: Print docker credentials
+        run: echo ${{secrets.DOCKER_USER}} ${{secrets.DOCKER_PASSWORD}}
       
       - name: Docker Build & Push Action
         uses: mr-smithers-excellent/docker-build-push@v5.6
