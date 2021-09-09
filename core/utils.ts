@@ -6,8 +6,8 @@ export const KEY_PF_RESPONSE_ID = "pf_response_id";
 export const KEY_PF_RESPONSE_TIME = "pf_response_time";
 export const KEY_PF_RESPONSE_UNLOCK = 'pf_unlock_at';
 
-const supaUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supaAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const supaUrl = process.env.supabase_url;
+const supaAnonKey = process.env.supabase_anon_key;
 
 export const supaClient = createClient(supaUrl, supaAnonKey);
 
