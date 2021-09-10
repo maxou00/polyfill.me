@@ -32,3 +32,12 @@ export interface BinaryRowCondition {
 }
 
 export type FilterChain = SingleRowCondition | BinaryRowCondition;
+
+export interface DataFormFilter {
+    label: string;
+    code: string;
+    schemaId: string;
+    filter: FilterChain;
+    createdAt: string;
+    updatedAt: string;
+}
