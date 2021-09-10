@@ -214,7 +214,7 @@ export default function TopAppBar() {
         transformOrigin={{ vertical: "top", horizontal: "center" }}>
         <Box minWidth="320px" padding={2}>
           <Box marginBottom={2}>
-            <Typography variant="body1">{session.user.email}</Typography>
+            <Typography variant="body1">{session.user.user_metadata.name || session.user.email}</Typography>
           </Box>
           <List dense disablePadding>
             <ListItem button onClick={() => router.push("/dashboard")}>
