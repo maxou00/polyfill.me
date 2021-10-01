@@ -12,6 +12,8 @@ import Image from "next/image";
 function SchemaResume(props: { form: DataForm }) {
     const dataset = useDataset(props.form.id, 1);
     const router = useRouter();
+    const filters = useGlobalState().filters.filter((f) => f.schemaId === props.form.id);
+
     const latestDate = useMemo(() => {
         return (dataset.pageData[0]) ? dataset.pageData[0].createdAt : undefined;
     }, [dataset]);
@@ -21,10 +23,13 @@ function SchemaResume(props: { form: DataForm }) {
             <Typography variant="h2" style={{fontWeight: 'bold'}}>{padZero(dataset.total)}<span style={{ fontSize: '21px', marginLeft: '8px', fontWeight: 'lighter' }}>entrées</span></Typography>
         </Box>
         <Box paddingY={1.5} display="flex" flexDirection="row" alignItems="center" justifyContent="center">
-            <Box flexGrow={1}>
+            <Box flexGrow={1} display="flex" flexDirection="column" alignItems="flex-start" justifyContent="center">
                 <Typography variant="h5">{props.form.form_content.title}</Typography>
                 {latestDate && <span>
-                    Dernière création le {new Date(latestDate).toLocaleDateString()} à {new Date(latestDate).toLocaleTimeString()}
+                    Dernier ajout le {new Date(latestDate).toLocaleDateString()} à {new Date(latestDate).toLocaleTimeString()}
+                </span>}
+                {filters.length > 0 && <span>
+                    {padZero(filters.length)} Filtre{filters.length > 1 ? 's':''}
                 </span>}
             </Box>
             <Box>

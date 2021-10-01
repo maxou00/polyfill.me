@@ -1,4 +1,5 @@
 import { DataForm, Fillable, FormResponse } from "../engine/page";
+import { DataFormFilter } from "../processing-analysis/filtering";
 
 export interface FillableEdition {
     activePage: string;
@@ -19,6 +20,7 @@ export interface CollectionState {
 
 export interface GlobalState {
     forms: DataForm[];
+    filters: DataFormFilter[];
 }
 
 export type AppState = { 

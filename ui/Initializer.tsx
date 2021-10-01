@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 import { supaClient } from "../core/utils";
 import { DataForm } from "../engine/page";
 import { appendForm } from "../state/creator";
-import { fetchForms, setActiveForm } from "../state/middlewares";
+import { fetchFilters, fetchForms, setActiveForm } from "../state/middlewares";
 
 const InitializerContext = createContext<Session>(undefined);
 
@@ -36,6 +36,7 @@ export function Initializer(props: PropsWithChildren<{ redirectToSignin?: boolea
         setBusy(false);
         if (activeSession) {
             dispatch(fetchForms());
+            dispatch(fetchFilters());
             supaClient.auth.onAuthStateChange((_event, s) => {
                 setSession(s);
                 if (_event === "SIGNED_OUT") {

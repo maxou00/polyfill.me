@@ -1,6 +1,7 @@
 import { FillableDecoration } from "../engine/decoration";
 import { ContentField } from "../engine/fields";
 import { DataForm, Fillable, Page } from "../engine/page";
+import { DataFormFilter } from "../processing-analysis/filtering";
 
 interface SetActiveFillable {
     type: 'SET_ACTIVE_FILLABLE',
@@ -90,12 +91,22 @@ export interface SetForms {
     forms: DataForm[];
 }
 
+export interface SetFilters {
+    type: 'SET_FILTERS',
+    filters: DataFormFilter[];
+}
+
 export interface AppendForm {
     type: 'APPEND_FORM',
     form: DataForm;
 }
 
-type GlobalAction = SetForms | AppendForm;
+export interface AppendFilter {
+    type: 'APPEND_FILTER',
+    filter: DataFormFilter;
+}
+
+type GlobalAction = SetForms | SetFilters | AppendForm | AppendFilter;
 
 type EditionAction = SetActiveFillable | SetActivePage | SetActiveField | MoveFieldBefore | MoveFieldAfter | AppendFieldBefore | AppendFieldAfter;
 

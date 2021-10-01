@@ -8,7 +8,8 @@ import { extractFileAnswers, KEY_PF_RESPONSE_ID, KEY_PF_RESPONSE_TIME, KEY_PF_RE
 import { defaultFillableDecoration } from "../engine/decoration";
 import { FieldErrorMap, ValidationFunction } from "../engine/errors";
 import { DataForm, Fillable, FormResponse } from "../engine/page";
-import { appendAnswerError, setActiveFillable, setActivePage, setForms } from "./creator";
+import { DataFormFilter } from "../processing-analysis/filtering";
+import { appendAnswerError, setActiveFillable, setActivePage, setFilters, setForms } from "./creator";
 
 
 export function fetchForms(): ThunkAction<Promise<void>, AppState, {}, AnyAction> {
@@ -27,6 +28,23 @@ export function fetchForms(): ThunkAction<Promise<void>, AppState, {}, AnyAction
                 if (values.body.length > 0) {
                     dispatch(setActiveForm(values.body[0].form_content));
                 }
+            })
+    }
+}
+
+export function fetchFilters(): ThunkAction<Promise<void>, AppState, {}, AnyAction> {
+    return async (dispatch, getState) => {
+        let user = supaClient.auth.user();
+        supaClient
+            .from<DataFormFilter>("filters")
+            .select("*")
+            .eq("user_id", user.id)
+            .order("updated_at", { ascending: false })
+            .then((values) => {
+                if (values.error) {
+                    return toast.error("Erreur de recupération de vos formulaires");
+                }
+                dispatch(setFilters(values.body));
             })
     }
 }

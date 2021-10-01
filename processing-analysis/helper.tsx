@@ -3,6 +3,7 @@ import { useCallback, useEffect } from "react"
 import { supaClient } from "../core/utils";
 import { FormResponse } from "../engine/page";
 import { useGlobalState } from "../state/selectors";
+import { FilterProvider } from "../api/FilterProvider";
 
 export const useSchema = (schemaId: string) => {
     return useGlobalState().forms.find((schema) => schema.id === schemaId);
@@ -26,11 +27,11 @@ export const useDataset = (formId: string, pageSize: number = 25) => {
         supaClient.from<FormResponse>("form_response")
             .select("*")
             .limit(pageSize)
-            .order("createdAt", {ascending:false})
+            .order("createdAt", { ascending: false })
             .range(startIndex, end)
             .then((result) => {
                 setBusy(false);
-                if(result.data) {
+                if (result.data) {
                     setItems(result.data);
                 }
             })
@@ -51,14 +52,14 @@ export const useDataset = (formId: string, pageSize: number = 25) => {
     }, [fetchCurrentPage]);
 
     const fetchNext = useCallback(() => {
-        if(currentPage >= 0 && currentPage < pageCount-1) {
-            setCurrentPage(currentPage+1);
+        if (currentPage >= 0 && currentPage < pageCount - 1) {
+            setCurrentPage(currentPage + 1);
         }
     }, [currentPage, pageCount]);
 
     const fetchBefore = useCallback(() => {
-        if(currentPage > 0 && currentPage <= pageCount-1) {
-            setCurrentPage(currentPage-1);
+        if (currentPage > 0 && currentPage <= pageCount - 1) {
+            setCurrentPage(currentPage - 1);
         }
     }, [currentPage, pageCount]);
 
@@ -66,8 +67,73 @@ export const useDataset = (formId: string, pageSize: number = 25) => {
      * fetch 1 based indexed page of data.
      **/
     const fetchIndex = useCallback((index: number) => {
-        if(index>=1 && index <= pageCount) {
-            setCurrentPage(index-1);
+        if (index >= 1 && index <= pageCount) {
+            setCurrentPage(index - 1);
+        }
+    }, [pageCount]);
+
+    return {
+        total: totalCount,
+        itemPerPage: pageSize,
+        pageCount,
+        pageIndex: currentPage,
+        pageData: items,
+        fetchBefore,
+        refresh: fetchCurrentPage,
+        fetchNext,
+        fetchIndex
+    }
+}
+
+export const useFilterDataset = (formId: string, filterId: string, pageSize: number = 25) => {
+    const [busy, setBusy] = useState(false);
+    const [totalCount, setTotalCount] = useState(0);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [items, setItems] = useState<FormResponse[]>([]);
+
+    const filterProvider = useMemo(() => new FilterProvider(), []);
+
+    const pageCount = useMemo(() => {    x
+        return Math.ceil(totalCount / pageSize);
+    }, [totalCount, pageSize]);
+
+    const fetchCurrentPage = useCallback(async () => {
+        let startIndex = currentPage * pageSize;
+        let end = startIndex + pageSize - 1;
+        setBusy(true);
+        filterProvider
+            .getDataset(formId, filterId, pageSize, currentPage)
+            .then((dataset) => {
+                setBusy(false);
+                if (dataset) {
+                    setItems(dataset.items);
+                    setTotalCount(dataset.count);
+                }
+            })
+    }, [currentPage, filterId, filterProvider, formId, pageSize]);
+
+    useEffect(() => {
+        fetchCurrentPage();
+    }, [fetchCurrentPage]);
+
+    const fetchNext = useCallback(() => {
+        if (currentPage >= 0 && currentPage < pageCount - 1) {
+            setCurrentPage(currentPage + 1);
+        }
+    }, [currentPage, pageCount]);
+
+    const fetchBefore = useCallback(() => {
+        if (currentPage > 0 && currentPage <= pageCount - 1) {
+            setCurrentPage(currentPage - 1);
+        }
+    }, [currentPage, pageCount]);
+
+    /**
+     * fetch 1 based indexed page of data.
+     **/
+    const fetchIndex = useCallback((index: number) => {
+        if (index >= 1 && index <= pageCount) {
+            setCurrentPage(index - 1);
         }
     }, [pageCount]);
 
@@ -79,7 +145,7 @@ export const useDataset = (formId: string, pageSize: number = 25) => {
         pageData: items,
         fetchBefore,
         fetchNext,
+        refresh: fetchCurrentPage,
         fetchIndex
     }
 }
-

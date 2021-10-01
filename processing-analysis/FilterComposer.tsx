@@ -57,7 +57,7 @@ export function FilterComposer(props: { schema: DataForm }) {
                 anchorEl={composerAnchor}
                 anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
                 transformOrigin={{ vertical: "top", horizontal: "center" }}>
-                <Box minWidth="3220px" padding={2}>
+                <Box maxWidth="320px" padding={2}>
                     <FilterEntryComposer schema={props.schema} onCompose={onConditionComposed} />
                 </Box>
             </Popover>

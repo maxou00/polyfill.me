@@ -1,6 +1,6 @@
-import { Box, Button, ButtonGroup, Container, Dialog, DialogContent, FormControlLabel, Grid, IconButton, Paper, Switch, Toolbar, Tooltip, Typography } from "@material-ui/core";
+import { Box, Button, ButtonGroup, Container, Dialog, DialogContent, DialogTitle, FormControlLabel, Grid, IconButton, Paper, Switch, Toolbar, Tooltip, Typography } from "@material-ui/core";
 import { useRouter } from "next/dist/client/router";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { useContext } from "react";
 import { createContext } from "react";
 import { useState } from "react";
@@ -16,7 +16,10 @@ import { toast } from "react-toastify";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { fetchForms } from "../state/middlewares";
-import { MdExpandMore, MdFullscreen, MdFullscreenExit, MdZoomIn } from "react-icons/md";
+import { MdClose, MdExpandMore, MdFullscreen, MdFullscreenExit, MdZoomIn } from "react-icons/md";
+import { useGlobalState } from "../state/selectors";
+import { FilterView } from "./FilterView";
+import { FilterComposer } from "./FilterComposer";
 
 const SchemaViewContext = createContext<ReturnType<typeof useDataset> & { form: DataForm } | undefined>(undefined);
 
@@ -25,12 +28,17 @@ export function useSchemaView() {
 }
 
 export function SchemaView(props: { form: DataForm }) {
+    const [filterOpen, setFilterOpen] = useState(false);
     const responses = useDataset(props.form.id);
     const [isFullScreen, setFullScreen] = useState(false);
 
     const dispatch = useDispatch();
-    const router = useRouter();
+    const globalState = useGlobalState();
+    const filters = useMemo(() => {
+        return (globalState.filters || []).filter((f) => f.schemaId === props.form.id);
+    }, [globalState.filters, props.form.id]);
 
+    const router = useRouter();
     const onPreview = useCallback(() => {
         window.open(`${router.basePath}/preview/${props.form.id}`, "_blank");
     }, [props, router]);
@@ -100,9 +108,18 @@ export function SchemaView(props: { form: DataForm }) {
                 </Container>
             </Grid>
             <Grid item xs={12}>
-                <Container>
-
-                </Container>
+                {
+                    filters.map((filter) => {
+                        return <Paper key={filter.id}>
+                            <FilterView schema={props.form} filter={filter} />
+                        </Paper>
+                    })
+                }
+            </Grid>
+            <Grid item xs={12}>
+                <Box paddingY={2}>
+                    <NoTransformButton onClick={() => setFilterOpen(true)} variant="contained" color="primary">Créer un nouveau filtre</NoTransformButton>
+                </Box>
             </Grid>
             <Grid item xs={12}>
                 <Paper elevation={2}>
@@ -122,6 +139,23 @@ export function SchemaView(props: { form: DataForm }) {
                 </Box>
                 <DialogContent>
                     <SchemaRowsPaper />
+                </DialogContent>
+            </Dialog>
+            <Dialog open={filterOpen} onClose={() => setFilterOpen(false)} fullScreen>
+                <DialogTitle>
+                    <Box display="flex" flexDirection="row" alignItems="center" justifyContent="space-between">
+                        <Box paddingY={2}>
+                            <Typography variant="h6">Composer un filtre</Typography>
+                        </Box>
+                        <IconButton onClick={() => setFilterOpen(false)}>
+                            <MdClose />
+                        </IconButton>
+                    </Box>
+                </DialogTitle>
+                <DialogContent>
+                    <Container>
+                        <FilterComposer schema={props.form} />
+                    </Container>
                 </DialogContent>
             </Dialog>
         </Grid>

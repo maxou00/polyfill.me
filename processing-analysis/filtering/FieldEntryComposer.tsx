@@ -1,4 +1,4 @@
-import { Box, FormControlLabel, Grid, MenuItem, Switch, TextField, Typography } from "@material-ui/core";
+import { Box, Checkbox, FormControlLabel, Grid, MenuItem, Switch, TextField, Typography } from "@material-ui/core";
 import { ChangeEvent, useCallback, useMemo, useState } from "react";
 import { MdDone } from "react-icons/md";
 import { DataOperation, SingleRowCondition } from ".";
@@ -49,14 +49,6 @@ export const FieldConditionComposer = (props: { condition: SingleRowCondition, o
                     <MenuItem value="lte">Infériorité ou égalité</MenuItem>
 
                 </TextField>
-                <Box display="flex" flexDirection="row" alignItems="center" justifyContent="flex-end">
-                    <FormControlLabel
-                        checked={props.condition.negated}
-                        onChange={(ev, c) => onNegated(c)}
-                        control={<Switch color="primary" />}
-                        label="Recherche négative"
-                        labelPlacement="start" />
-                </Box>
             </Grid>
             <Grid item xs={12}>
                 <Typography variant="h6">Valeur de référence</Typography>
@@ -66,6 +58,17 @@ export const FieldConditionComposer = (props: { condition: SingleRowCondition, o
                     fullWidth
                     value={props.condition.value}
                     onChange={onReferenceChange} />
+            </Grid>
+            <Grid item xs={12}>
+                <Box display="flex" flexDirection="column" alignItems="flex-start" justifyContent="center">
+                    <FormControlLabel
+                        checked={props.condition.negated}
+                        onChange={(ev, c) => onNegated(c)}
+                        control={<Checkbox color="primary" />}
+                        label="Recherche négative"
+                        labelPlacement="end" />
+                    <Typography variant="body2" align="right">L&apos;algorithme prendra toutes les entrées qui ne vérifient pas cette condition.</Typography>
+                </Box>
             </Grid>
         </Grid>
     </Box>

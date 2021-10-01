@@ -39,9 +39,6 @@ function IndexScreen() {
             <link rel="icon" href="/favicon.ico" />
         </Head>
         <main>
-            {
-                JSON.stringify(process.env)
-            }
             <div className={styles.headerWrapper}>
                 <header className={styles.header}>
                     <div className={styles.logoWrapper}>

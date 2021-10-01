@@ -34,10 +34,12 @@ export interface BinaryRowCondition {
 export type FilterChain = SingleRowCondition | BinaryRowCondition;
 
 export interface DataFormFilter {
+    id: string;
     label: string;
     code: string;
     schemaId: string;
+    user_id: string;
     filter: FilterChain;
-    createdAt: string;
-    updatedAt: string;
+    created_at: string;
+    updated_at: string;
 }

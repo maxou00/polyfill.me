@@ -1,15 +1,18 @@
 import { Divider, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography } from "@material-ui/core";
 import { useMemo } from "react";
 import { ContentField } from "../engine/fields";
-import { DataForm } from "../engine/page";
+import { DataForm, FormResponse } from "../engine/page";
 import { CellRenderer } from "./cells";
 import { useSchemaView } from "./SchemaView";
 
-export function SchemaTable() {
-    const responses = useSchemaView();
+interface Props {
+    schema: DataForm;
+    dataset: FormResponse[];
+}
 
+export function SchemaTable(props: Props) {
     const flattenedFields = useMemo(() => {
-        return responses.form.form_content.pages
+        return props.schema.form_content.pages
             .flatMap(
                 (page) => page.fields
                     .map(
@@ -18,9 +21,9 @@ export function SchemaTable() {
                         }
                     )
             )
-    }, [responses.form]);
+    }, [props.schema]);
 
-    if (!responses) {
+    if (!props.dataset) {
         return <></>
     }
 
@@ -31,7 +34,7 @@ export function SchemaTable() {
                     <TableRow>
                         <TableCell colSpan={2}>Dates</TableCell>
                         {
-                            responses.form.form_content.pages.map((page) => {
+                            props.schema.form_content.pages.map((page) => {
                                 return <TableCell key={page.key} colSpan={page.fields.length}>
                                     <Typography variant="h6">{page.title}</Typography>
                                 </TableCell>
@@ -54,7 +57,7 @@ export function SchemaTable() {
                             </Tooltip>
                         </TableCell>
                         {
-                            responses.form.form_content.pages.flatMap((page) => page.fields).map((field) => {
+                            props.schema.form_content.pages.flatMap((page) => page.fields).map((field) => {
                                 return <TableCell key={field.key}>
                                     <Tooltip title={<span style={{ fontSize: '14px' }}>{field.title}</span>}>
                                         <div style={{ overflow: 'hidden', maxWidth: '250px', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
@@ -68,7 +71,7 @@ export function SchemaTable() {
                 </TableHead>
                 <TableBody>
                     {
-                        responses.pageData.map((response) => {
+                        props.dataset.map((response) => {
 
                             let created = response.createdAt instanceof Date ? response.createdAt : new Date(Date.parse(response.createdAt as any));
                             let updated = response.updatedAt instanceof Date ? response.updatedAt : new Date(Date.parse(response.updatedAt as any));

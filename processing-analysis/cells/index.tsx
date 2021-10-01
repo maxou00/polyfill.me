@@ -40,8 +40,8 @@ function ArrayCellRenderer(props: CellRendererProps<ContentField, Array<any>>) {
     if (props.answer.length <= 2) {
         return <div className={styles.cellArray}>
             {
-                props.answer.map((entry) => {
-                    return <CellRenderer {...props} answer={entry} key={props.field.key} />
+                props.answer.map((entry, i) => {
+                    return <CellRenderer {...props} answer={entry} key={props.field.key+i} />
                 })
             }
         </div>

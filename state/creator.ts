@@ -1,6 +1,7 @@
 import { FillableDecoration } from "../engine/decoration";
 import { ContentField } from "../engine/fields";
 import { DataForm, Fillable, Page } from "../engine/page";
+import { DataFormFilter } from "../processing-analysis/filtering";
 import { Action } from "./actions";
 
 export function setActiveFillable(fillable: Fillable): Action {
@@ -145,6 +146,20 @@ export function setForms(forms:DataForm[]): Action {
     return {
         type: 'SET_FORMS',
         forms
+    }
+}
+
+export function setFilters(filters:DataFormFilter[]): Action {
+    return {
+        type: "SET_FILTERS",
+        filters
+    }
+}
+
+export function appendFilter(filter: DataFormFilter): Action {
+    return {
+        type: 'APPEND_FILTER',
+        filter
     }
 }
 
